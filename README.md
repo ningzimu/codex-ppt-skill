@@ -153,3 +153,7 @@ skill 会按以下流程执行：
 ## 许可证
 
 MIT
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=ningzimu/codex-ppt-skill&type=Date)](https://www.star-history.com/#ningzimu/codex-ppt-skill&Date)
