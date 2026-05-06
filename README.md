@@ -6,7 +6,7 @@
 
 - 使用 Codex 内置的 `gpt-image-2` 生图和编辑图能力生成每页幻灯片图片
 - 图片式 PPT：每页幻灯片是一张完整 16:9 图片，适合强视觉表达
-- 风格参考库：内置商务、清爽专业、电子墨水杂志、手绘技术解释、仪表盘等多种风格说明
+- 风格参考库：内置清爽专业、科研答辩、电子墨水杂志、手绘技术解释、仪表盘等多种风格说明
 - 整套 PPT 保持统一视觉语言，但每页会按内容语义调整版式，避免机械重复
 - 本地组装脚本：将 `slide_01.png`、`slide_02.png` 等图片打包成 PowerPoint
 
@@ -28,6 +28,7 @@ codex-ppt-skill/
             ├── 清爽专业风.md
             ├── 创意杂志风.md
             ├── 电子墨水杂志风.md
+            ├── 科研答辩风.md
             ├── 手绘技术解释风.md
             ├── 数据仪表盘风.md
             └── ...
@@ -82,18 +83,14 @@ skill 会按以下流程执行：
 | 清爽专业风 | 创意杂志风 |
 | --- | --- |
 | ![清爽专业风](assets/style-previews/clean-professional.png) | ![创意杂志风](assets/style-previews/creative-magazine.png) |
-
 | 电子墨水杂志风 | 数据仪表盘风 |
-| --- | --- |
 | ![电子墨水杂志风](assets/style-previews/e-ink-magazine.png) | ![数据仪表盘风](assets/style-previews/data-dashboard.png) |
-
 | 复古扁平插画风 | 手绘技术解释风 |
-| --- | --- |
 | ![复古扁平插画风](assets/style-previews/retro-flat-illustration.png) | ![手绘技术解释风](assets/style-previews/handdrawn-technical.png) |
-
 | 手绘白板风 | 温暖手工风 |
-| --- | --- |
 | ![手绘白板风](assets/style-previews/handdrawn-whiteboard.png) | ![温暖手工风](assets/style-previews/warm-handmade.png) |
+| 科研答辩风 |  |
+| ![科研答辩风](assets/style-previews/scientific-defense.png) |  |
 
 ## 输出结构
 
@@ -147,6 +144,7 @@ skill 会按以下流程执行：
 - 技术文章转分享 PPT
 - 论文或报告转演示稿
 - 课程笔记转课件
+- 科研项目申报、中期检查、结题验收和论文答辩
 - 商业汇报、产品介绍、调研总结
 - 需要强视觉统一性的图片式演示文稿
 
