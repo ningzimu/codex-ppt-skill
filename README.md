@@ -1,5 +1,7 @@
 # Codex PPT Skill
 
+[![English](https://img.shields.io/badge/lang-English-blue)](README_en.md)
+
 一个面向 Codex 的 PPT 生成 skill。它把文章、报告、论文、课程笔记等内容转换成“整页图片式”的演示文稿：先规划大纲和视觉风格，再使用 Codex 内置的 `gpt-image-2` 生成每页幻灯片图片，最后用本地脚本组装为 `.pptx`。
 
 ## 特点
@@ -15,6 +17,7 @@
 ```text
 codex-ppt-skill/
 ├── README.md
+├── README_en.md
 ├── LICENSE
 ├── assets/
 │   └── style-previews/
