@@ -83,6 +83,7 @@ Available references:
 - `references/创意杂志风.md`
 - `references/电子墨水杂志风.md`
 - `references/数据仪表盘风.md`
+- `references/科研答辩风.md`
 - `references/复古扁平插画风.md`
 - `references/手绘技术解释风.md`
 - `references/手绘白板风.md`
@@ -96,6 +97,7 @@ Example style confirmation:
 A. 清爽专业风（推荐）：浅色背景、蓝绿强调色、结构清晰，适合汇报、答辩和技术分享。
 B. 创意杂志风：大标题、强图片、留白更大胆，适合分享和传播。
 C. 数据仪表盘风：指标卡、图表感布局，适合数据密集型报告。
+D. 科研答辩风：蓝色结构、红色重点、高密度证据图表，适合课题申报、中期检查、结题验收和论文答辩。
 
 你选哪个？也可以指定要调整的配色、布局或插画方向。
 ```
