@@ -39,18 +39,27 @@ codex-ppt-skill/
 
 ## 安装
 
-将 skill 目录复制或链接到 Codex skills 目录：
+推荐直接在 Codex 会话中说：
+
+```text
+请使用 skill-installer 从 https://github.com/ningzimu/codex-ppt-skill 安装 codex-ppt，skill 路径是 skills/codex-ppt。
+```
+
+安装完成后，重启 Codex 让新 skill 生效。
+
+如果你想手动安装，也可以直接运行 Codex 内置的安装脚本。这个仓库的 skill 根目录是 `skills/codex-ppt`：
+
+```bash
+python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
+  --repo ningzimu/codex-ppt-skill \
+  --path skills/codex-ppt
+```
+
+如果你是在本地开发这个仓库，也可以把 skill 目录链接到 Codex skills 目录：
 
 ```bash
 mkdir -p ~/.codex/skills
 ln -s /path/to/codex-ppt-skill/skills/codex-ppt ~/.codex/skills/codex-ppt
-```
-
-安装 PPT 组装脚本依赖：
-
-```bash
-python3 -m venv ~/.codex/skills/codex-ppt/.venv
-~/.codex/skills/codex-ppt/.venv/bin/python -m pip install -r ~/.codex/skills/codex-ppt/requirements.txt
 ```
 
 ## 使用方式
@@ -72,6 +81,12 @@ skill 会按以下流程执行：
 7. 检查文字清晰度、风格一致性和内容完整性
 8. 生成 `outline.md` 和 `speech.md`
 9. 使用 `assemble_ppt.py` 组装 `.pptx`
+
+## 使用技巧
+
+- 如果生成的幻灯片图片比较模糊，尤其是文字较多的页面，可以让 Codex 改用 4K 分辨率生成图片。默认分辨率在高文字密度页面上可能会导致小字不够清晰。
+- 如果只是不满意某一页的内容、排版、配色或文字表达，可以直接让 Codex 针对这一页做细致修改，不需要整套 PPT 重新生成。
+- 你也可以上传一张喜欢的 PPT 风格截图或参考图，让 Codex 模仿它的配色、版式、字体气质和视觉元素来生成整套 PPT。
 
 ## 生成效果
 
@@ -113,34 +128,6 @@ skill 会按以下流程执行：
 `origin_image/` 只放正式页图片，并按 `slide_01.png`、`slide_02.png` 这样的顺序命名。样张确认时也直接使用对应页的正式文件名；如果要保留废稿或对比图，放到项目根目录或单独的 `drafts/` 目录，不要放进 `origin_image/`。
 
 `speech.md` 会在组装时写入 PPT 的每页备注。建议使用 `## Slide 1: 标题`、`## Slide 2: 标题` 这样的标题格式，脚本会按页码匹配。
-
-## 手动组装 PPT
-
-如果你已经有一组幻灯片图片，可以直接运行脚本：
-
-```bash
-~/.codex/skills/codex-ppt/.venv/bin/python ~/.codex/skills/codex-ppt/scripts/assemble_ppt.py /path/to/base MyPresentation.pptx --init
-```
-
-把图片保存到 `/path/to/base/MyPresentation/origin_image/` 后，再组装 PPT：
-
-```bash
-~/.codex/skills/codex-ppt/.venv/bin/python ~/.codex/skills/codex-ppt/scripts/assemble_ppt.py /path/to/base MyPresentation.pptx --aspect-ratio 16:9
-```
-
-脚本会读取：
-
-```text
-/path/to/base/MyPresentation/origin_image/
-```
-
-只会读取 `slide_01.png`、`slide_02.png` 这类正式图片；`sample_slide.png`、草稿图、参考图会被忽略。如果项目目录下存在 `speech.md`，脚本会把对应 `Slide N` 段落写入 PPT 备注。
-
-并输出：
-
-```text
-/path/to/base/MyPresentation/MyPresentation.pptx
-```
 
 ## 适用场景
 

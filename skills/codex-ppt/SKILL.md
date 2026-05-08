@@ -300,12 +300,14 @@ Report:
 
 ## Assembly Script Dependency
 
-`scripts/assemble_ppt.py` requires:
+Before running `scripts/assemble_ppt.py`, make sure the local virtual environment exists and has the required packages. If `~/.codex/skills/codex-ppt/.venv/bin/python` is missing, or if importing the script dependencies fails, create or refresh the environment:
 
 ```bash
 python3 -m venv ~/.codex/skills/codex-ppt/.venv
 ~/.codex/skills/codex-ppt/.venv/bin/python -m pip install -r ~/.codex/skills/codex-ppt/requirements.txt
 ```
+
+This is an internal setup step for the skill. Do not ask the user to run these commands unless dependency installation fails and user approval or troubleshooting is required.
 
 The script supports `16:9` and `4:3`. Use `16:9` unless the user requests otherwise.
 
