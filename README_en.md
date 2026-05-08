@@ -39,18 +39,27 @@ codex-ppt-skill/
 
 ## Installation
 
-Copy or symlink the skill directory into the Codex skills directory:
+The recommended path is to ask Codex directly:
+
+```text
+Use skill-installer to install codex-ppt from https://github.com/ningzimu/codex-ppt-skill. The skill path is skills/codex-ppt.
+```
+
+Restart Codex after installation so the new skill is picked up.
+
+If you prefer a manual install, you can run Codex's built-in installer script directly. The skill root in this repository is `skills/codex-ppt`:
+
+```bash
+python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
+  --repo ningzimu/codex-ppt-skill \
+  --path skills/codex-ppt
+```
+
+If you are developing this repository locally, you can instead symlink the skill directory into the Codex skills directory:
 
 ```bash
 mkdir -p ~/.codex/skills
 ln -s /path/to/codex-ppt-skill/skills/codex-ppt ~/.codex/skills/codex-ppt
-```
-
-Install dependencies for the PPT assembly script:
-
-```bash
-python3 -m venv ~/.codex/skills/codex-ppt/.venv
-~/.codex/skills/codex-ppt/.venv/bin/python -m pip install -r ~/.codex/skills/codex-ppt/requirements.txt
 ```
 
 ## Usage
@@ -72,6 +81,12 @@ The skill follows this workflow:
 7. Check text readability, style consistency, and content completeness.
 8. Generate `outline.md` and `speech.md`.
 9. Assemble the `.pptx` with `assemble_ppt.py`.
+
+## Usage Tips
+
+- If generated slide images look blurry, especially on text-heavy pages, ask Codex to generate the images at 4K resolution. The default resolution can make small text less clear when a slide contains a lot of text.
+- If you are unhappy with one specific slide's content, layout, colors, or wording, ask Codex to refine that slide in detail instead of regenerating the whole deck.
+- You can also upload a screenshot or reference image of a PPT style you like, and ask Codex to imitate its color palette, layout, typography feel, and visual elements.
 
 ## Output Example
 
@@ -113,34 +128,6 @@ Each PPT is generated into an independent project directory:
 `origin_image/` should contain only final slide images, named in order as `slide_01.png`, `slide_02.png`, and so on. The confirmed sample slide should also use its final slide filename directly. If you want to keep rejected variants or comparison drafts, put them in the project root or a separate `drafts/` directory, not in `origin_image/`.
 
 `speech.md` is written into PowerPoint speaker notes during assembly. Use headings such as `## Slide 1: Title` and `## Slide 2: Title`; the script matches notes by slide number.
-
-## Manual PPT Assembly
-
-If you already have a set of slide images, initialize the project directory:
-
-```bash
-~/.codex/skills/codex-ppt/.venv/bin/python ~/.codex/skills/codex-ppt/scripts/assemble_ppt.py /path/to/base MyPresentation.pptx --init
-```
-
-After saving images into `/path/to/base/MyPresentation/origin_image/`, assemble the PPT:
-
-```bash
-~/.codex/skills/codex-ppt/.venv/bin/python ~/.codex/skills/codex-ppt/scripts/assemble_ppt.py /path/to/base MyPresentation.pptx --aspect-ratio 16:9
-```
-
-The script reads:
-
-```text
-/path/to/base/MyPresentation/origin_image/
-```
-
-It only reads final images named like `slide_01.png` and `slide_02.png`; files such as `sample_slide.png`, drafts, and reference images are ignored. If `speech.md` exists in the project directory, matching `Slide N` sections are written into PPT speaker notes.
-
-The output file is:
-
-```text
-/path/to/base/MyPresentation/MyPresentation.pptx
-```
 
 ## Use Cases
 
