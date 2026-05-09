@@ -12,6 +12,8 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ### Documentation
 
+- Add agent contribution guidelines for PR, changelog, and release workflows.
+
 ## 0.1.0
 
 ### Features
