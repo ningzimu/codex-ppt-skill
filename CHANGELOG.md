@@ -4,6 +4,8 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ## Unreleased
 
+## 0.2.0
+
 ### Features
 
 - Add ClawHub publishing workflow and skill metadata. (#8)
