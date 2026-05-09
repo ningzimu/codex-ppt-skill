@@ -36,18 +36,53 @@ jobs:
           version="${TAG_NAME#v}"
           notes_file="${RUNNER_TEMP}/release-notes.md"
 
-          awk -v version="${version}" '
-            $0 == "## " version {
-              found = 1
-              next
-            }
-            found && /^## / {
-              exit
-            }
-            found {
-              print
-            }
-          ' CHANGELOG.md > "${notes_file}"
+          python3 - "${version}" "${notes_file}" <<'PY'
+          import re
+          import sys
+          from pathlib import Path
+
+          version = sys.argv[1]
+          notes_file = Path(sys.argv[2])
+          lines = Path("CHANGELOG.md").read_text(encoding="utf-8").splitlines()
+
+          section = []
+          found = False
+          for line in lines:
+            if line == f"## {version}":
+              found = True
+              continue
+            if found and line.startswith("## "):
+              break
+            if found:
+              section.append(line)
+
+          if not found:
+            notes_file.write_text("", encoding="utf-8")
+            raise SystemExit(0)
+
+          output = []
+          i = 0
+          while i < len(section):
+            line = section[i]
+            if re.match(r"^###\s+", line):
+              header = line
+              content = []
+              i += 1
+              while i < len(section) and not re.match(r"^###\s+", section[i]):
+                content.append(section[i])
+                i += 1
+              if any(item.strip() for item in content):
+                output.append(header)
+                output.extend(content)
+              continue
+
+            output.append(line)
+            i += 1
+
+          text = "\n".join(output).strip()
+          text = re.sub(r"\n{3,}", "\n\n", text)
+          notes_file.write_text(text + ("\n" if text else ""), encoding="utf-8")
+          PY
 
           if [ ! -s "${notes_file}" ]; then
             echo "No CHANGELOG.md section found for ${version}."
