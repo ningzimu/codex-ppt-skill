@@ -6,6 +6,7 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ### Features
 
+- Add ClawHub publishing workflow and skill metadata.
 - Add third-party OpenAI-compatible image API fallback for codex-ppt. (#6)
 - Add shared runtime configuration for API key, base URL, and image model reuse. (#6)
 - Support Claude Code, OpenClaw, Hermes Agent, and other `SKILL.md`-based agent usage. (#6)

@@ -1,0 +1,189 @@
+name: Publish ClawHub Skill
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "SemVer version to publish, for example 0.2.0"
+        required: true
+        default: "0.2.0"
+      changelog:
+        description: "Release changelog text for ClawHub"
+        required: true
+        default: "Add ClawHub publishing metadata and workflow."
+      owner:
+        description: "Optional ClawHub owner handle"
+        required: false
+        default: ""
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+jobs:
+  publish-clawhub-skill:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Resolve publish metadata
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          REF_NAME: ${{ github.ref_name }}
+          INPUT_VERSION: ${{ inputs.version }}
+          INPUT_CHANGELOG: ${{ inputs.changelog }}
+          INPUT_OWNER: ${{ inputs.owner }}
+        run: |
+          set -euo pipefail
+
+          if [ "${EVENT_NAME}" = "push" ]; then
+            if [[ ! "${REF_NAME}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
+              echo "Tag must be SemVer with a leading v, for example v0.2.0."
+              exit 1
+            fi
+
+            version="${REF_NAME#v}"
+            changelog_file="${RUNNER_TEMP}/clawhub-changelog.md"
+
+            awk -v version="${version}" '
+              $0 == "## " version {
+                found = 1
+                next
+              }
+              found && /^## / {
+                exit
+              }
+              found {
+                print
+              }
+            ' CHANGELOG.md > "${changelog_file}"
+
+            if [ ! -s "${changelog_file}" ]; then
+              echo "No CHANGELOG.md section found for ${version}."
+              exit 1
+            fi
+          else
+            version="${INPUT_VERSION}"
+            changelog_file="${RUNNER_TEMP}/clawhub-changelog.md"
+            printf '%s\n' "${INPUT_CHANGELOG}" > "${changelog_file}"
+          fi
+
+          if [[ ! "${version}" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
+            echo "Version must be SemVer without a leading v, for example 0.2.0."
+            exit 1
+          fi
+
+          if [ ! -s "${changelog_file}" ]; then
+            echo "ClawHub changelog text must not be empty."
+            exit 1
+          fi
+
+          {
+            echo "version=${version}"
+            echo "owner=${INPUT_OWNER}"
+            echo "changelog_file=${changelog_file}"
+          } >> "${GITHUB_ENV}"
+
+          {
+            echo "## ClawHub publish"
+            echo
+            echo "- Version: ${version}"
+            if [ -n "${INPUT_OWNER}" ]; then
+              echo "- Owner: ${INPUT_OWNER}"
+            fi
+            echo
+            echo "### Changelog"
+            echo
+            cat "${changelog_file}"
+          } >> "${GITHUB_STEP_SUMMARY}"
+
+      - name: Install ClawHub CLI
+        run: npm i -g clawhub
+
+      - name: Synchronize skill version
+        run: |
+          set -euo pipefail
+
+          python3 - <<'PY'
+          import os
+          import re
+          from pathlib import Path
+
+          path = Path("skills/codex-ppt/SKILL.md")
+          version = os.environ["version"]
+          text = path.read_text(encoding="utf-8")
+
+          if not text.startswith("---\n"):
+            raise SystemExit("SKILL.md must start with YAML frontmatter.")
+
+          end = text.find("\n---", 4)
+          if end == -1:
+            raise SystemExit("SKILL.md frontmatter is not closed.")
+
+          frontmatter = text[:end]
+          body = text[end:]
+
+          if re.search(r"^version:\s*.+$", frontmatter, flags=re.MULTILINE):
+            frontmatter = re.sub(
+              r"^version:\s*.+$",
+              f"version: {version}",
+              frontmatter,
+              count=1,
+              flags=re.MULTILINE,
+            )
+          else:
+            lines = frontmatter.splitlines()
+            insert_at = 1
+            for i, line in enumerate(lines):
+              if line.startswith("description:"):
+                insert_at = i + 1
+                break
+            lines.insert(insert_at, f"version: {version}")
+            frontmatter = "\n".join(lines)
+
+          path.write_text(frontmatter + body, encoding="utf-8")
+          PY
+
+          grep -q "^version: ${version}$" skills/codex-ppt/SKILL.md
+
+      - name: Authenticate ClawHub
+        env:
+          CLAWHUB_TOKEN: ${{ secrets.CLAWHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${CLAWHUB_TOKEN:-}" ]; then
+            echo "Missing CLAWHUB_TOKEN repository secret."
+            exit 1
+          fi
+
+          clawhub login --token "${CLAWHUB_TOKEN}"
+          clawhub whoami
+
+      - name: Publish codex-ppt skill
+        run: |
+          set -euo pipefail
+
+          skill_path="${PWD}/skills/codex-ppt"
+
+          args=(
+            "skill" "publish" "${skill_path}"
+            "--slug" "codex-ppt"
+            "--name" "Codex PPT"
+            "--version" "${version}"
+            "--changelog" "$(cat "${changelog_file}")"
+          )
+
+          if [ -n "${owner}" ]; then
+            args+=("--owner" "${owner}")
+          fi
+
+          clawhub "${args[@]}"

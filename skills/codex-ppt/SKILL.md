@@ -1,6 +1,29 @@
 ---
 name: codex-ppt
 description: Generate image-based PowerPoint decks from articles, reports, papers, notes, or outlines. Use this skill when the user asks to create a visually unified PPT/PPTX deck where each slide is a full-slide generated image, then assemble those images into a PowerPoint file.
+version: 0.2.0
+metadata:
+  openclaw:
+    requires:
+      bins:
+        - python3
+      config:
+        - ~/.codex-ppt-skill/.env
+    primaryEnv: OPENAI_API_KEY
+    envVars:
+      - name: OPENAI_API_KEY
+        required: false
+        description: Optional API key for local API/CLI image fallback.
+      - name: OPENAI_BASE_URL
+        required: false
+        description: Optional OpenAI-compatible image API base URL.
+      - name: CODEX_PPT_IMAGE_MODEL
+        required: false
+        description: Optional image model name, defaults to gpt-image-2.
+      - name: CODEX_PPT_HOME
+        required: false
+        description: Optional runtime home override, defaults to ~/.codex-ppt-skill.
+    homepage: https://github.com/ningzimu/codex-ppt-skill
 ---
 
 # Codex PPT
