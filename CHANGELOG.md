@@ -4,6 +4,10 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ## Unreleased
 
+### Fixes
+
+- Omit empty changelog subsections from generated release notes. (#10)
+
 ## 0.2.0
 
 ### Features
