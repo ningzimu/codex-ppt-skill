@@ -8,7 +8,7 @@ permissions:
   pull-requests: read
 
 jobs:
-  validate:
+  pr-title:
     runs-on: ubuntu-latest
     steps:
       - name: Validate semantic PR title
