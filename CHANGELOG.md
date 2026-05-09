@@ -6,6 +6,7 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ### Fixes
 
+- Clarify that Codex built-in image generation remains the preferred `gpt-image-2` path when available, avoiding unnecessary API key prompts. (#11)
 - Omit empty changelog subsections from generated release notes. (#10)
 
 ## 0.2.0
