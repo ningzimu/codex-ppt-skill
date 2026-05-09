@@ -7,8 +7,6 @@ metadata:
     requires:
       bins:
         - python3
-      config:
-        - ~/.codex-ppt-skill/.env
     primaryEnv: OPENAI_API_KEY
     envVars:
       - name: OPENAI_API_KEY
