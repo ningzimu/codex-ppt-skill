@@ -4,15 +4,20 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ## Unreleased
 
-### Added
+### Features
 
-### Changed
+### Improvements
 
-### Fixed
+### Fixes
+
+### Documentation
 
 ## 0.1.0
 
-### Added
+### Features
 
 - Add the initial Codex PPT skill and style assets. (#1)
+
+### Documentation
+
 - Add installation and usage documentation. (#2)
