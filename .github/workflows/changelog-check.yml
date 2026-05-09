@@ -1,0 +1,136 @@
+name: Changelog Check
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate changelog entry
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+
+          git fetch --no-tags origin "+refs/heads/${BASE_REF}:refs/remotes/origin/${BASE_REF}"
+
+          changed_files="$(git diff --name-only "origin/${BASE_REF}...HEAD")"
+          printf 'Changed files:\n%s\n' "${changed_files}"
+
+          changelog_required=false
+          while IFS= read -r path; do
+            [ -n "${path}" ] || continue
+            case "${path}" in
+              README.md|README_en.md|skills/**|scripts/**)
+                changelog_required=true
+                ;;
+              CHANGELOG.md|.github/**|*.md|docs/**|assets/**)
+                ;;
+              *)
+                changelog_required=true
+                ;;
+            esac
+          done <<< "${changed_files}"
+
+          if [ "${changelog_required}" != "true" ]; then
+            echo "Changelog not required for this PR."
+            exit 0
+          fi
+
+          if ! printf '%s\n' "${changed_files}" | grep -qx 'CHANGELOG.md'; then
+            echo "Missing changelog update. Add a user-facing entry to CHANGELOG.md under ## Unreleased."
+            exit 1
+          fi
+
+          added_lines="$(
+            git diff --unified=0 "origin/${BASE_REF}...HEAD" -- CHANGELOG.md |
+              awk '/^\+\+\+/ { next } /^\+/ { print substr($0, 2) }'
+          )"
+
+          if [ -z "${added_lines}" ]; then
+            echo "CHANGELOG.md changed, but no added lines were found."
+            exit 1
+          fi
+
+          pr_pattern="(#${PR_NUMBER})"
+          if ! printf '%s\n' "${added_lines}" | grep -Fq "${pr_pattern}"; then
+            echo "CHANGELOG.md entry must reference this PR as ${pr_pattern}."
+            exit 1
+          fi
+
+          node <<'NODE'
+          const { execSync } = require("node:child_process");
+          const fs = require("node:fs");
+
+          const base = process.env.BASE_REF;
+          const pr = process.env.PR_NUMBER;
+          const diff = execSync(`git diff --unified=0 origin/${base}...HEAD -- CHANGELOG.md`, {
+            encoding: "utf8",
+          });
+          const changelog = fs.readFileSync("CHANGELOG.md", "utf8").split(/\r?\n/);
+          const prToken = `(#${pr})`;
+          let currentLine = 0;
+          const addedPrLines = [];
+
+          for (const line of diff.split(/\r?\n/)) {
+            if (line.startsWith("@@ ")) {
+              const match = line.match(/\+(\d+)/);
+              currentLine = match ? Number(match[1]) : 0;
+              continue;
+            }
+            if (line.startsWith("+++") || line.startsWith("---")) {
+              continue;
+            }
+            if (line.startsWith("+")) {
+              const text = line.slice(1);
+              if (text.includes(prToken)) {
+                addedPrLines.push({ line: currentLine, text });
+              }
+              if (currentLine > 0) currentLine += 1;
+              continue;
+            }
+            if (line.startsWith("-")) {
+              continue;
+            }
+            if (currentLine > 0) currentLine += 1;
+          }
+
+          if (addedPrLines.length === 0) {
+            console.error(`No added CHANGELOG.md line references ${prToken}.`);
+            process.exit(1);
+          }
+
+          for (const entry of addedPrLines) {
+            let release = "";
+            let subsection = "";
+            for (let i = entry.line - 1; i >= 0; i -= 1) {
+              const line = changelog[i] ?? "";
+              if (!subsection && line.startsWith("### ")) {
+                subsection = line;
+              }
+              if (line.startsWith("## ")) {
+                release = line;
+                break;
+              }
+            }
+            if (release !== "## Unreleased") {
+              console.error(`Changelog PR entry must be under ## Unreleased: line ${entry.line}`);
+              process.exit(1);
+            }
+            if (!subsection) {
+              console.error(`Changelog PR entry must be inside a ### subsection: line ${entry.line}`);
+              process.exit(1);
+            }
+          }
+          NODE

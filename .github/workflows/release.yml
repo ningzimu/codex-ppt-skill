@@ -1,0 +1,80 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate SemVer tag
+        env:
+          TAG_NAME: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+
+          if [[ ! "${TAG_NAME}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
+            echo "Tag must be SemVer with a leading v, for example v0.1.0 or v0.2.0-beta.1."
+            exit 1
+          fi
+
+      - name: Extract release notes
+        env:
+          TAG_NAME: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+
+          version="${TAG_NAME#v}"
+          notes_file="${RUNNER_TEMP}/release-notes.md"
+
+          awk -v version="${version}" '
+            $0 == "## " version {
+              found = 1
+              next
+            }
+            found && /^## / {
+              exit
+            }
+            found {
+              print
+            }
+          ' CHANGELOG.md > "${notes_file}"
+
+          if [ ! -s "${notes_file}" ]; then
+            echo "No CHANGELOG.md section found for ${version}."
+            echo "Add a section like: ## ${version}"
+            exit 1
+          fi
+
+          if ! grep -Eq '^- .+\(#[0-9]+\)' "${notes_file}"; then
+            echo "Release notes for ${version} must include at least one changelog entry with a PR reference like (#12)."
+            exit 1
+          fi
+
+          {
+            echo "## Release notes"
+            echo
+            cat "${notes_file}"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG_NAME: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+
+          gh release create "${TAG_NAME}" \
+            --repo "${GITHUB_REPOSITORY}" \
+            --title "${TAG_NAME}" \
+            --notes-file "${RUNNER_TEMP}/release-notes.md" \
+            --verify-tag
