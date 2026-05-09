@@ -150,9 +150,9 @@ You only need to configure an image model when API/CLI fallback image generation
 - Using a third-party API or OpenAI-compatible proxy in Codex, where the built-in image generation tool is usually unavailable.
 - Using this skill from Claude Code, OpenClaw, Hermes Agent, or similar agents.
 
-If you use Codex through a GPT subscription and Codex's built-in image generation tool is available, you do not need to configure the `gpt-image-2` image model; in that setup, Codex already provides the image generation capability.
+If you use Codex through a GPT subscription and Codex's built-in image generation tool is available, you do not need to configure the `gpt-image-2` image model; in that setup, Codex already provides the image generation capability. Even when the user explicitly says “use `gpt-image-2`”, treat that as a request to use Codex's built-in image tool first, not as a reason to switch to the local API/CLI fallback.
 
-When API/CLI fallback is needed, the agent checks `~/.codex-ppt-skill/.env` before first use. If the API key is missing, the agent should guide you through one-time configuration. `base URL` is only needed when using a third-party proxy, and the model defaults to `gpt-image-2`; change the model only when your proxy requires a custom model name. After that, Codex, Claude Code, OpenClaw, and Hermes Agent reuse the same config.
+Only after API/CLI fallback has been intentionally selected should the agent check `~/.codex-ppt-skill/.env` and report a missing `OPENAI_API_KEY`. Do not ask for an API key in Codex just because the user mentioned `gpt-image-2` while the built-in image tool is available. `base URL` is only needed when using a third-party proxy, and the model defaults to `gpt-image-2`; change the model only when your proxy requires a custom model name. After that, Codex, Claude Code, OpenClaw, and Hermes Agent reuse the same config.
 
 For manual troubleshooting, you can also run the config command directly:
 

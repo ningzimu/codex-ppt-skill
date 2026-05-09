@@ -55,11 +55,12 @@ This skill supports two image backends:
 
 Backend selection rules:
 
-- Prefer the built-in image tool when available. In Codex, this usually means the built-in `image_gen` tool. In OpenClaw, this may be `image_generate`. Resolution, quality, aspect ratio, or slide-edit requests alone do not require CLI/API fallback.
+- Prefer the built-in image tool when available. In Codex, this usually means the built-in `image_gen` tool. In OpenClaw, this may be `image_generate`. Resolution, quality, aspect ratio, slide-edit requests, or the user saying “use `gpt-image-2`” do not require CLI/API fallback.
+- In Codex, treat the built-in image tool as the preferred `gpt-image-2` path when it is available. If the user has a GPT subscription / Codex environment and asks for `gpt-image-2`, do not switch to `scripts/image_gen.py` only to satisfy the model name.
 - Use CLI/API fallback only when the built-in tool is unavailable, the user explicitly asks for API/CLI or a third-party OpenAI-compatible proxy, or the requested capability is unavailable in the built-in tool.
 - Before generating the first image, tell the user which backend you plan to use, why, and ask for confirmation. Do not treat being in a specific agent environment as proof that the built-in image tool is available.
 - CLI/API fallback loads `~/.codex-ppt-skill/.env` automatically. Run the CLI normally; do not manually parse `.env` or ask for configuration before an error.
-- Ask for configuration only after the CLI reports missing `OPENAI_API_KEY`, after authentication/base URL/model errors, or when the user explicitly wants to change API settings. Configure provided values with `scripts/codex_ppt_runtime.py config --api-key`.
+- Ask for `OPENAI_API_KEY` configuration only after you have intentionally selected CLI/API fallback and that fallback reports missing config, after authentication/base URL/model errors, or when the user explicitly wants to change API settings. Do not mention missing `OPENAI_API_KEY` while the Codex built-in image tool is available. Configure provided values with `scripts/codex_ppt_runtime.py config --api-key`.
 - For detailed fallback setup after an error, read `docs/image-model-configuration.md`.
 
 CLI/API fallback commands use the shared runtime environment. Let `{skill_root}` mean the directory containing this `SKILL.md`.

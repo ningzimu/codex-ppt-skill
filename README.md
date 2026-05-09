@@ -150,9 +150,9 @@ ClawHub 页面：[clawhub.ai/ningzimu/codex-ppt](https://clawhub.ai/ningzimu/cod
 - 在 Codex 中使用第三方 API 或兼容中转站接入时，通常无法使用内置的图片生成工具。
 - 在 Claude Code、OpenClaw、Hermes Agent 等环境中使用该 skill。
 
-如果你是通过 GPT 会员订阅使用 Codex，并且 Codex 内置图片生成工具可用，则不需要配置 `gpt-image-2` 生图模型；这种情况下 Codex 已经内置了该图片生成能力。
+如果你是通过 GPT 会员订阅使用 Codex，并且 Codex 内置图片生成工具可用，则不需要配置 `gpt-image-2` 生图模型；这种情况下 Codex 已经内置了该图片生成能力。即使你在提示词里明确说“使用 `gpt-image-2`”，也应优先理解为使用 Codex 内置图片生成工具，而不是切换到本地 API/CLI fallback。
 
-需要 API/CLI fallback 时，agent 会在首次使用前检查 `~/.codex-ppt-skill/.env`。如果缺少 API key，agent 会引导你配置一次；`base URL` 只有使用第三方中转站时才需要配置，模型名缺省为 `gpt-image-2`，只有中转站要求自定义模型名时才需要修改。配置完成后 Codex、Claude Code、OpenClaw、Hermes Agent 会复用同一套配置。
+只有在已经明确选择 API/CLI fallback 时，agent 才应该检查 `~/.codex-ppt-skill/.env` 并在缺少配置时报 `OPENAI_API_KEY`。不要在 Codex 内置图片生成工具可用时，因为用户提到 `gpt-image-2` 就要求配置 API key。`base URL` 只有使用第三方中转站时才需要配置，模型名缺省为 `gpt-image-2`，只有中转站要求自定义模型名时才需要修改。配置完成后 Codex、Claude Code、OpenClaw、Hermes Agent 会复用同一套配置。
 
 手动排查时也可以直接运行配置命令：
 
