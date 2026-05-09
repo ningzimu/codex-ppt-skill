@@ -19,7 +19,8 @@
   - `### Fixes`
   - `### Documentation`
 - Changelog entries must be written in English.
-- Changelog entries should include the PR reference after the PR is opened, for example `(#12)`.
+- Changelog entries must include the PR reference after the PR is opened, for example `(#12)`.
+- If the PR number is not known when the first commit is made, open the PR first and then push a follow-up commit that adds the `(#PR_NUMBER)` reference.
 
 ## Release Process
 
