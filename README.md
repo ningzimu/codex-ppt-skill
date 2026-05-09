@@ -1,6 +1,6 @@
 # Codex PPT Skill
 
-[![English](https://img.shields.io/badge/lang-English-blue)](README_en.md)
+[![English](https://img.shields.io/badge/lang-English-blue)](README_en.md) [![ClawHub](https://img.shields.io/badge/ClawHub-codex--ppt-cd3b35)](https://clawhub.ai/ningzimu/codex-ppt)
 
 一个面向 Codex 的 PPT 生成 skill，也可在 Claude Code、OpenClaw、Hermes Agent 等支持 `SKILL.md` 的 agent 中使用；在这些非 Codex 环境中通常需要配置 `gpt-image-2` 或第三方 OpenAI 兼容格式的生图 API。它把文章、报告、论文、课程笔记等内容转换成“整页图片式”的演示文稿：先规划大纲和视觉风格，再生成每页幻灯片图片，最后用本地脚本组装为 `.pptx`。
 
@@ -119,7 +119,19 @@ mkdir -p ~/.codex/skills
 ln -s /path/to/codex-ppt-skill/skills/codex-ppt ~/.codex/skills/codex-ppt
 ```
 
-### Claude Code、OpenClaw、Hermes Agent
+### OpenClaw
+
+推荐通过 ClawHub 安装：
+
+```bash
+openclaw skills install codex-ppt
+```
+
+ClawHub 页面：[clawhub.ai/ningzimu/codex-ppt](https://clawhub.ai/ningzimu/codex-ppt)
+
+如果使用 OpenClaw 的 skill allowlist，需要把 `codex-ppt` 加入允许列表。
+
+### Claude Code、Hermes Agent
 
 这些 agent 都可以读取 `SKILL.md` 形式的 skill。推荐直接在对应 agent 会话中说：
 
@@ -127,11 +139,9 @@ ln -s /path/to/codex-ppt-skill/skills/codex-ppt ~/.codex/skills/codex-ppt
 请从 https://github.com/ningzimu/codex-ppt-skill 安装 codex-ppt，skill 路径是 skills/codex-ppt，并把它放到当前 agent 的 skills 目录下。
 ```
 
-常见目标目录是：Claude Code 使用 `~/.claude/skills/codex-ppt`，OpenClaw 使用 `~/.openclaw/skills/codex-ppt`，Hermes Agent 使用 `~/.hermes/skills/codex-ppt`。
+常见目标目录是：Claude Code 使用 `~/.claude/skills/codex-ppt`，Hermes Agent 使用 `~/.hermes/skills/codex-ppt`。
 
 如果你是在本地开发这个仓库，也可以用软链接替代复制，方便实时调试修改。
-
-如果使用 OpenClaw 的 skill allowlist，需要把 `codex-ppt` 加入允许列表。
 
 ## 生图模型配置
 

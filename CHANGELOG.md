@@ -19,6 +19,7 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ### Documentation
 
+- Add ClawHub badge and OpenClaw install command to the READMEs. (#8)
 - Require explicit image backend confirmation before sample generation. (#6)
 - Add agent contribution guidelines for PR, changelog, and release workflows. (#5)
 

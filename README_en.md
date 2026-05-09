@@ -1,6 +1,6 @@
 # Codex PPT Skill
 
-[![中文](https://img.shields.io/badge/lang-中文-red)](README.md)
+[![中文](https://img.shields.io/badge/lang-中文-red)](README.md) [![ClawHub](https://img.shields.io/badge/ClawHub-codex--ppt-cd3b35)](https://clawhub.ai/ningzimu/codex-ppt)
 
 A Codex skill for generating PowerPoint decks. It can also be used in Claude Code, OpenClaw, Hermes Agent, and other agents that support `SKILL.md`; these non-Codex environments usually require configuring `gpt-image-2` or a third-party OpenAI-compatible image generation API. It turns articles, reports, papers, course notes, and other source materials into image-based presentations: first plan the outline and visual style, then generate each full-slide image, and finally assemble the images into a `.pptx` file with a local script.
 
@@ -119,7 +119,19 @@ mkdir -p ~/.codex/skills
 ln -s /path/to/codex-ppt-skill/skills/codex-ppt ~/.codex/skills/codex-ppt
 ```
 
-### Claude Code, OpenClaw, and Hermes Agent
+### OpenClaw
+
+Install from ClawHub:
+
+```bash
+openclaw skills install codex-ppt
+```
+
+ClawHub page: [clawhub.ai/ningzimu/codex-ppt](https://clawhub.ai/ningzimu/codex-ppt)
+
+If you use OpenClaw skill allowlists, add `codex-ppt` to the allowed skills.
+
+### Claude Code and Hermes Agent
 
 These agents can read `SKILL.md` skills. The recommended path is to ask the current agent directly:
 
@@ -127,11 +139,9 @@ These agents can read `SKILL.md` skills. The recommended path is to ask the curr
 Install codex-ppt from https://github.com/ningzimu/codex-ppt-skill. The skill path is skills/codex-ppt. Put it into the current agent's skills directory.
 ```
 
-Common target directories are `~/.claude/skills/codex-ppt` for Claude Code, `~/.openclaw/skills/codex-ppt` for OpenClaw, and `~/.hermes/skills/codex-ppt` for Hermes Agent.
+Common target directories are `~/.claude/skills/codex-ppt` for Claude Code and `~/.hermes/skills/codex-ppt` for Hermes Agent.
 
 If you are developing this repository locally, you can use a symlink instead of copying so changes are reflected immediately.
-
-If you use OpenClaw skill allowlists, add `codex-ppt` to the allowed skills.
 
 ## Image Model Configuration
 
