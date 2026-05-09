@@ -1,0 +1,26 @@
+name: PR Title
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  pull-requests: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate semantic PR title
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          set -euo pipefail
+
+          if [[ ! "${PR_TITLE}" =~ ^(feat|fix|docs|chore|refactor|test|ci|perf|build|revert)(\([a-zA-Z0-9._-]+\))?!?:\ .+ ]]; then
+            echo "PR title must follow Conventional Commit style, for example:"
+            echo "  feat: add release workflow"
+            echo "  fix: handle missing API key"
+            echo "  docs: clarify install steps"
+            exit 1
+          fi
