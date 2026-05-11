@@ -6,6 +6,7 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ### Documentation
 
+- Add GitHub star and fork badges to both READMEs. (#15)
 - Recommend `npx skills` installation commands for Codex, Claude Code, and Hermes Agent. (#13)
 
 ### Fixes
