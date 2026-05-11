@@ -4,6 +4,10 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ## Unreleased
 
+### Documentation
+
+- Recommend `npx skills` installation commands for Codex, Claude Code, and Hermes Agent. (#13)
+
 ### Fixes
 
 - Mark local image API fallback config as optional so built-in image tool users do not see unnecessary missing-config warnings. (#12)

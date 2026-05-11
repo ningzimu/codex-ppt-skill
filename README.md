@@ -96,23 +96,18 @@ codex-ppt-skill/
 
 ### Codex
 
-推荐直接在 Codex 会话中说：
+推荐使用 `skills` CLI 安装到 Codex 的全局 skills 目录：
 
-```text
-请使用 skill-installer 从 https://github.com/ningzimu/codex-ppt-skill 安装 codex-ppt，skill 路径是 skills/codex-ppt。
+```bash
+npx -y skills@latest add ningzimu/codex-ppt-skill \
+  --skill codex-ppt \
+  --agent codex \
+  --global
 ```
 
 安装完成后，重启 Codex 让新 skill 生效。
 
-如果你想手动安装，也可以直接运行 Codex 内置的安装脚本。这个仓库的 skill 根目录是 `skills/codex-ppt`：
-
-```bash
-python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
-  --repo ningzimu/codex-ppt-skill \
-  --path skills/codex-ppt
-```
-
-如果你是在本地开发这个仓库，也可以把 skill 目录链接到 Codex skills 目录：
+如果你是在本地开发这个仓库，也可以把 skill 目录链接到 Codex skills 目录，方便实时调试修改：
 
 ```bash
 mkdir -p ~/.codex/skills
@@ -133,10 +128,20 @@ ClawHub 页面：[clawhub.ai/ningzimu/codex-ppt](https://clawhub.ai/ningzimu/cod
 
 ### Claude Code、Hermes Agent
 
-这些 agent 都可以读取 `SKILL.md` 形式的 skill。推荐直接在对应 agent 会话中说：
+这些 agent 都可以读取 `SKILL.md` 形式的 skill。推荐同样使用 `skills` CLI 安装：
 
-```text
-请从 https://github.com/ningzimu/codex-ppt-skill 安装 codex-ppt，skill 路径是 skills/codex-ppt，并把它放到当前 agent 的 skills 目录下。
+```bash
+# Claude Code
+npx -y skills@latest add ningzimu/codex-ppt-skill \
+  --skill codex-ppt \
+  --agent claude-code \
+  --global
+
+# Hermes Agent
+npx -y skills@latest add ningzimu/codex-ppt-skill \
+  --skill codex-ppt \
+  --agent hermes-agent \
+  --global
 ```
 
 常见目标目录是：Claude Code 使用 `~/.claude/skills/codex-ppt`，Hermes Agent 使用 `~/.hermes/skills/codex-ppt`。

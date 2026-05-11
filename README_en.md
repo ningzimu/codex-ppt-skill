@@ -96,23 +96,18 @@ codex-ppt-skill/
 
 ### Codex
 
-The recommended path is to ask Codex directly:
+Use the `skills` CLI to install this skill into Codex's global skills directory:
 
-```text
-Use skill-installer to install codex-ppt from https://github.com/ningzimu/codex-ppt-skill. The skill path is skills/codex-ppt.
+```bash
+npx -y skills@latest add ningzimu/codex-ppt-skill \
+  --skill codex-ppt \
+  --agent codex \
+  --global
 ```
 
 Restart Codex after installation so the new skill is picked up.
 
-If you prefer a manual install, you can run Codex's built-in installer script directly. The skill root in this repository is `skills/codex-ppt`:
-
-```bash
-python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
-  --repo ningzimu/codex-ppt-skill \
-  --path skills/codex-ppt
-```
-
-If you are developing this repository locally, you can instead symlink the skill directory into the Codex skills directory:
+If you are developing this repository locally, you can instead symlink the skill directory into the Codex skills directory so changes are reflected immediately:
 
 ```bash
 mkdir -p ~/.codex/skills
@@ -133,10 +128,20 @@ If you use OpenClaw skill allowlists, add `codex-ppt` to the allowed skills.
 
 ### Claude Code and Hermes Agent
 
-These agents can read `SKILL.md` skills. The recommended path is to ask the current agent directly:
+These agents can read `SKILL.md` skills. The recommended path is to install with the `skills` CLI:
 
-```text
-Install codex-ppt from https://github.com/ningzimu/codex-ppt-skill. The skill path is skills/codex-ppt. Put it into the current agent's skills directory.
+```bash
+# Claude Code
+npx -y skills@latest add ningzimu/codex-ppt-skill \
+  --skill codex-ppt \
+  --agent claude-code \
+  --global
+
+# Hermes Agent
+npx -y skills@latest add ningzimu/codex-ppt-skill \
+  --skill codex-ppt \
+  --agent hermes-agent \
+  --global
 ```
 
 Common target directories are `~/.claude/skills/codex-ppt` for Claude Code and `~/.hermes/skills/codex-ppt` for Hermes Agent.
