@@ -1,6 +1,6 @@
 # Codex PPT Skill
 
-[![English](https://img.shields.io/badge/lang-English-blue)](README_en.md) [![ClawHub](https://img.shields.io/badge/ClawHub-codex--ppt-cd3b35)](https://clawhub.ai/ningzimu/codex-ppt) [![GitHub stars](https://img.shields.io/github/stars/ningzimu/codex-ppt-skill?style=social)](https://github.com/ningzimu/codex-ppt-skill/stargazers) [![GitHub forks](https://img.shields.io/github/forks/ningzimu/codex-ppt-skill?style=social)](https://github.com/ningzimu/codex-ppt-skill/forks)
+[![English](https://img.shields.io/badge/docs-English-blue)](README_en.md) [![ClawHub](https://img.shields.io/badge/ClawHub-codex--ppt-cd3b35)](https://clawhub.ai/ningzimu/codex-ppt) [![GitHub stars](https://img.shields.io/github/stars/ningzimu/codex-ppt-skill?style=flat&logo=github&label=stars)](https://github.com/ningzimu/codex-ppt-skill/stargazers) [![GitHub forks](https://img.shields.io/github/forks/ningzimu/codex-ppt-skill?style=flat&logo=github&label=forks)](https://github.com/ningzimu/codex-ppt-skill/forks)
 
 一个面向 Codex 的 PPT 生成 skill，也可在 Claude Code、OpenClaw、Hermes Agent 等支持 `SKILL.md` 的 agent 中使用；在这些非 Codex 环境中通常需要配置 `gpt-image-2` 或第三方 OpenAI 兼容格式的生图 API。它把文章、报告、论文、课程笔记等内容转换成“整页图片式”的演示文稿：先规划大纲和视觉风格，再生成每页幻灯片图片，最后用本地脚本组装为 `.pptx`。
 

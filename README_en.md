@@ -1,6 +1,6 @@
 # Codex PPT Skill
 
-[![中文](https://img.shields.io/badge/lang-中文-red)](README.md) [![ClawHub](https://img.shields.io/badge/ClawHub-codex--ppt-cd3b35)](https://clawhub.ai/ningzimu/codex-ppt) [![GitHub stars](https://img.shields.io/github/stars/ningzimu/codex-ppt-skill?style=social)](https://github.com/ningzimu/codex-ppt-skill/stargazers) [![GitHub forks](https://img.shields.io/github/forks/ningzimu/codex-ppt-skill?style=social)](https://github.com/ningzimu/codex-ppt-skill/forks)
+[![中文](https://img.shields.io/badge/docs-中文-red)](README.md) [![ClawHub](https://img.shields.io/badge/ClawHub-codex--ppt-cd3b35)](https://clawhub.ai/ningzimu/codex-ppt) [![GitHub stars](https://img.shields.io/github/stars/ningzimu/codex-ppt-skill?style=flat&logo=github&label=stars)](https://github.com/ningzimu/codex-ppt-skill/stargazers) [![GitHub forks](https://img.shields.io/github/forks/ningzimu/codex-ppt-skill?style=flat&logo=github&label=forks)](https://github.com/ningzimu/codex-ppt-skill/forks)
 
 A Codex skill for generating PowerPoint decks. It can also be used in Claude Code, OpenClaw, Hermes Agent, and other agents that support `SKILL.md`; these non-Codex environments usually require configuring `gpt-image-2` or a third-party OpenAI-compatible image generation API. It turns articles, reports, papers, course notes, and other source materials into image-based presentations: first plan the outline and visual style, then generate each full-slide image, and finally assemble the images into a `.pptx` file with a local script.
 
