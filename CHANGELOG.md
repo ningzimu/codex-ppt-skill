@@ -6,7 +6,7 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ### Documentation
 
-- Add a README note about personalizing the codex-ppt workflow and include the good skill design deck.
+- Add a README note about personalizing the codex-ppt workflow and include the good skill design deck. (#22)
 
 ### Improvements
 
