@@ -6,7 +6,7 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ### Improvements
 
-- Package GitHub Release assets as a skill-only zip for direct manual installation.
+- Package GitHub Release assets as a skill-only zip for direct manual installation. (#20)
 
 ## 0.3.0
 
