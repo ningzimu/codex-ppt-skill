@@ -6,6 +6,7 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ### Improvements
 
+- Display GitHub Release skill zip assets with their versioned filenames.
 - Package GitHub Release assets as a skill-only zip for direct manual installation. (#20)
 
 ## 0.3.0

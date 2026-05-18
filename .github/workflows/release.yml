@@ -134,4 +134,4 @@ jobs:
             --title "${TAG_NAME}" \
             --notes-file "${RUNNER_TEMP}/release-notes.md" \
             --verify-tag \
-            "${SKILL_ZIP}#codex-ppt skill zip"
+            "${SKILL_ZIP}"
