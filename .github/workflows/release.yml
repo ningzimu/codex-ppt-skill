@@ -101,6 +101,27 @@ jobs:
             cat "${notes_file}"
           } >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Package skill zip
+        env:
+          TAG_NAME: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+
+          asset_dir="${RUNNER_TEMP}/release-assets"
+          asset_name="codex-ppt-skill-${TAG_NAME}.zip"
+          mkdir -p "${asset_dir}"
+
+          (
+            cd skills
+            zip -r "${asset_dir}/${asset_name}" codex-ppt \
+              -x "codex-ppt/.DS_Store" \
+              -x "codex-ppt/.venv/*" \
+              -x "codex-ppt/**/__pycache__/*" \
+              -x "codex-ppt/**/*.pyc"
+          )
+
+          echo "SKILL_ZIP=${asset_dir}/${asset_name}" >> "$GITHUB_ENV"
+
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -112,4 +133,5 @@ jobs:
             --repo "${GITHUB_REPOSITORY}" \
             --title "${TAG_NAME}" \
             --notes-file "${RUNNER_TEMP}/release-notes.md" \
-            --verify-tag
+            --verify-tag \
+            "${SKILL_ZIP}#codex-ppt skill zip"

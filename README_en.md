@@ -84,6 +84,8 @@ npx -y skills@latest add ningzimu/codex-ppt-skill \
 
 Restart Codex after installation so the new skill is picked up.
 
+You can also download `codex-ppt-skill-v*.zip` from GitHub Releases, unzip it, place the contained `codex-ppt` directory at `~/.codex/skills/codex-ppt`, and then restart Codex.
+
 If you are developing this repository locally, you can instead symlink the skill directory into the Codex skills directory so changes are reflected immediately:
 
 ```bash

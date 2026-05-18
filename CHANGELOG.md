@@ -4,6 +4,10 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ## Unreleased
 
+### Improvements
+
+- Package GitHub Release assets as a skill-only zip for direct manual installation.
+
 ## 0.3.0
 
 ### Documentation

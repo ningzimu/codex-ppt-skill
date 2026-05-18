@@ -84,6 +84,8 @@ npx -y skills@latest add ningzimu/codex-ppt-skill \
 
 安装完成后，重启 Codex 让新 skill 生效。
 
+也可以从 GitHub Releases 下载 `codex-ppt-skill-v*.zip`，解压后把其中的 `codex-ppt` 文件夹放到 `~/.codex/skills/codex-ppt`，然后重启 Codex。
+
 如果你是在本地开发这个仓库，也可以把 skill 目录链接到 Codex skills 目录，方便实时调试修改：
 
 ```bash
