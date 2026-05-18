@@ -4,6 +4,10 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ## Unreleased
 
+### Documentation
+
+- Add a README note about personalizing the codex-ppt workflow and include the good skill design deck.
+
 ### Improvements
 
 - Display GitHub Release skill zip assets with their versioned filenames. (#21)

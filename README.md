@@ -4,6 +4,16 @@
 
 一个面向 Codex 的 PPT 生成 skill，也可在 Claude Code、OpenClaw、Hermes Agent 等支持 `SKILL.md` 的 agent 中使用；在这些非 Codex 环境中通常需要配置 `gpt-image-2` 或第三方 OpenAI 兼容格式的生图 API。它把文章、报告、论文、课程笔记等内容转换成“整页图片式”的演示文稿：先规划大纲和视觉风格，再生成每页幻灯片图片，最后用本地脚本组装为 `.pptx`。
 
+## 温馨提示
+
+这个 skill 主要给大家提供一个还不错的 PPT 生成流程。为了尽量通用，它的流程设计会稍微复杂一些；复杂也会带来不稳定性或者冗余性。比如它同时兼容 Codex 内置生图和 API/CLI fallback 生图，也会兼容有无子 agent 可用这两种情况，但大部分人日常使用时其实只会固定走其中一条路线。
+
+建议大家在走通自己常用的路线之后，让 AI 帮你改一下这个 skill，把你的偏好固定下来，省得每次都重新选择。比如固定使用内置生图或固定使用某个 API，固定是否使用子 agent，固定常用输出目录、风格、页数节奏等。
+
+另外，如果你在做 PPT 的过程中遇到了自己喜欢的版式或排版，无论是这个 skill 做出来的，还是从别的地方找到的 PPT 风格图片，都可以让 AI 加到这个 skill 的 `references/` 里，逐步形成你自己的风格库。Skills 本质上是非常个性化的流程，鼓励大家在使用这个 skill 的基础上，按自己的偏好持续调优，让它更适配自己的工作流。
+
+关于 skills 如何设计和使用，可以参考 [good-skill-design.pptx](assets/good-skill-design.pptx)。这个 PPT 也是用本 skill 做的，采用的是手绘技术解释风；内容基于 Claude 在设计 skills 方面的最佳实践文章 [The Complete Guide to Building Skills for Claude](https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf)。祝大家玩得愉快！
+
 ## 特点
 
 - 在 Codex 中优先使用内置生图和编辑图能力；在其他 agent 中可使用本地 API/CLI fallback
