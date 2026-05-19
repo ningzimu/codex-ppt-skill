@@ -32,13 +32,10 @@ jobs:
           while IFS= read -r path; do
             [ -n "${path}" ] || continue
             case "${path}" in
-              README.md|README_en.md|skills/**|scripts/**)
+              skills/**)
                 changelog_required=true
-                ;;
-              CHANGELOG.md|.github/**|*.md|docs/**|assets/**)
                 ;;
               *)
-                changelog_required=true
                 ;;
             esac
           done <<< "${changed_files}"
