@@ -6,6 +6,7 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ### Documentation
 
+- Clarify that PPT style references can be screenshots or full PPT/PDF files, and that reusable styles can be saved into this skill's `references/` directory. (#24)
 - Add a README note about personalizing the codex-ppt workflow and include the good skill design deck. (#22)
 
 ### Improvements
