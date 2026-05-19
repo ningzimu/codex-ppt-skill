@@ -192,7 +192,7 @@ The skill follows this workflow:
 
 - The default script resolution is 2K 16:9 landscape. If generated slide images look blurry, especially on text-heavy pages, ask the current agent to generate the images at 4K resolution.
 - If you are unhappy with one specific slide's content, layout, colors, or wording, ask the current agent to refine that slide in detail instead of regenerating the whole deck.
-- You can also upload a screenshot or reference image of a PPT style you like, and ask the current agent to imitate its color palette, layout, typography feel, and visual elements.
+- You can also provide PPT style references you like — a single screenshot, multiple screenshots, or a full PPT/PDF. Ask the current agent to analyze the colors, layout, typography, and visual elements first, then generate a new deck in that style. Once the result looks good, you can ask the agent to save the style into this skill's `references/` directory for future reuse.
 - If you need to include paper figures, experiment charts, screenshots, or architecture diagrams, specify the target slide and role for each image in the outline.
 
 ## License
