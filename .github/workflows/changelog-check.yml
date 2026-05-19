@@ -82,7 +82,9 @@ jobs:
             }
             if (line.startsWith("+")) {
               const text = line.slice(1);
-              addedLines.push({ line: currentLine, text });
+              if (text.trim() && !text.startsWith("## ") && !text.startsWith("### ")) {
+                addedLines.push({ line: currentLine, text });
+              }
               if (currentLine > 0) currentLine += 1;
               continue;
             }
