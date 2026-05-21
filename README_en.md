@@ -4,6 +4,9 @@
 
 A Codex skill for generating PowerPoint decks. It can also be used in Claude Code, OpenClaw, Hermes Agent, and other agents that support `SKILL.md`; these non-Codex environments usually require configuring `gpt-image-2` or a third-party OpenAI-compatible image generation API. It turns articles, reports, papers, course notes, and other source materials into image-based presentations: first plan the outline and visual style, then generate each full-slide image, and finally assemble the images into a `.pptx` file with a local script.
 
+> [!TIP]
+> This skill generates image-based PPT decks from articles, reports, outlines, or ideas. It is suitable for strong visual expression, but slide elements are not directly editable. If you need a more editable PPT, you can try converting the generated deck with [image-to-editable-ppt-skill](https://github.com/ningzimu/image-to-editable-ppt-skill).
+
 ## Friendly Note
 
 This skill is meant to provide a solid PPT generation workflow. To stay broadly useful, the workflow is a little more complex than most people need every day, and that complexity can sometimes add instability or redundant choices. For example, it supports both Codex built-in image generation and API/CLI fallback generation, and it also supports workflows with or without subagents. Most users will eventually use only one of those paths.
