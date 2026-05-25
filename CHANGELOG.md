@@ -4,9 +4,14 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ## Unreleased
 
-### Documentation
+## 0.3.1
+
+### Fixes
 
 - Fix full-deck generation so the parent actively dispatches slide subagents, and subagents must use the selected image generation tool instead of local rendering fallbacks. (#31)
+
+### Documentation
+
 - Clarify that PPT style references can be screenshots or full PPT/PDF files, and that reusable styles can be saved into this skill's `references/` directory. (#24)
 - Add a README note about personalizing the codex-ppt workflow and include the good skill design deck. (#22)
 - Add a README tip pointing users to image-to-editable-ppt-skill when they need editable PPT reconstruction. (#29)
