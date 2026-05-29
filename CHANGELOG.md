@@ -6,6 +6,7 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ### Documentation
 
+- Add a README callout linking to the pinned community showcase issue.
 - Add the generated skill duo introduction PDF to the README tips.
 
 ## 0.3.1

@@ -9,6 +9,9 @@ A Codex skill for generating PowerPoint decks. It can also be used in Claude Cod
 >
 > For a detailed introduction to `codex-ppt` and `image-to-editable-ppt`, see [skill_duo_intro.pdf](assets/skill_duo_intro.pdf). This deck was generated with the `codex-ppt` skill using the prompt: "请分别阅读 Codex PPT和 Image to Editable PPT 这两个技能的内容，然后用 Codex PPT 帮我做一个PPT吧，20页，每个技能的介绍10页。"
 
+> [!NOTE]
+> To see more PPT examples made by users with this skill, visit the pinned showcase issue: [欢迎分享 codex-ppt 使用案例和 PPT 效果](https://github.com/ningzimu/codex-ppt-skill/issues/34).
+
 ## Friendly Note
 
 This skill is meant to provide a solid PPT generation workflow. To stay broadly useful, the workflow is a little more complex than most people need every day, and that complexity can sometimes add instability or redundant choices. For example, it supports both Codex built-in image generation and API/CLI fallback generation, and it also supports workflows with or without subagents. Most users will eventually use only one of those paths.
