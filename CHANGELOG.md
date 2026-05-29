@@ -6,7 +6,7 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ### Documentation
 
-- Add an update and installation reference to the codex-ppt skill instructions.
+- Add an update and installation reference to the codex-ppt skill instructions. (#36)
 - Add a README callout linking to the pinned community showcase issue. (#35)
 - Add the generated skill duo introduction PDF to the README tips.
 
