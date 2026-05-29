@@ -4,6 +4,8 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ## Unreleased
 
+## 0.3.2
+
 ### Documentation
 
 - Add an update and installation reference to the codex-ppt skill instructions. (#36)
