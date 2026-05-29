@@ -715,4 +715,4 @@ This is an internal setup step for the skill. Do not ask the user to run these c
 
 ## Documentation and Updates
 
-For the latest `codex-ppt` skill source, documentation, installation steps, configuration guidance, usage examples, and update notes, see [ningzimu/codex-ppt-skill](https://github.com/ningzimu/codex-ppt-skill) and its repository README.
+For the latest `codex-ppt` skill source, documentation, installation steps, configuration guidance, usage examples, and update notes, see [ningzimu/codex-ppt-skill](https://github.com/ningzimu/codex-ppt-skill).
