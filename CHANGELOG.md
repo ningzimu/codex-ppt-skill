@@ -6,7 +6,7 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ### Fixes
 
-- Use a cross-platform file lock for slide generation state files so Windows can run state recording scripts.
+- Use a cross-platform file lock for slide generation state files so Windows can run state recording scripts. (#41)
 
 ## 0.4.0
 
