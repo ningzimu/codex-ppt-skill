@@ -12,7 +12,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Iterable, List
 
-import fcntl
+from filelock import FileLock
 
 
 ACTIVE_SLIDE_STATUSES = {"dispatched"}
@@ -55,8 +55,7 @@ def locked_json(path: Path, default: Any = None):
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     lock_path = path.with_name(f".{path.name}.lock")
-    with lock_path.open("a+", encoding="utf-8") as lock_file:
-        fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX)
+    with FileLock(str(lock_path)):
         data = read_json(path, default=default)
         try:
             yield data
@@ -64,8 +63,6 @@ def locked_json(path: Path, default: Any = None):
             raise
         else:
             write_json(path, data)
-        finally:
-            fcntl.flock(lock_file.fileno(), fcntl.LOCK_UN)
 
 
 def sha256_file(path: Path) -> str:

@@ -58,6 +58,7 @@ examples/
 !assets/style-previews/*.png
 
 # Test outputs
+tests/
 test_output/
 output/
 temp/
