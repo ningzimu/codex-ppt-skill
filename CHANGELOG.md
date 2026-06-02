@@ -4,6 +4,10 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ## Unreleased
 
+### Documentation
+
+- Expand speaker notes guidance so `speech.md` uses content-specific delivery styles, natural presenter-facing talk tracks, and separate emphasis and pacing cues.
+
 ## 0.4.1
 
 ### Fixes

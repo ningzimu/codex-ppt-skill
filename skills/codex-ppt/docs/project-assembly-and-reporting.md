@@ -48,18 +48,77 @@ If a slide has severe text or layout issues, regenerate it with a more constrain
 
 Make sure `outline.md` reflects the final confirmed deck outline. Do not recreate it from scratch here.
 
-Create `speech.md` with speaker notes. Keep it useful and concise: 1-3 short paragraphs per slide is usually enough.
+Create `speech.md` as presenter notes that a speaker can use directly. Do not write a brief summary of visible slide text. Write in the presentation language; for Chinese decks, speaker notes should be in Chinese.
+
+For each slide, keep the spoken script and presenter cues separate:
+
+- The talk track appears directly under the slide heading, without an extra label. It is the script the presenter can read or closely follow. It should connect the slide to the deck's main story, explain the point the audience should take away, and include a natural transition at the end when useful.
+- `注意点：` is not meant to be read aloud. Use it for emphasis, pacing, visual reading order, caveats, examples, source reminders, or audience interaction prompts.
+
+Separate these two sections with a standalone `---` line, so the presenter can quickly distinguish the readable script from the cue list.
+
+Before writing the slide notes, choose a delivery style based on the deck content, audience, and purpose. The delivery style is not a label added after writing; it should shape the actual talk track, including how direct the claim is, how much background is explained, which examples are used, how quickly the speaker moves, and how transitions are phrased.
+
+Common delivery styles:
+
+- Technical explainer: patient, definition-first, example-driven, with careful visual walkthroughs.
+- Research or paper reading: evidence-led, method/result/limitation oriented, with clear claims about what the audience should learn from each figure.
+- Product or pitch deck: outcome-first, persuasive, focused on user pain, value, proof, and the next action.
+- Training or workshop: step-by-step, checkpoint-driven, with small prompts for audience reflection or practice.
+- Executive report: conclusion-first, concise, focused on decisions, risks, tradeoffs, and recommended actions.
+
+Keep one deck-level delivery style consistent, but adapt the tone by slide role. For example, an opening slide can be more framing-oriented, a dense diagram slide can slow down for explanation, and a closing slide can become more action-oriented.
+
+Length guidance:
+
+- Title, agenda, and section-divider slides can be 1-2 short paragraphs.
+- Normal content slides should usually be 2-5 short paragraphs, or roughly 150-400 Chinese characters for Chinese decks.
+- Dense concept, architecture, data, or paper-explanation slides may need more, but split long material if the audience would lose the thread.
+
+Use basic presentation craft in the talk track:
+
+- Lead with the claim before the details.
+- Explain visuals in the order the audience should look at them.
+- Add examples, contrast, caveats, and "so what" implications instead of rereading the slide.
+- Close with a natural bridge to the next slide when useful.
+
+Write the talk track from the presenter's point of view, facing the audience. Avoid generic AI-style phrasing, canned summaries, and phrases that sound detached from the actual talk. The script should sound like a person explaining this specific deck in the room:
+
+- Use natural first-person or speaker-facing phrasing when appropriate, such as "这里我想强调的是..." or "我们先看左边这个结构...".
+- Ground each paragraph in the current slide's content and the surrounding deck narrative.
+- Prefer concrete explanations, examples, and audience-oriented transitions over broad filler like "本页主要介绍了..." or "综上所述...".
+- Do not mention that the notes were generated, inferred, or prepared by an AI.
+
+Use `注意点：` for short cues such as:
+
+- `重点：` the one or two ideas the presenter must emphasize.
+- `画面引导：` where the audience should look first, second, and last.
+- `节奏：` where to slow down, pause, or ask a question.
+- `补充：` caveats, examples, source details, or context that should stay out of the spoken script unless needed.
 
 Use headings that the assembly script can map back to slide numbers:
 
 ```markdown
 ## Slide 1: {Title}
 
-{Speaker notes for slide 1}
+{Presenter talk track for slide 1. For Chinese decks, write this in Chinese. Include an optional transition sentence at the end when useful.}
+
+---
+
+注意点：
+- 重点：{Key point the presenter should emphasize}
+- 画面引导：{How to guide the audience through the visual}
+- 节奏：{Where to slow down, pause, or ask a question}
+- 补充：{Caveat, example, source detail, or audience takeaway}
 
 ## Slide 2: {Title}
 
-{Speaker notes for slide 2}
+{Presenter talk track for slide 2}
+
+---
+
+注意点：
+- 重点：{Key point for slide 2}
 ```
 
 ## Assembly
