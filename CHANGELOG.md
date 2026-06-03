@@ -12,6 +12,7 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ### Improvements
 
+- Rename the reusable consulting style and preview assets to avoid company-branded naming. (#46)
 - Refresh the hand-drawn technical style preview with a clearer Codex PPT explainer illustration. (#45)
 
 
