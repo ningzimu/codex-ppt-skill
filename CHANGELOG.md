@@ -8,7 +8,7 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ### Features
 
-- Add a reusable McKinsey style reference and README preview for conclusion-first consulting decks. (#45)
+- Add a reusable premium consulting style reference and README preview for conclusion-first consulting decks. (#45)
 
 ### Improvements
 
