@@ -4,6 +4,8 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ## Unreleased
 
+## 0.4.3
+
 ### Features
 
 - Add a reusable McKinsey style reference and README preview for conclusion-first consulting decks. (#45)
