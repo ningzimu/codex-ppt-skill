@@ -56,8 +56,8 @@ The following preview images were generated with `gpt-image-2` to help users cho
 | ![Retro Flat Illustration](assets/style-previews/retro-flat-illustration.png) | ![Hand-drawn Technical Explainer](assets/style-previews/handdrawn-technical.png) |
 | Hand-drawn Whiteboard | Warm Handmade |
 | ![Hand-drawn Whiteboard](assets/style-previews/handdrawn-whiteboard.png) | ![Warm Handmade](assets/style-previews/warm-handmade.png) |
-| Scientific Defense |  |
-| ![Scientific Defense](assets/style-previews/scientific-defense.png) |  |
+| Scientific Defense | McKinsey Style |
+| ![Scientific Defense](assets/style-previews/scientific-defense.png) | ![McKinsey Style](assets/style-previews/mckinsey-style.png) |
 
 ## Output Structure
 

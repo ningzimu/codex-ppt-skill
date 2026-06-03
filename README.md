@@ -56,8 +56,8 @@
 | ![复古扁平插画风](assets/style-previews/retro-flat-illustration.png) | ![手绘技术解释风](assets/style-previews/handdrawn-technical.png) |
 | 手绘白板风 | 温暖手工风 |
 | ![手绘白板风](assets/style-previews/handdrawn-whiteboard.png) | ![温暖手工风](assets/style-previews/warm-handmade.png) |
-| 科研答辩风 |  |
-| ![科研答辩风](assets/style-previews/scientific-defense.png) |  |
+| 科研答辩风 | 麦肯锡风格 |
+| ![科研答辩风](assets/style-previews/scientific-defense.png) | ![麦肯锡风格](assets/style-previews/mckinsey-style.png) |
 
 ## 输出结构
 

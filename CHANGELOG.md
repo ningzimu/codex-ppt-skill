@@ -4,6 +4,15 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ## Unreleased
 
+### Features
+
+- Add a reusable McKinsey style reference and README preview for conclusion-first consulting decks.
+
+### Improvements
+
+- Refresh the hand-drawn technical style preview with a clearer Codex PPT explainer illustration.
+
+
 ## 0.4.2
 
 ### Documentation

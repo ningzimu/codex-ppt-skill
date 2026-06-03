@@ -85,6 +85,7 @@ Available references:
 - `references/手绘技术解释风.md`
 - `references/手绘白板风.md`
 - `references/温暖手工风.md`
+- `references/麦肯锡风格.md`
 
 When adding a reusable style to the library, also add its `references/{style_name}.md` file to this list.
 
