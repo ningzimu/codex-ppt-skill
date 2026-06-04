@@ -92,9 +92,17 @@ Use `origin_image/` to review the final image used for each slide. Files are nam
 
 ## Installation
 
-### Codex
+### One-sentence install
 
-Use the `skills` CLI to install this skill into Codex's global skills directory:
+Recommended: send this sentence to your agent and let it install the skill for you:
+
+```text
+Please install this codex-ppt skill for me: https://github.com/ningzimu/codex-ppt-skill
+```
+
+### Manual install for Codex
+
+To install manually for Codex, use the `skills` CLI to add this skill to Codex's global skills directory:
 
 ```bash
 npx -y skills@latest add ningzimu/codex-ppt-skill \
@@ -128,7 +136,7 @@ If you use OpenClaw skill allowlists, add `codex-ppt` to the allowed skills.
 
 ### Claude Code and Hermes Agent
 
-These agents can read `SKILL.md` skills. The recommended path is to install with the `skills` CLI:
+These agents can read `SKILL.md` skills. You can also install with the `skills` CLI:
 
 ```bash
 # Claude Code
@@ -225,6 +233,14 @@ The skill follows this workflow:
 Scan the QR code to join the Skill community group, share usage experience, report issues, and receive update notices.
 
 <img src="assets/codex-ppt-community-qr.png" alt="Codex PPT Skill community QR code" width="220">
+
+## More Projects
+
+- [image-to-editable-ppt-skill](https://github.com/ningzimu/image-to-editable-ppt-skill): Rebuild slide screenshots, PDF pages, or image-based PPTX files into editable PowerPoint decks, useful after `codex-ppt` generates image-based slides.
+- [codex-gpt-image](https://github.com/ningzimu/codex-gpt-image): A `gpt-image-2` image generation skill powered by Codex OAuth / member login, which can be paired with `codex-ppt` to generate higher-resolution PPT pages with your subscription.
+- [handdrawn-tech-illustrations](https://github.com/ningzimu/handdrawn-tech-illustrations): A hand-drawn illustration skill for Chinese technical content. It turns technical articles, product notes, screenshots, outlines, or rough ideas into article illustrations, concept explainer graphics, WeChat cover images, and Rednote covers, with a friendly, light-cartoon, Chinese-readable style and moderate information density.
+- [awesome-ai-ppt](https://github.com/ningzimu/awesome-ai-ppt): A curated list of open-source AI PPT projects, organized by workflows such as HTML-first, image-first, PPTX-native, conversion, and automation infrastructure, focused on GitHub projects that help agents or developers create, edit, convert, or inspect PPT decks.
+- [claude-code-lens](https://github.com/ningzimu/claude-code-lens): A local observability tool for Claude Code API traffic, logs, prompts, and tool calls, useful for understanding what an agent is actually doing.
 
 ## License
 

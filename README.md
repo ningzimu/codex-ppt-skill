@@ -92,9 +92,17 @@
 
 ## 安装
 
-### Codex
+### 一句话安装
 
-推荐使用 `skills` CLI 安装到 Codex 的全局 skills 目录：
+【推荐】可以直接把下面这句话发给你的 Agent，让它帮你安装：
+
+```text
+请帮我安装这个 codex-ppt skill，链接是：https://github.com/ningzimu/codex-ppt-skill
+```
+
+### 手动安装到 Codex
+
+如需手动安装到 Codex，可以使用 `skills` CLI 安装到 Codex 的全局 skills 目录：
 
 ```bash
 npx -y skills@latest add ningzimu/codex-ppt-skill \
@@ -116,7 +124,7 @@ ln -s /path/to/codex-ppt-skill/skills/codex-ppt ~/.codex/skills/codex-ppt
 
 ### OpenClaw
 
-推荐通过 ClawHub 安装：
+可以通过 ClawHub 安装：
 
 ```bash
 openclaw skills install codex-ppt
@@ -128,7 +136,7 @@ ClawHub 页面：[clawhub.ai/ningzimu/codex-ppt](https://clawhub.ai/ningzimu/cod
 
 ### Claude Code、Hermes Agent
 
-这些 agent 都可以读取 `SKILL.md` 形式的 skill。推荐同样使用 `skills` CLI 安装：
+这些 agent 都可以读取 `SKILL.md` 形式的 skill。也可以使用 `skills` CLI 安装：
 
 ```bash
 # Claude Code
@@ -225,6 +233,14 @@ skill 会按以下流程执行：
 扫描二维码加入 Skill 交流群，分享使用经验、反馈问题，并获取更新通知。
 
 <img src="assets/codex-ppt-community-qr.png" alt="Codex PPT Skill 交流群二维码" width="220">
+
+## 我的其他项目
+
+- [image-to-editable-ppt-skill](https://github.com/ningzimu/image-to-editable-ppt-skill)：把幻灯片截图、PDF 页面或图片版 PPTX 重建为可编辑 PowerPoint，适合在 `codex-ppt` 生成整页图片后继续做可编辑化。
+- [codex-gpt-image](https://github.com/ningzimu/codex-gpt-image)：通过 Codex OAuth / 会员登录调用 `gpt-image-2` 的生图 skill，可和 `codex-ppt` 组合，用会员身份生成更高清的 PPT 页面。
+- [handdrawn-tech-illustrations](https://github.com/ningzimu/handdrawn-tech-illustrations)：面向中文技术内容的手绘配图 skill，可以把技术文章、产品笔记、截图、大纲或粗略想法生成正文配图、概念解释图、微信公众号封面和小红书封面；风格强调亲和、轻卡通、中文可读和适中的信息密度。
+- [awesome-ai-ppt](https://github.com/ningzimu/awesome-ai-ppt)：精选的 AI PPT 相关开源项目，按 HTML-first、图片生成式、PPTX-native、转换与自动化基础设施等工作流分类，关注能帮助 agent 或开发者创建、编辑、转换、检查 PPT 的 GitHub 仓库。
+- [claude-code-lens](https://github.com/ningzimu/claude-code-lens)：Claude Code 本地观测工具，用来查看 API 流量、日志、prompt 和工具调用，适合排查 agent 实际在做什么。
 
 ## 许可证
 
