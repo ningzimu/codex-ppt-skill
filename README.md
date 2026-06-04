@@ -24,14 +24,17 @@
 
 ## 特点
 
-- 在 Codex 中优先使用内置生图和编辑图能力；在其他 agent 中可使用本地 API/CLI fallback
-- 同时支持 Codex、Claude Code、OpenClaw、Hermes Agent 等多种 agent 环境
-- 支持使用第三方 OpenAI 兼容接口提供的 `gpt-image-2` 生图模型
-- 图片式 PPT：每页幻灯片是一张完整 16:9 图片，适合强视觉表达
-- 支持为某一页指定必须插入的图片素材，例如论文原图、实验结果图、截图或架构图
-- 风格参考库：内置清爽专业、科研答辩、电子墨水杂志、手绘技术解释、仪表盘等多种风格说明
-- 整套 PPT 保持统一视觉语言，但每页会按内容语义调整版式，避免机械重复
-- 本地组装脚本：将 `slide_01.png`、`slide_02.png` 等图片打包成 PowerPoint
+- 多 agent 可用：支持 Codex、Claude Code、OpenClaw、Hermes Agent 等支持 `SKILL.md` 的环境；最推荐在 Codex 中使用，优先走内置生图和编辑图能力。
+- 第三方中转站接入：支持 OpenAI 兼容接口、`base URL` 和自定义模型名配置，方便通过 API/CLI fallback 使用 `gpt-image-2` 或兼容模型。
+- 稳定的阶段化流程：先确认大纲、页数、视觉风格、生图后端和样张，再进入整套生成，降低一次生成完整 PPT 时的返工和偏航。
+- 不是无脑生成：会先引导你确认 `outline.md`、每页要点、风格方向和样张效果，再按确认后的方案继续。
+- 低门槛输入：文章、报告、论文、课程笔记、Markdown、大纲、PDF、Word 等材料都可以作为起点。
+- 内置 10 种 PPT 风格参考：包括清爽专业、科研答辩、电子墨水杂志、手绘技术解释、仪表盘、麦肯锡等；不会写提示词也可以先从内置风格开始，尤其推荐手绘技术解释风。
+- 支持自定义风格复刻：可以上传喜欢的图片、PDF 或 PPT/PPTX，让 agent 先分析配色、版式、字体和视觉元素，再按该风格生成新 PPT。
+- 可沉淀个人风格库：生成满意后，可以把当前风格保存到 skill 的 `references/` 目录，下次直接复用，让这个 skill 越用越贴合你的偏好。
+- 多 agent 并发生成：样张确认后，支持一个子 agent 负责一页，并对文字清晰度、风格一致性和内容完整性做自检，发现问题及时返修。
+- 支持指定图片插入：可以要求某一页必须放入论文原图、实验结果图、截图、架构图等素材，并让页面围绕这些图片适配主题和版式。
+- 自动生成演讲稿：会生成 `speech.md`，并在组装 PPTX 时写入每页备注，方便直接演示或二次修改。
 
 ## 生成效果
 
@@ -64,19 +67,19 @@
 每个 PPT 会生成一个独立项目目录：
 
 ```text
-{基础目录}/{PPT名称}/
-├── origin_image/
-│   ├── slide_01.png
-│   ├── slide_02.png
-│   └── ...
-├── outline.md
-├── speech.md
-└── {PPT名称}.pptx
+{基础目录}/{PPT名称}/        # 当前 PPT 的独立项目目录
+├── origin_image/           # 正式幻灯片图片目录，只放最终采用的页面
+│   ├── slide_01.png        # 第 1 页幻灯片图片
+│   ├── slide_02.png        # 第 2 页幻灯片图片
+│   └── ...                 # 后续页面图片，按页码顺序命名
+├── outline.md              # 经确认的 PPT 大纲、页数、每页标题和要点
+├── speech.md               # 演讲稿，会写入 PPT 每页备注
+└── {PPT名称}.pptx          # 最终组装生成的 PowerPoint 文件
 ```
 
-`origin_image/` 只放正式页图片，并按 `slide_01.png`、`slide_02.png` 这样的顺序命名。样张确认时也直接使用对应页的正式文件名；如果要保留废稿或对比图，放到项目根目录或单独的 `drafts/` 目录，不要放进 `origin_image/`。
+你可以在 `origin_image/` 里查看每一页最终采用的幻灯片图片，文件会按 `slide_01.png`、`slide_02.png` 这样的顺序排列。想预览整套 PPT 的视觉效果，或只挑某一页继续修改时，直接看这里最方便。
 
-`speech.md` 会在组装时写入 PPT 的每页备注。建议使用 `## Slide 1: 标题`、`## Slide 2: 标题` 这样的标题格式，脚本会按页码匹配。
+`speech.md` 是配套演讲稿。生成 `.pptx` 时，这些内容会自动写入每页 PPT 的备注区，你可以在 PowerPoint 里直接查看、修改，或演示时作为讲稿使用。
 
 ## 适用场景
 
@@ -147,16 +150,22 @@ npx -y skills@latest add ningzimu/codex-ppt-skill \
 
 ## 生图模型配置
 
-只有在需要通过 API/CLI fallback 生图时，才需要配置生图模型。指定图片分辨率、提高质量或要求修改某一页，本身不会触发第三方 API 配置；如果 Codex 内置图片生成工具可用，会继续使用内置工具。典型需要配置的情况包括：
+> [!TIP]
+> 你可以先正常使用 Codex PPT 开始制作 PPT。一般不需要自己手动配置生图模型；当流程走到“选择生图后端”时，AI 会根据当前环境判断是否需要配置，并在需要时引导你提供相关信息。
+>
+> - 如果你使用的是 Codex 内置图片生成能力，通常不需要额外配置 API key。
+> - 如果你使用第三方 API 或 OpenAI 兼容中转站，请把中转站关于如何使用 `gpt-image-2` 的文档发给 AI，让它先阅读文档，再帮你配置相关脚本和参数。
+
+下面的手动配置说明主要用于 API/CLI fallback 场景。指定图片分辨率、提高质量或要求修改某一页，本身不会触发第三方 API 配置。典型需要配置的情况包括：
 
 - 在 Codex 中使用第三方 API 或兼容中转站接入时，通常无法使用内置的图片生成工具。
 - 在 Claude Code、OpenClaw、Hermes Agent 等环境中使用该 skill。
 
-如果你是通过 GPT 会员订阅使用 Codex，并且 Codex 内置图片生成工具可用，则不需要配置 `gpt-image-2` 生图模型；这种情况下 Codex 已经内置了该图片生成能力。即使你在提示词里明确说“使用 `gpt-image-2`”，也应优先理解为使用 Codex 内置图片生成工具，而不是切换到本地 API/CLI fallback。
+如果你是通过 GPT 会员订阅使用 Codex，并且 Codex 内置图片生成工具可用，就不需要额外配置 `gpt-image-2`。即使你在提示词里写“使用 `gpt-image-2`”，通常也可以继续使用 Codex 内置生图能力，不需要准备 API key。
 
-只有在已经明确选择 API/CLI fallback 时，agent 才应该检查 `~/.codex-ppt-skill/.env` 并在缺少配置时报 `OPENAI_API_KEY`。不要在 Codex 内置图片生成工具可用时，因为用户提到 `gpt-image-2` 就要求配置 API key。`base URL` 只有使用第三方中转站时才需要配置，模型名缺省为 `gpt-image-2`，只有中转站要求自定义模型名时才需要修改。配置完成后 Codex、Claude Code、OpenClaw、Hermes Agent 会复用同一套配置。
+如果确实需要外部生图接口，配置文件会写入 `~/.codex-ppt-skill/.env`。使用第三方中转站时再填写 `base URL`；模型名默认是 `gpt-image-2`，除非中转站明确要求别的名称。配置完成后，Codex、Claude Code、OpenClaw、Hermes Agent 可以复用同一套配置。
 
-手动排查时也可以直接运行配置命令：
+确实需要手动配置或排查时，也可以直接运行配置命令：
 
 ```bash
 python3 /path/to/codex-ppt-skill/skills/codex-ppt/scripts/codex_ppt_runtime.py config \
@@ -195,11 +204,15 @@ skill 会按以下流程执行：
 8. 检查文字清晰度、风格一致性和内容完整性
 9. 生成 `speech.md`
 10. 使用 `assemble_ppt.py` 组装 `.pptx`
+11. 可选：如果生成的 PPT 风格你很喜欢，可以保存到风格库；如果使用的是内置风格，则无需重复保存
 
 ## 使用技巧
 
-- 默认脚本分辨率是 2K 16:9 横屏。如果生成的幻灯片图片比较模糊，尤其是文字较多的页面，可以让当前 agent 改用 4K 分辨率生成图片。
+- 默认脚本分辨率是 2K 16:9 横屏。这个设置主要适用于你自己提供第三方 `gpt-image-2` API 或 OpenAI 兼容中转站的 API/CLI fallback 场景；如果生成的幻灯片图片比较模糊，尤其是文字较多的页面，可以让 AI 改用 4K 分辨率生成。Codex 会员默认会优先使用内置生图工具，内置工具目前不能手动指定图片分辨率。如果你不想额外购买第三方 `gpt-image-2` API，但又想用会员身份生成 4K 级别的高清 PPT，可以组合使用 [ningzimu/codex-gpt-image](https://github.com/ningzimu/codex-gpt-image) skill；它会使用会员登录，并以 API 方式调用 `gpt-image-2` 生图，再配合 Codex PPT 生成高清页面。
 - 如果只是不满意某一页的内容、排版、配色或文字表达，可以直接让当前 agent 针对这一页做细致修改，不需要整套 PPT 重新生成。
+
+![单页局部修改示意：打开 PPT、点击标注，并框选需要修改的位置](assets/single-slide-revision-example.png)
+
 - 你也可以提供喜欢的 PPT 风格参考，可以是一张截图、多张截图，或完整 PPT/PDF。建议先让当前 agent 分析参考材料的配色、版式、字体和视觉元素，再按这个风格生成新 PPT。生成满意后，也可以让 agent 把这套风格保存到本技能的 `references/` 目录里，方便以后复用。
 - 如果需要插入论文原图、实验结果图、截图或架构图，可以在大纲中指定这些图片对应的页码和用途。
 

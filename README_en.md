@@ -24,14 +24,17 @@ For a basic introduction to skill design and usage, see [good-skill-design.pptx]
 
 ## Features
 
-- Uses Codex's built-in image generation and editing capabilities when available; uses the local CLI/API fallback in other agents.
-- Supports multiple agent environments, including Codex, Claude Code, OpenClaw, and Hermes Agent.
-- Supports `gpt-image-2` image models provided by third-party OpenAI-compatible endpoints.
-- Image-based PPT workflow: each slide is a complete 16:9 image, suitable for highly visual presentations.
-- Supports assigning required image assets to specific slides, such as paper figures, experiment charts, screenshots, or architecture diagrams.
-- Style reference library: includes clean professional, scientific defense, e-ink magazine, hand-drawn technical explainer, dashboard, and other style directions.
-- Keeps one coherent visual language across the whole deck, while varying layouts by slide semantics to avoid mechanical repetition.
-- Local assembly script: packages `slide_01.png`, `slide_02.png`, and other generated images into a PowerPoint file.
+- Works across multiple agents: supports Codex, Claude Code, OpenClaw, Hermes Agent, and other `SKILL.md`-based environments; Codex is the recommended environment because it can use the built-in image generation and image editing tools first.
+- Supports third-party proxy APIs: works with OpenAI-compatible endpoints, `base URL`, and custom model names, so API/CLI fallback can use `gpt-image-2` or compatible image models.
+- Stable staged workflow: confirms the outline, slide count, visual style, image backend, and sample slide before full-deck generation, reducing drift and rework when generating a complete PPT.
+- Guided instead of one-shot: the skill asks you to confirm `outline.md`, per-slide key points, style direction, and sample-slide quality before continuing.
+- Low setup effort: articles, reports, papers, course notes, Markdown files, outlines, PDFs, and Word documents can all be used as starting material.
+- 10 built-in PPT style references: includes clean professional, scientific defense, e-ink magazine, hand-drawn technical explainer, dashboard, McKinsey style, and more. The hand-drawn technical explainer style is a strong starting point if you do not want to write prompts.
+- Supports custom style replication: provide a favorite image, PDF, or PPT/PPTX, and the agent can analyze its color, layout, typography, and visual system before generating a new deck in that style.
+- Builds a reusable personal style library: once you like a deck style, ask the agent to save it into this skill's `references/` directory so future decks can reuse it directly.
+- Supports parallel subagent generation: after the sample slide is approved, one subagent can handle one slide and self-check readability, style consistency, and content completeness before reporting issues for repair.
+- Supports required image insertion: assign paper figures, experiment charts, screenshots, architecture diagrams, or other images to specific slides, and the generated page will adapt the layout and theme around them.
+- Generates speaker notes: creates `speech.md` and writes the notes into each slide during PPTX assembly, making the deck easier to present or revise.
 
 ## Output Example
 
@@ -64,19 +67,19 @@ The following preview images were generated with `gpt-image-2` to help users cho
 Each PPT is generated into an independent project directory:
 
 ```text
-{base_dir}/{deck_name}/
-├── origin_image/
-│   ├── slide_01.png
-│   ├── slide_02.png
-│   └── ...
-├── outline.md
-├── speech.md
-└── {deck_name}.pptx
+{base_dir}/{deck_name}/     # Independent project directory for this deck
+├── origin_image/           # Final slide images only
+│   ├── slide_01.png        # Slide 1 image
+│   ├── slide_02.png        # Slide 2 image
+│   └── ...                 # Additional slide images, named in slide order
+├── outline.md              # Confirmed outline, slide count, titles, and key points
+├── speech.md               # Speaker notes written into the PPT
+└── {deck_name}.pptx        # Final assembled PowerPoint file
 ```
 
-`origin_image/` should contain only final slide images, named in order as `slide_01.png`, `slide_02.png`, and so on. The confirmed sample slide should also use its final slide filename directly. If you want to keep rejected variants or comparison drafts, put them in the project root or a separate `drafts/` directory, not in `origin_image/`.
+Use `origin_image/` to review the final image used for each slide. Files are named in order as `slide_01.png`, `slide_02.png`, and so on, which makes it easy to preview the deck visually or ask for one specific slide to be revised.
 
-`speech.md` is written into PowerPoint speaker notes during assembly. Use headings such as `## Slide 1: Title` and `## Slide 2: Title`; the script matches notes by slide number.
+`speech.md` is the companion talk track. When the `.pptx` is assembled, the content is written into each slide's speaker notes so you can view, edit, or use it directly while presenting in PowerPoint.
 
 ## Use Cases
 
@@ -147,16 +150,22 @@ If you are developing this repository locally, you can use a symlink instead of 
 
 ## Image Model Configuration
 
-You only need to configure an image model when API/CLI fallback image generation is needed. Asking for a specific resolution, higher quality, or edits to one slide does not by itself trigger third-party API configuration; if Codex's built-in image tool is available, it should keep using the built-in tool. Typical cases that require configuration include:
+> [!TIP]
+> You can start using Codex PPT normally to make a deck. In most cases, you do not need to configure the image model by hand; when the workflow asks you to choose an image backend, the AI will check the current environment and guide you through any required information.
+>
+> - If you use Codex's built-in image generation, you usually do not need an extra API key.
+> - If you use a third-party API or an OpenAI-compatible proxy, send the AI that provider's documentation for using `gpt-image-2` first, then let it read the docs and configure the relevant scripts and parameters.
+
+The manual configuration notes below mainly apply to API/CLI fallback. Asking for a specific resolution, higher quality, or edits to one slide does not by itself trigger third-party API configuration. Typical cases that require configuration include:
 
 - Using a third-party API or OpenAI-compatible proxy in Codex, where the built-in image generation tool is usually unavailable.
 - Using this skill from Claude Code, OpenClaw, Hermes Agent, or similar agents.
 
-If you use Codex through a GPT subscription and Codex's built-in image generation tool is available, you do not need to configure the `gpt-image-2` image model; in that setup, Codex already provides the image generation capability. Even when the user explicitly says “use `gpt-image-2`”, treat that as a request to use Codex's built-in image tool first, not as a reason to switch to the local API/CLI fallback.
+If you use Codex through a GPT subscription and Codex's built-in image generation tool is available, you do not need to configure `gpt-image-2` separately. Even if your prompt says “use `gpt-image-2`”, you can usually keep using Codex's built-in image generation and do not need to prepare an API key.
 
-Only after API/CLI fallback has been intentionally selected should the agent check `~/.codex-ppt-skill/.env` and report a missing `OPENAI_API_KEY`. Do not ask for an API key in Codex just because the user mentioned `gpt-image-2` while the built-in image tool is available. `base URL` is only needed when using a third-party proxy, and the model defaults to `gpt-image-2`; change the model only when your proxy requires a custom model name. After that, Codex, Claude Code, OpenClaw, and Hermes Agent reuse the same config.
+If you do need an external image API, the config is written to `~/.codex-ppt-skill/.env`. Add a `base URL` only when using a third-party proxy. The model defaults to `gpt-image-2`; change it only if your proxy requires a different model name. Once configured, Codex, Claude Code, OpenClaw, and Hermes Agent can share the same settings.
 
-For manual troubleshooting, you can also run the config command directly:
+If you need to configure or troubleshoot it manually, you can run the config command directly:
 
 ```bash
 python3 /path/to/codex-ppt-skill/skills/codex-ppt/scripts/codex_ppt_runtime.py config \
@@ -195,11 +204,15 @@ The skill follows this workflow:
 8. Check text readability, style consistency, and content completeness.
 9. Generate `speech.md`.
 10. Assemble the `.pptx` with `assemble_ppt.py`.
+11. Optional: if you really like the generated PPT style, save it to the style library; if it already uses a built-in style, you do not need to save it again.
 
 ## Usage Tips
 
-- The default script resolution is 2K 16:9 landscape. If generated slide images look blurry, especially on text-heavy pages, ask the current agent to generate the images at 4K resolution.
+- The default script resolution is 2K 16:9 landscape. This setting mainly applies when you provide a third-party `gpt-image-2` API or OpenAI-compatible proxy and use API/CLI fallback; in that path, ask the AI to switch to 4K if slide images look blurry, especially on text-heavy pages. Codex subscribers use the built-in image generation tool by default, and that built-in tool does not currently expose a manual resolution setting. If you do not want to buy a third-party `gpt-image-2` API but still want 4K-level decks with your subscription, combine this skill with [ningzimu/codex-gpt-image](https://github.com/ningzimu/codex-gpt-image), which uses your member login and calls `gpt-image-2` through an API-style workflow before pairing with Codex PPT for high-resolution slide generation.
 - If you are unhappy with one specific slide's content, layout, colors, or wording, ask the current agent to refine that slide in detail instead of regenerating the whole deck.
+
+![Single-slide revision example: open the PPT, click annotation, and mark the area to revise](assets/single-slide-revision-example.png)
+
 - You can also provide PPT style references you like — a single screenshot, multiple screenshots, or a full PPT/PDF. Ask the current agent to analyze the colors, layout, typography, and visual elements first, then generate a new deck in that style. Once the result looks good, you can ask the agent to save the style into this skill's `references/` directory for future reuse.
 - If you need to include paper figures, experiment charts, screenshots, or architecture diagrams, specify the target slide and role for each image in the outline.
 
