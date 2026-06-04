@@ -6,6 +6,7 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ### Documentation
 
+- Add README one-sentence install guidance and related project links. (#49)
 - Refresh README user guidance for PPT generation workflows, image backend setup, style reuse, and slide revision tips. (#48)
 
 ## 0.4.3
