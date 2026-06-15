@@ -2,6 +2,83 @@
 
 [![English](https://img.shields.io/badge/docs-English-blue)](README_en.md) [![ClawHub](https://img.shields.io/badge/ClawHub-codex--ppt-cd3b35)](https://clawhub.ai/ningzimu/codex-ppt) [![GitHub stars](https://img.shields.io/github/stars/ningzimu/codex-ppt-skill?style=flat&logo=github&label=stars)](https://github.com/ningzimu/codex-ppt-skill/stargazers) [![GitHub forks](https://img.shields.io/github/forks/ningzimu/codex-ppt-skill?style=flat&logo=github&label=forks)](https://github.com/ningzimu/codex-ppt-skill/forks)
 
+---
+
+<a href="https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=codex-ppt-skill">
+  <img src="assets/atlas-cloud-logo.png" alt="Atlas Cloud" height="36">
+</a>
+
+**使用 [Atlas Cloud](https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=codex-ppt-skill) 作为 gpt-image-2 图像生成后端**
+
+[Atlas Cloud](https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=codex-ppt-skill) 提供与 `gpt-image-2` 完全兼容的图像生成 API，让 codex-ppt-skill 可以无缝切换到 Atlas 托管推理，无需自行管理 OpenAI quota，按量计费，开箱即用。
+
+查看完整图像模型目录：[atlascloud.ai/models](https://www.atlascloud.ai/models)
+
+**快速配置（API/CLI fallback 模式）：**
+
+```bash
+python3 /path/to/codex-ppt-skill/skills/codex-ppt/scripts/codex_ppt_runtime.py config \
+  --api-key "<your-atlascloud-key>" \
+  --base-url "https://api.atlascloud.ai/api/v1/model" \
+  --model "openai/gpt-image-2/text-to-image"
+```
+
+或直接配置环境变量：
+
+```env
+OPENAI_API_KEY=<your-atlascloud-key>
+OPENAI_BASE_URL=https://api.atlascloud.ai/api/v1/model
+CODEX_PPT_IMAGE_MODEL=openai/gpt-image-2/text-to-image
+```
+
+获取 Atlas Cloud API Key：[atlascloud.ai](https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=codex-ppt-skill)
+
+<details>
+<summary>Atlas Cloud 支持的图像生成模型（36 个）</summary>
+
+| 模型调用名 | 名称 | 参考单价 |
+|---|---|---|
+| `openai/gpt-image-2/text-to-image` | OpenAI GPT Image 2 | $0.009 |
+| `openai/gpt-image-1/text-to-image` | OpenAI GPT Image-1 | $0.009 |
+| `openai/gpt-image-1.5/text-to-image` | OpenAI GPT Image-1.5 | $0.008 |
+| `openai/gpt-image-1-mini/text-to-image` | OpenAI GPT Image-1 Mini | $0.004 |
+| `bytedance/seedream-v5.0-lite` | Seedream v5.0 Lite | $0.032 |
+| `bytedance/seedream-v4.5` | Seedream v4.5 | $0.036 |
+| `bytedance/seedream-v4` | Seedream v4 | $0.027 |
+| `black-forest-labs/flux-2-pro/text-to-image` | FLUX.2 Pro | $0.03 |
+| `black-forest-labs/flux-2-flex/text-to-image` | FLUX.2 Flex | $0.05 |
+| `black-forest-labs/flux-dev` | Flux Dev | $0.012 |
+| `black-forest-labs/flux-schnell` | Flux Schnell | $0.003 |
+| `google/imagen4-ultra` | Imagen4 Ultra | $0.06 |
+| `google/imagen4` | Imagen4 | $0.04 |
+| `google/imagen4-fast` | Imagen4 Fast | $0.02 |
+| `google/imagen3` | Imagen3 | $0.04 |
+| `google/imagen3-fast` | Imagen3 Fast | $0.02 |
+| `google/nano-banana-pro/text-to-image-ultra` | Nano Banana Pro Ultra | $0.15 |
+| `google/nano-banana-pro/text-to-image` | Nano Banana Pro | $0.084 |
+| `google/nano-banana-2/text-to-image` | Nano Banana 2 | $0.048 |
+| `google/nano-banana/text-to-image` | Nano Banana | $0.038 |
+| `alibaba/wan-2.7-pro/text-to-image` | Wan-2.7 Pro | $0.075 |
+| `alibaba/wan-2.7/text-to-image` | Wan-2.7 | $0.03 |
+| `alibaba/wan-2.6/text-to-image` | Wan-2.6 | $0.021 |
+| `alibaba/wan-2.5/text-to-image` | Wan-2.5 | $0.021 |
+| `alibaba/qwen-image/text-to-image-max` | Qwen-Image Max | $0.052 |
+| `alibaba/qwen-image/text-to-image-plus` | Qwen-Image Plus | $0.021 |
+| `atlascloud/qwen-image/text-to-image` | Qwen Image | $0.024 |
+| `qwen/qwen-image-2.0-pro/text-to-image` | Qwen Image 2.0 Pro | $0.06 |
+| `qwen/qwen-image-2.0/text-to-image` | Qwen Image 2.0 | $0.028 |
+| `xai/grok-imagine-image-quality/text-to-image` | Grok Imagine Image Quality | $0.06 |
+| `baidu/ERNIE-Image-Turbo/text-to-image` | ERNIE Image Turbo | — |
+| `bytedance/seedream-v5.0-lite/sequential` | Seedream v5.0 Lite Sequential | $0.032 |
+| `bytedance/seedream-v4.5/sequential` | Seedream v4.5 Sequential | $0.036 |
+| `bytedance/seedream-v4/sequential` | Seedream v4 Sequential | $0.027 |
+| `black-forest-labs/flux-dev-lora` | Flux Dev Lora | $0.015 |
+| `z-image/turbo` | Z-Image Turbo | $0.01 |
+
+</details>
+
+---
+
 一个面向 Codex 的 PPT 生成 skill，也可在 Claude Code、OpenClaw、Hermes Agent 等支持 `SKILL.md` 的 agent 中使用；在这些非 Codex 环境中通常需要配置 `gpt-image-2` 或第三方 OpenAI 兼容格式的生图 API。它把文章、报告、论文、课程笔记等内容转换成“整页图片式”的演示文稿：先规划大纲和视觉风格，再生成每页幻灯片图片，最后用本地脚本组装为 `.pptx`。
 
 > [!TIP]
