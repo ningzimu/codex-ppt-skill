@@ -50,11 +50,7 @@ class AtlasCloudImageProvider(ImageProvider):
         self,
         payload: Dict[str, Any],
         image_paths: List[Path],
-        mask_path: Optional[Path],
     ) -> List[str]:
-        if mask_path is not None:
-            raise ValueError("AtlasCloud image edit does not support --mask.")
-
         count = int(payload.get("n", 1))
         edit_payload = dict(payload)
         edit_payload["images"] = [_image_to_data_url(path) for path in image_paths]

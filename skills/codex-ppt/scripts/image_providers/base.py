@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 
 class ImageProvider(ABC):
@@ -17,7 +17,6 @@ class ImageProvider(ABC):
         self,
         payload: Dict[str, Any],
         image_paths: List[Path],
-        mask_path: Optional[Path],
     ) -> List[str]:
         """Edit input images and return base64-encoded image payloads."""
 

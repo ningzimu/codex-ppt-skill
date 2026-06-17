@@ -53,7 +53,7 @@ Use Markdown image syntax inside the `Required images` list whenever the asset i
 
 Before generating slide images, discuss the visual style with the user unless the user has already provided a clear style direction or reference material.
 
-If the user has already specified a style, provided a style image, or provided a PDF/PPT/PPTX to use as style reference, do not force a 2-3 option style selection. Extract the usable style rules, briefly restate them, then proceed to backend confirmation and sample generation.
+If the user has already specified a style, provided a style image, or provided a PDF/PPT/PPTX to use as style reference, do not force a 2-3 option style selection. Extract the usable style rules, briefly restate them, then proceed to backend selection and sample generation.
 
 For PDF/PPT/PPTX style references, do not infer the visual system from document structure, outline text, XML, file metadata, or slide object hierarchy alone. First render or export representative pages/slides into real page images, inspect those rendered images, and derive the style from what is actually visible on the pages. If the file has multiple visual sections, inspect enough representative pages to capture the shared style and any section-specific variations.
 
@@ -103,14 +103,15 @@ C. 数据仪表盘风：指标卡、图表感布局，适合数据密集型报�
 
 ## Generate One Sample Slide For Approval
 
-After the outline, style, and image backend are confirmed, generate exactly one sample slide image before full production.
+After the outline and style are confirmed, select the image backend, announce which backend will be used, and generate exactly one sample slide image before full production.
 
 Sample slide requirements:
 
 - Use the confirmed style description.
+- State the backend used when presenting the sample image to the user.
 - Prefer a representative content slide over the cover when possible.
 - Demonstrate the intended deck rhythm: the sample should show how the chosen style adapts to a real content page, not just a generic fixed template.
-- Save it directly as the intended final slide filename, such as `{base_dir}/{deck_name}/origin_image/slide_08.png`. In CLI/API fallback mode, use `scripts/image_gen.py generate --out` for that exact path.
+- Save it directly as the intended final slide filename, such as `{base_dir}/{deck_name}/origin_image/slide_08.png`. In local CLI mode, use `scripts/image_gen.py generate --backend auto --out` for that exact path.
 - Show the sample image to the user.
 - Ask the user to confirm the visual style, typography, layout density, and Chinese text quality.
 
@@ -118,11 +119,11 @@ Do not generate the full deck until the user approves the sample slide. If the u
 
 After the sample slide is approved, record the sample generation method in `deck_spec.json` before preparing full-deck jobs. This is the contract the parent passes to subagents so they use the same image-generation path as the sample, not a cheaper local rendering path. Include at least:
 
-- `backend_used`: the confirmed backend label, such as `built-in image tool` or `scripts/image_gen.py`.
-- `tool_name`: the actual tool or command used, such as `image_gen`, `image_generate`, or `scripts/image_gen.py`.
+- `backend_used`: the selected backend label, such as `scripts/image_gen.py --backend auto (codex-oauth)` or `scripts/image_gen.py --backend atlascloud`.
+- `tool_name`: the actual tool or command used, such as `scripts/image_gen.py`.
 - `mode`: `generate` or `edit`.
 - `prompt_source`: where the approved sample prompt came from.
 - `size`, `quality`, and model/config details when the backend exposes them.
 - `approved_sample_path`: the approved `origin_image/slide_XX.png` path.
-- `input_context_preparation`: how local source/style images were made available, such as `view_image` for built-in mode.
+- `input_context_preparation`: how local source/style images were made available, such as `--image {asset_path}` for local CLI edit mode.
 - `handoff_rule`: subagents must use the same backend/tool/mode and return a blocker if that path is unavailable.

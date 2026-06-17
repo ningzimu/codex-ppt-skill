@@ -8,12 +8,12 @@ Generate slide <N> for this codex-ppt deck.
 Deck dir: <absolute deck dir>
 Slide job file: <absolute deck dir>/prompts/slide_<NN>.json
 Output target owned by parent: <absolute deck dir>/origin_image/slide_<NN>.png
-Selected image backend: <built-in image tool OR CLI/API fallback>
+Selected image backend: <scripts/image_gen.py --backend auto (codex-oauth) OR scripts/image_gen.py --backend atlascloud/openai-compatible>
 Sample generation method copied from the approved sample:
 - backend_used: <exact backend label recorded by parent>
-- tool_name: <image_gen OR image_generate OR scripts/image_gen.py>
+- tool_name: <scripts/image_gen.py>
 - mode: <generate OR edit>
-- model/config: <model, size, quality, or "built-in default" if not exposed>
+- model/config: <model, size, quality, backend>
 - prompt_source: <approved sample prompt source>
 - input_context_preparation: <how local images were made visible or attached>
 - approved_sample_path: <absolute path to approved origin_image/slide_XX.png>
@@ -24,8 +24,8 @@ Input images already prepared by the parent:
 
 Read the JSON job file, then follow its `prompt` field exactly. Use the selected image backend and the recorded sample generation method only.
 You must produce the final slide candidate by calling the selected image generation backend:
-- Built-in mode: use the built-in image generation/editing tool.
-- CLI/API fallback mode: use `scripts/image_gen.py` with the saved job prompt and required image inputs.
+- Local CLI mode: use `scripts/image_gen.py` with the saved job prompt and required image inputs.
+- UI built-in mode is allowed only if the parent explicitly selected it and described how to save the result to the target path.
 
 Forbidden for final slide image creation:
 - local drawing or rendering scripts
@@ -45,7 +45,7 @@ Before returning, visually check:
 - no overlapping or truncated important content
 
 Return only:
-backend_used=<built-in image tool OR scripts/image_gen.py>
+backend_used=<exact selected backend label>
 selected_source=/absolute/path/to/$CODEX_HOME/generated_images/.../ig_*.png
 qa_note=<one sentence>
 ```

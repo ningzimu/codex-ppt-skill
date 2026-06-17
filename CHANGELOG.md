@@ -8,6 +8,11 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 - Add an AtlasCloud image provider adapter for GPT Image 2 generation and editing. (#60)
 
+### Fixes
+
+- Add a Codex OAuth image backend so Codex users can generate PPT images through the local CLI without relying on the built-in image tool output path.
+- Stop requiring explicit image backend confirmation before sample-slide generation; the workflow now announces the backend used when generating the sample.
+
 ### Documentation
 
 - Document OpenAI-compatible and AtlasCloud image provider configuration examples. (#60)

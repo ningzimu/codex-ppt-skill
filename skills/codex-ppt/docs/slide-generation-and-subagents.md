@@ -4,9 +4,9 @@ Read this before full-deck image generation, preparing slide jobs, dispatching s
 
 ## Final Slide Image Generation
 
-Generate one image per slide with the selected image backend. Every final `slide_XX.png` must be produced by the built-in image tool or by `scripts/image_gen.py`; programmatic rendering or hybrid text overlay is not acceptable for slide image creation.
+Generate one image per slide with the selected image backend. Every final `slide_XX.png` should be produced by `scripts/image_gen.py` with the selected backend; programmatic rendering or hybrid text overlay is not acceptable for slide image creation.
 
-After the outline, visual style, image backend, and sample slide have all been approved, create final downstream artifacts if they do not already exist:
+After the outline, visual style, and sample slide have all been approved, create final downstream artifacts if they do not already exist:
 
 - `deck_spec.json`
 - `prompts/slide_XX.json`
@@ -22,7 +22,7 @@ Before full production, create structured per-slide image jobs. Prefer the bundl
 ~/.codex-ppt-skill/.venv/bin/python {skill_root}/scripts/prepare_slide_prompts.py \
   --spec {base_dir}/{deck_name}/deck_spec.json \
   --out-dir {base_dir}/{deck_name} \
-  --selected-backend "<confirmed backend label>" \
+  --selected-backend "<selected backend label>" \
   --force
 ```
 
@@ -38,7 +38,7 @@ The helper writes:
 └── slide_run_state.json
 ```
 
-Each `prompts/slide_XX.json` is a self-contained slide job. It includes the slide number, title, output filename, input image list, whether context images are required, and the full prompt text. Use these JSON job files for built-in image generation, CLI/API fallback coordination, and subagent handoff. Do not create a separate job manifest unless the user explicitly asks for one.
+Each `prompts/slide_XX.json` is a self-contained slide job. It includes the slide number, title, output filename, input image list, whether context images are required, and the full prompt text. Use these JSON job files for local CLI generation coordination and subagent handoff. Do not create a separate job manifest unless the user explicitly asks for one.
 
 The parent agent is responsible for packaging context before dispatch. A slide subagent only sees its assigned single-slide job, the images explicitly passed to it, and the handoff text. Do not assume the subagent knows the source article, full outline, previous slides, later slides, or any concept held only in the parent agent's conversation context.
 
@@ -137,8 +137,7 @@ Parent agent responsibilities:
 - Ensure every dispatched slide job is self-contained. If a slide summarizes, compares, continues, or refers to deck-wide concepts, put the required concepts into `deck_context` or the slide's `local_context` before running `prepare_slide_prompts.py`.
 - Ensure `sample_generation_method` is present in `deck_spec.json`, every `prompts/slide_XX.json`, and `slide_jobs.json`; it must describe the exact backend/tool/mode used to generate the approved sample.
 - If the approved sample slide already exists and should not be regenerated, mark that slide in `deck_spec.json` with `sample_approved: true` or `approved_sample: true` before running `prepare_slide_prompts.py`; the helper records it as `accepted` when the final image file exists.
-- In built-in `image_gen` mode, ensure every slide-level required local source image has already been inspected with `view_image` before any delegated job that depends on it.
-- In CLI/API fallback mode, ensure each JSON job lists the required source images and that the selected CLI path can use them; if the CLI path cannot attach input images for a slide, do not delegate that slide as a text-only replacement for the asset.
+- In local CLI mode, ensure each JSON job lists the required source images and that the selected CLI path can use them with `edit --image`; if the CLI path cannot attach input images for a slide, do not delegate that slide as a text-only replacement for the asset.
 - Spawn subagents with exactly one slide job each, up to `dispatch_slots_available`.
 - Immediately after each successful spawn, run `record_slide_dispatch.py` with the real agent id and prompt path.
 - After each worker returns, visually check its selected output, then run `record_slide_result.py` to copy the selected generated image into `origin_image/slide_XX.png` and record backend provenance.
@@ -147,7 +146,7 @@ Parent agent responsibilities:
 Subagent responsibilities:
 
 - Read exactly the assigned `prompts/slide_XX.json`.
-- Use the selected image backend only; do not switch between built-in image generation and CLI/API fallback.
+- Use the selected image backend only; do not switch between local CLI backends.
 - Follow the `sample_generation_method` from the assigned job. Use the same tool family, generation/edit mode, image context preparation, and model/config details that produced the approved sample.
 - Generate the final slide candidate by calling the selected image generation backend. Do not create final slide images with local drawing, HTML/SVG/canvas screenshots, Pillow, python-pptx/PptxGenJS layouts, or manually composited text/image overlays.
 - Treat the approved sample slide as style reference only.
@@ -180,7 +179,7 @@ Result recording:
   {base_dir}/{deck_name} \
   --slide slide_02 \
   --agent-id <agent id> \
-  --backend-used "built-in image tool" \
+  --backend-used "scripts/image_gen.py --backend auto (codex-oauth)" \
   --selected-source /absolute/path/to/generated/slide_02.png \
   --qa-note "Text readable; style matches the approved sample."
 ```
@@ -207,7 +206,7 @@ Save images as:
 
 After each image is generated, the parent agent should record it with `record_slide_result.py`, which copies it into `{base_dir}/{deck_name}/origin_image/` and rejects backend provenance that does not match the selected backend or sample generation method. Do not leave final slide images only in a temporary or default generated-images directory, and do not manually mark slide state complete.
 
-In CLI/API fallback mode, read `cli-api-fallback.md` for text-only generation commands, image-input limitations, edit commands, transparency rules, and runtime troubleshooting.
+In local CLI mode, read `cli-api-fallback.md` for text-only generation commands, image-input limitations, edit commands, transparency rules, and runtime troubleshooting.
 
 Final slide image naming rules:
 

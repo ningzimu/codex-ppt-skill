@@ -357,7 +357,7 @@ def main() -> int:
     parser.add_argument("--write-template", help="Write an example deck spec JSON and exit.")
     parser.add_argument(
         "--selected-backend",
-        help="Confirmed image backend label, such as `built-in image tool` or `scripts/image_gen.py`.",
+        help="Selected image backend label, such as `scripts/image_gen.py --backend auto (codex-oauth)`.",
     )
     parser.add_argument(
         "--max-concurrent-slides",
