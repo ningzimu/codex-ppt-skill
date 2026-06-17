@@ -14,6 +14,7 @@ Release notes are generated from this file. Keep changelog entries in English.
 - Separate approved sample style references from strict input images so slide subagents use generation by default and editing only for strict input assets or repairs.
 - Clarify that available slide subagent tools should be used directly without asking for separate user authorization.
 - Tell the parent agent to refill freed slide subagent dispatch slots while pending slide jobs remain.
+- Clarify that post-assembly single-slide detail changes should use image editing to avoid style and detail drift.
 - Clarify that sample-slide generation should pass prompt text directly with `--prompt` instead of creating style or prompt files.
 
 ### Fixes
