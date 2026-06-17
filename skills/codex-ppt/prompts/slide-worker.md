@@ -1,6 +1,6 @@
 # Slide Worker Prompt
 
-Use this template when dispatching a slide subagent after the sample slide is approved and full-deck generation is authorized.
+Use this template when dispatching a slide subagent after the sample slide is approved and the workflow reaches full-deck generation.
 
 ```text
 Generate slide <N> for this codex-ppt deck.

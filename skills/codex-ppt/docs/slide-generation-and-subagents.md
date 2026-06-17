@@ -124,7 +124,7 @@ If preparing prompts manually instead of using `prepare_slide_prompts.py`, still
 
 ## Parallel Slide Generation With Subagents
 
-After the user approves the sample slide and full-deck generation is authorized, slide subagents are mandatory whenever the current runtime can spawn them. Use one subagent per remaining slide image job. Do not generate the remaining deck sequentially merely for convenience. If subagents cannot be spawned, stop at the dispatch step and report a blocker instead of producing a lower-quality sequential deck.
+After the user approves the sample slide and the workflow reaches full-deck generation, slide subagents are mandatory whenever subagent tools are available in the current runtime. Use one subagent per remaining slide image job. Do not ask for separate permission or authorization to use subagents, and do not generate the remaining deck sequentially when subagent dispatch is available.
 
 Use the slide state scripts as the dispatch contract: the main agent spawns workers, then records dispatch and result state. A slide is not considered dispatched or complete until the relevant script records it.
 
@@ -156,7 +156,7 @@ Subagent responsibilities:
 
 Subagents must not edit `outline.md`, `deck_spec.json`, other slide job files, `origin_image/`, `speech.md`, or the final `.pptx`. The parent agent alone records selected outputs and performs final assembly.
 
-Do not continue sequentially after the sample if subagents are part of the confirmed full-generation workflow and cannot be used. Stop and report the blocker, unless the user explicitly changes the requirement.
+Do not continue sequentially after the sample when subagent dispatch is available.
 
 Dispatch loop:
 
