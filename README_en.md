@@ -201,7 +201,7 @@ The skill follows this workflow:
 
 ## Usage Tips
 
-- The default script resolution is 2K 16:9 landscape, and it applies to Codex OAuth, local third-party providers, and OpenAI-compatible proxies. If slide images look blurry, especially on text-heavy pages, ask the AI to switch to 4K. Codex subscribers use the local image CLI's Codex OAuth backend by default, writing images directly to the PPT project's local paths.
+- The default script resolution is 2K 16:9 landscape (`2048x1152`), and it applies to Codex OAuth, local third-party providers, and OpenAI-compatible proxies. If slide images look blurry, especially on text-heavy pages, ask the AI to switch to 4K. Codex subscribers use the local image CLI's Codex OAuth backend by default, writing images directly to the PPT project's local paths.
 - If you are unhappy with one specific slide's content, layout, colors, or wording, ask the current agent to refine that slide in detail instead of regenerating the whole deck.
 
 ![Single-slide revision example: open the PPT, click annotation, and mark the area to revise](assets/single-slide-revision-example.png)

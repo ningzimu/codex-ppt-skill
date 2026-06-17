@@ -117,11 +117,11 @@ class OpenAICompatibleImageProvider(ImageProvider):
         self._async_client_factory = async_client_factory
         self._async_client: Optional[Any] = None
 
-    def generate(self, payload: Dict[str, Any]) -> List[str]:
+    def _generate(self, payload: Dict[str, Any]) -> List[str]:
         result = self._create_client().images.generate(**payload)
         return [item.b64_json for item in result.data]
 
-    def edit(
+    def _edit(
         self,
         payload: Dict[str, Any],
         image_paths: List[Path],

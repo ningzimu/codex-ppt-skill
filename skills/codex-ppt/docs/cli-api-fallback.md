@@ -25,7 +25,7 @@ Basic generation command:
   --backend auto \
   --model gpt-image-2 \
   --prompt-file {prompt_file} \
-  --size 2560x1440 \
+  --size 2048x1152 \
   --quality medium \
   --out {base_dir}/{deck_name}/origin_image/slide_01.png
 ```
@@ -39,7 +39,7 @@ python3 -c 'import json, pathlib; print(json.loads(pathlib.Path("{base_dir}/{dec
 ~/.codex-ppt-skill/.venv/bin/python {skill_root}/scripts/image_gen.py generate \
   --backend auto \
   --prompt-file - \
-  --size 2560x1440 \
+  --size 2048x1152 \
   --quality medium \
   --out {base_dir}/{deck_name}/origin_image/slide_01.png
 ```
@@ -53,7 +53,9 @@ The local image CLI supports:
 - `generate`: create one or more images from a prompt.
 - `edit`: edit one or more existing images.
 
-The local image CLI defaults to 2K 16:9 landscape output, `2560x1440`, because it keeps slide text clearer while staying below the `gpt-image-2` pixel limit. For 4K landscape slides, use `--size 3840x2160 --quality high` only when the user asks for 4K, text-heavy slides need sharper output, or the default result is blurry. For portrait assets, use `--size 2160x3840` only if the user requests portrait output.
+The provider abstraction retries transient network and provider failures up to five attempts before surfacing an error.
+
+The local image CLI defaults to 2K 16:9 landscape output, `2048x1152`, because it is an official popular GPT Image 2 landscape size and keeps slide text clearer while staying below the pixel limit. For 4K landscape slides, use `--size 3840x2160 --quality high` only when the user asks for 4K, text-heavy slides need sharper output, or the default result is blurry. For portrait assets, use `--size 2160x3840` only if the user requests portrait output.
 
 ## Editing Slides
 

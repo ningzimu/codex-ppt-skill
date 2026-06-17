@@ -1,11 +1,9 @@
 from __future__ import annotations
 
-import asyncio
 import base64
 import json
 import mimetypes
 from pathlib import Path
-import sys
 import time
 from typing import Any, Callable, Dict, List, Optional
 from urllib.parse import urlparse
@@ -39,14 +37,14 @@ class AtlasCloudImageProvider(ImageProvider):
         self.poll_interval = poll_interval
         self.max_polls = max_polls
 
-    def generate(self, payload: Dict[str, Any]) -> List[str]:
+    def _generate(self, payload: Dict[str, Any]) -> List[str]:
         count = int(payload.get("n", 1))
         outputs: List[str] = []
         for _ in range(count):
             outputs.extend(self._submit_and_collect(payload, operation="text-to-image"))
         return outputs
 
-    def edit(
+    def _edit(
         self,
         payload: Dict[str, Any],
         image_paths: List[Path],
@@ -58,29 +56,6 @@ class AtlasCloudImageProvider(ImageProvider):
         for _ in range(count):
             outputs.extend(self._submit_and_collect(edit_payload, operation="edit"))
         return outputs
-
-    async def generate_batch(
-        self,
-        payload: Dict[str, Any],
-        *,
-        attempts: int,
-        job_label: str,
-    ) -> List[str]:
-        last_exc: Optional[Exception] = None
-        for attempt in range(1, attempts + 1):
-            try:
-                return await asyncio.to_thread(self.generate, payload)
-            except Exception as exc:
-                last_exc = exc
-                if attempt == attempts:
-                    raise
-                sleep_s = min(60.0, 2.0**attempt)
-                print(
-                    f"{job_label} attempt {attempt}/{attempts} failed ({exc.__class__.__name__}); retrying in {sleep_s:.1f}s",
-                    file=sys.stderr,
-                )
-                await asyncio.sleep(sleep_s)
-        raise last_exc or RuntimeError("unknown error")
 
     def _submit_and_collect(self, payload: Dict[str, Any], *, operation: str) -> List[str]:
         request_payload = self._atlas_payload(payload, operation=operation)

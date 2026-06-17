@@ -297,7 +297,7 @@ def _write_template(path: Path) -> None:
             "tool_name": "image_gen",
             "mode": "generate",
             "prompt_source": "the approved sample slide job prompt",
-            "size": "16:9 landscape, 2560x1440 target",
+            "size": "16:9 landscape, 2048x1152 target",
             "quality": "medium",
             "approved_sample_path": "/absolute/path/to/approved-sample-slide.png",
             "input_context_preparation": "view_image local required images before built-in generation",

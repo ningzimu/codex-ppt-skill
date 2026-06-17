@@ -35,7 +35,7 @@ from image_providers.codex_oauth import (
 from image_providers.openai_compatible import OpenAICompatibleImageProvider
 
 DEFAULT_MODEL = "gpt-image-2"
-DEFAULT_SIZE = "2560x1440"
+DEFAULT_SIZE = "2048x1152"
 DEFAULT_QUALITY = "medium"
 DEFAULT_OUTPUT_FORMAT = "png"
 DEFAULT_CONCURRENCY = 5
@@ -401,9 +401,6 @@ def _validate_generate_payload(payload: Dict[str, Any]) -> None:
     _validate_quality(quality)
     _validate_background(background)
     _validate_model_specific_options(model=model, background=background)
-    oc = payload.get("output_compression")
-    if oc is not None and not (0 <= int(oc) <= 100):
-        _die("output_compression must be between 0 and 100")
 
 
 def _build_output_paths(
@@ -681,8 +678,6 @@ async def _run_generate_batch(args: argparse.Namespace) -> int:
         "quality": args.quality,
         "background": args.background,
         "output_format": args.output_format,
-        "output_compression": args.output_compression,
-        "moderation": args.moderation,
     }
 
     provider = _create_provider(args)
@@ -826,8 +821,6 @@ def _generate(args: argparse.Namespace) -> None:
         "quality": args.quality,
         "background": args.background,
         "output_format": args.output_format,
-        "output_compression": args.output_compression,
-        "moderation": args.moderation,
     }
     payload = {k: v for k, v in payload.items() if v is not None}
 
@@ -892,9 +885,7 @@ def _edit(args: argparse.Namespace) -> None:
         "quality": args.quality,
         "background": args.background,
         "output_format": args.output_format,
-        "output_compression": args.output_compression,
         "input_fidelity": args.input_fidelity,
-        "moderation": args.moderation,
     }
     payload = {k: v for k, v in payload.items() if v is not None}
 
@@ -958,8 +949,6 @@ def _add_shared_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--quality", default=DEFAULT_QUALITY)
     parser.add_argument("--background")
     parser.add_argument("--output-format")
-    parser.add_argument("--output-compression", type=int)
-    parser.add_argument("--moderation")
     parser.add_argument("--out", default=DEFAULT_OUTPUT_PATH)
     parser.add_argument("--out-dir")
     parser.add_argument("--force", action="store_true")
@@ -1004,7 +993,7 @@ def main() -> int:
     _add_shared_args(batch_parser)
     batch_parser.add_argument("--input", required=True, help="Path to JSONL file (one job per line)")
     batch_parser.add_argument("--concurrency", type=int, default=DEFAULT_CONCURRENCY)
-    batch_parser.add_argument("--max-attempts", type=int, default=3)
+    batch_parser.add_argument("--max-attempts", type=int, default=5)
     batch_parser.add_argument("--fail-fast", action="store_true")
     batch_parser.set_defaults(func=_generate_batch)
 
@@ -1019,10 +1008,8 @@ def main() -> int:
         _die("--n must be between 1 and 10")
     if getattr(args, "concurrency", 1) < 1 or getattr(args, "concurrency", 1) > 25:
         _die("--concurrency must be between 1 and 25")
-    if getattr(args, "max_attempts", 3) < 1 or getattr(args, "max_attempts", 3) > 10:
+    if getattr(args, "max_attempts", 5) < 1 or getattr(args, "max_attempts", 5) > 10:
         _die("--max-attempts must be between 1 and 10")
-    if args.output_compression is not None and not (0 <= args.output_compression <= 100):
-        _die("--output-compression must be between 0 and 100")
     if args.command == "generate-batch" and not args.out_dir:
         _die("generate-batch requires --out-dir")
     if getattr(args, "downscale_max_dim", None) is not None and args.downscale_max_dim < 1:
