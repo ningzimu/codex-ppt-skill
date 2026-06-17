@@ -13,6 +13,7 @@ Release notes are generated from this file. Keep changelog entries in English.
 - Change the default image generation size to 2K 16:9 (`2048x1152`).
 - Separate approved sample style references from strict input images so slide subagents use generation by default and editing only for strict input assets or repairs.
 - Clarify that available slide subagent tools should be used directly without asking for separate user authorization.
+- Tell the parent agent to refill freed slide subagent dispatch slots while pending slide jobs remain.
 - Clarify that sample-slide generation should pass prompt text directly with `--prompt` instead of creating style or prompt files.
 
 ### Fixes

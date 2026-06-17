@@ -39,7 +39,7 @@ Completion evidence:
 - `Prepare source, outline, and style decisions`: `outline.md` is approved and visual style is selected.
 - `Generate and approve one sample slide`: one final `origin_image/slide_XX.png` is approved as the style reference.
 - `Prepare slide jobs and slide state`: `prompts/slide_XX.json`, `slide_jobs.json`, and `slide_run_state.json` exist.
-- `Dispatch slide subagents`: `slide_job_status.py` shows dispatchable slides and each spawned worker is recorded by `record_slide_dispatch.py`.
+- `Dispatch slide subagents`: `slide_job_status.py` shows dispatchable slides, each spawned worker is recorded by `record_slide_dispatch.py`, and freed dispatch slots are refilled while pending slides remain.
 - `Record generated slide results`: each worker output is recorded by `record_slide_result.py`, which copies the selected image into `origin_image/slide_XX.png` and records backend provenance.
 - `QA, repair, notes, and PPT assembly`: every expected final image exists, QA is complete, `speech.md` is final, and `{deck_name}.pptx` exists.
 

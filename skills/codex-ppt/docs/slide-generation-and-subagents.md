@@ -126,7 +126,7 @@ If preparing prompts manually instead of using `prepare_slide_prompts.py`, still
 
 After the user approves the sample slide and the workflow reaches full-deck generation, slide subagents are mandatory whenever subagent tools are available in the current runtime. Use one subagent per remaining slide image job. Do not ask for separate permission or authorization to use subagents, and do not generate the remaining deck sequentially when subagent dispatch is available.
 
-Use the slide state scripts as the dispatch contract: the main agent spawns workers, then records dispatch and result state. A slide is not considered dispatched or complete until the relevant script records it.
+Use the slide state scripts as the dispatch contract: the main agent spawns workers, then records dispatch and result state. A slide is not considered dispatched or complete until the relevant script records it. Keep dispatch slots busy by treating completion as the trigger for the next dispatch.
 
 Parent agent responsibilities:
 
@@ -141,6 +141,7 @@ Parent agent responsibilities:
 - Spawn subagents with exactly one slide job each, up to `dispatch_slots_available`.
 - Immediately after each successful spawn, run `record_slide_dispatch.py` with the real agent id and prompt path.
 - After each worker returns, visually check its selected output, then run `record_slide_result.py` to copy the selected generated image into `origin_image/slide_XX.png` and record backend provenance.
+- After recording a returned worker's result, immediately rerun `slide_job_status.py` and dispatch the next pending slide into the freed slot until there are no pending slides or no available dispatch slots.
 - If a worker cannot use the selected image backend or cannot access required input images, run `record_slide_blocker.py` and report the blocker.
 
 Subagent responsibilities:
