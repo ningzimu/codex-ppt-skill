@@ -167,6 +167,21 @@ def _format_input_images(images: Iterable[Dict[str, Any]]) -> str:
     return "\n".join(lines)
 
 
+def _format_style_reference_images(images: Iterable[Dict[str, Any]]) -> str:
+    lines: List[str] = []
+    for idx, image in enumerate(images, start=1):
+        path = str(image.get("path") or image.get("attachment") or "").strip()
+        role = str(image.get("role") or "approved sample slide style reference").strip()
+        fidelity = str(image.get("fidelity") or image.get("constraints") or "").strip()
+        if not path:
+            _die(f"Style reference image {idx} is missing path or attachment.")
+        if fidelity:
+            lines.append(f"- Style Reference {idx}: {path} — {role}; {fidelity}")
+        else:
+            lines.append(f"- Style Reference {idx}: {path} — {role}")
+    return "\n".join(lines)
+
+
 def _slide_number(slide: Dict[str, Any], fallback: int) -> int:
     raw = slide.get("number", fallback)
     try:
@@ -188,10 +203,10 @@ def _build_prompt(
 ) -> str:
     title = str(slide.get("title") or f"Slide {number}").strip()
     style = deck.get("style", {})
-    images: List[Dict[str, Any]] = []
+    style_reference_images: List[Dict[str, Any]] = []
     if global_style_reference:
-        images.append(global_style_reference)
-    images.extend(_slide_images(slide, slide_number=number, base_dir=base_dir))
+        style_reference_images.append(global_style_reference)
+    input_images = _slide_images(slide, slide_number=number, base_dir=base_dir)
     required_background = {
         key: value
         for key, value in {
@@ -214,9 +229,18 @@ def _build_prompt(
         _format_block("Global Style", style),
     ]
 
-    if images:
+    if style_reference_images:
+        prompt_parts.append("## Style Reference Images To Inspect\n")
+        prompt_parts.append(_format_style_reference_images(style_reference_images))
+        prompt_parts.append(
+            "\nInspect these images before generation to understand the approved deck style. "
+            "Do not pass them to the image backend as input images unless this slide explicitly "
+            "lists them under Input Images.\n"
+        )
+
+    if input_images:
         prompt_parts.append("## Input Images\n")
-        prompt_parts.append(_format_input_images(images))
+        prompt_parts.append(_format_input_images(input_images))
         prompt_parts.append("\n")
 
     prompt_parts.extend(
@@ -239,15 +263,17 @@ def _build_prompt(
         ]
     )
 
-    if global_style_reference:
+    if style_reference_images:
         prompt_parts.append(
             "## Style Reference Rule\n"
-            "Use Image 1 as the approved sample-slide style reference. Match its palette, "
+            "Use the approved sample-slide style reference as visual guidance only. Match its palette, "
             "typography mood, density, texture, and overall visual identity. Do not copy "
-            "its exact layout unless this slide's layout explicitly asks for it.\n"
+            "its exact layout unless this slide's layout explicitly asks for it. For normal "
+            "new slide generation, use the generate endpoint and express the inspected style "
+            "through the prompt instead of attaching the sample as an edit input.\n"
         )
 
-    if images:
+    if input_images:
         prompt_parts.append(
             "## Input Image Handling Rules\n"
             "For any input image marked as a strict input asset, include it visibly and "
@@ -270,14 +296,15 @@ def _job_images(
     slide: Dict[str, Any],
     *,
     number: int,
-    global_style_reference: Optional[Dict[str, Any]],
     base_dir: Path,
 ) -> List[Dict[str, Any]]:
-    images: List[Dict[str, Any]] = []
-    if global_style_reference:
-        images.append(global_style_reference)
-    images.extend(_slide_images(slide, slide_number=number, base_dir=base_dir))
-    return images
+    return _slide_images(slide, slide_number=number, base_dir=base_dir)
+
+
+def _style_reference_images(global_style_reference: Optional[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    if not global_style_reference:
+        return []
+    return [global_style_reference]
 
 
 def _write_template(path: Path) -> None:
@@ -290,18 +317,18 @@ def _write_template(path: Path) -> None:
             "core_claim": "The central thesis that should stay consistent across the deck.",
             "canonical_terms": ["Term one", "Term two", "Term three"],
         },
-        "selected_image_backend": "built-in image tool",
+        "selected_image_backend": "scripts/image_gen.py --backend auto (codex-oauth)",
         "max_concurrent_slides": 6,
         "sample_generation_method": {
-            "backend_used": "built-in image tool",
-            "tool_name": "image_gen",
+            "backend_used": "scripts/image_gen.py --backend auto (codex-oauth)",
+            "tool_name": "scripts/image_gen.py",
             "mode": "generate",
             "prompt_source": "the approved sample slide job prompt",
             "size": "16:9 landscape, 2048x1152 target",
             "quality": "medium",
             "approved_sample_path": "/absolute/path/to/approved-sample-slide.png",
-            "input_context_preparation": "view_image local required images before built-in generation",
-            "handoff_rule": "Subagents must use this same backend/tool/mode; return a blocker if unavailable.",
+            "input_context_preparation": "inspect style references before generation; pass strict input assets with edit --image only when a slide job lists input_images",
+            "handoff_rule": "Subagents must use this same backend/tool/config; use generate for new slides unless the assigned job has strict input_images or is a repair.",
         },
         "style": {
             "name": "手绘技术解释风",
@@ -432,19 +459,30 @@ def main() -> int:
             global_style_reference=slide_style_reference,
             base_dir=spec_dir,
         )
-        images = _job_images(slide, number=number, global_style_reference=slide_style_reference, base_dir=spec_dir)
+        input_images = _job_images(slide, number=number, base_dir=spec_dir)
+        style_reference_images = _style_reference_images(slide_style_reference)
+        expected_mode = "edit" if input_images else "generate"
         job = {
             "slide": number,
             "title": slide.get("title", f"Slide {number}"),
             "prompt": prompt,
             "out": f"slide_{number:02d}.png",
-            "input_images": images,
-            "requires_context_images": bool(images),
+            "candidate_out": f"drafts/slide_{number:02d}_candidate.png",
+            "input_images": input_images,
+            "style_reference_images": style_reference_images,
+            "requires_context_images": bool(input_images),
+            "expected_generation_mode": expected_mode,
             "expected_backend": selected_backend,
             "sample_generation_method": sample_generation_method,
             "generation_contract": {
                 "must_use_selected_image_backend": True,
                 "must_match_sample_generation_method": bool(sample_generation_method),
+                "default_mode": "generate",
+                "use_edit_only_when": [
+                    "input_images is non-empty",
+                    "repairing an existing generated slide",
+                ],
+                "must_inspect_style_reference_images": bool(style_reference_images),
                 "forbidden_final_image_methods": [
                     "local drawing/rendering scripts",
                     "Pillow-generated slides",
@@ -470,8 +508,10 @@ def main() -> int:
                 "title": slide.get("title", f"Slide {number}"),
                 "job": rel_to_deck(out_dir, prompt_path),
                 "out": rel_to_deck(out_dir, final_image),
-                "input_images": images,
-                "requires_context_images": bool(images),
+                "input_images": input_images,
+                "style_reference_images": style_reference_images,
+                "requires_context_images": bool(input_images),
+                "expected_generation_mode": expected_mode,
                 "status": status,
                 "dispatch": None,
                 "result": {

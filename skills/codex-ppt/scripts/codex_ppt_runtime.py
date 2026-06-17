@@ -31,8 +31,7 @@ ENV_FIELDS = (
     "OPENAI_BASE_URL",
     "CODEX_PPT_IMAGE_MODEL",
     "CODEX_PPT_IMAGE_BACKEND",
-    "CODEX_RESPONSES_BASE_URL",
-    "CODEX_RESPONSES_MODEL",
+    "CODEX_IMAGES_BASE_URL",
 )
 VALID_IMAGE_BACKENDS = ("auto", "codex-oauth", "atlascloud", "openai-compatible")
 

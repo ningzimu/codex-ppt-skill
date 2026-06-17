@@ -37,9 +37,11 @@ No `OPENAI_API_KEY` is required when local Codex auth is available:
 ```bash
 ~/.codex-ppt-skill/.venv/bin/python {skill_root}/scripts/image_gen.py generate \
   --backend auto \
-  --prompt-file {prompt_file} \
+  --prompt "{sample_prompt}" \
   --out {base_dir}/{deck_name}/origin_image/slide_01.png
 ```
+
+The Codex OAuth backend reuses local Codex auth and calls the official Codex images endpoints, `/backend-api/codex/images/generations` and `/backend-api/codex/images/edits`.
 
 Use `--backend codex-oauth` only when you want to require this route and fail if Codex auth is missing.
 

@@ -29,7 +29,7 @@ from image_providers import create_image_provider
 from image_providers.atlascloud import AtlasCloudImageProvider, atlascloud_model_for_operation
 from image_providers.base import ImageProvider
 from image_providers.codex_oauth import (
-    DEFAULT_CODEX_RESPONSES_BASE_URL,
+    DEFAULT_CODEX_BASE_URL,
     CodexOAuthImageProvider,
 )
 from image_providers.openai_compatible import OpenAICompatibleImageProvider
@@ -62,8 +62,7 @@ ENV_FIELDS = (
     "OPENAI_BASE_URL",
     "CODEX_PPT_IMAGE_MODEL",
     "CODEX_PPT_IMAGE_BACKEND",
-    "CODEX_RESPONSES_BASE_URL",
-    "CODEX_RESPONSES_MODEL",
+    "CODEX_IMAGES_BASE_URL",
 )
 VALID_IMAGE_BACKENDS = ("auto", "codex-oauth", "atlascloud", "openai-compatible")
 
@@ -146,8 +145,13 @@ def _preview_backend(backend: Optional[str]) -> str:
 def _preview_endpoint(kind: str, *, backend: Optional[str] = None) -> str:
     selected = _preview_backend(backend)
     if selected == "codex-oauth":
-        base_url = os.getenv("CODEX_RESPONSES_BASE_URL") or DEFAULT_CODEX_RESPONSES_BASE_URL
-        return f"{base_url.rstrip('/')}/responses"
+        base_url = (
+            os.getenv("CODEX_IMAGES_BASE_URL")
+            or DEFAULT_CODEX_BASE_URL
+        )
+        if kind == "edit":
+            return f"{base_url.rstrip('/')}/images/edits"
+        return f"{base_url.rstrip('/')}/images/generations"
     base_url = _api_base_url()
     if selected == "atlascloud" or (base_url and _is_atlascloud_base_url(base_url)):
         return "/api/v1/model/generateImage"
@@ -214,7 +218,7 @@ def _provider_preview(provider: ImageProvider) -> Dict[str, Any]:
     if isinstance(provider, CodexOAuthImageProvider):
         return {
             "auth_file": str(provider.auth_file),
-            "responses_model": provider.responses_model,
+            "codex_base_url": provider.codex_base_url,
         }
     return {}
 
@@ -942,8 +946,8 @@ def _edit(args: argparse.Namespace) -> None:
 def _add_shared_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--backend", choices=VALID_IMAGE_BACKENDS, default=_default_backend())
     parser.add_argument("--model", default=_default_model())
-    parser.add_argument("--prompt")
-    parser.add_argument("--prompt-file")
+    parser.add_argument("--prompt", help="Prompt text. Prefer this for sample generation.")
+    parser.add_argument("--prompt-file", help="Prompt file path, or '-' for stdin. Prefer this for saved slide jobs.")
     parser.add_argument("--n", type=int, default=1)
     parser.add_argument("--size", default=DEFAULT_SIZE)
     parser.add_argument("--quality", default=DEFAULT_QUALITY)

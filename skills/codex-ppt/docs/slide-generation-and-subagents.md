@@ -14,7 +14,7 @@ After the outline, visual style, and sample slide have all been approved, create
 
 Do not create these final downstream artifacts before outline approval. If the user explicitly asks for pre-approval planning files, use `.draft.` filenames and synchronize them after approval.
 
-`deck_spec.json` must include `sample_generation_method` copied from the approved sample before `prepare_slide_prompts.py` is run. The helper copies that method into each `prompts/slide_XX.json` and into `slide_jobs.json`, so workers can see the exact backend, tool, mode, image context preparation, and output constraints used for the approved sample.
+`deck_spec.json` must include `sample_generation_method` copied from the approved sample before `prepare_slide_prompts.py` is run. The helper copies that method into each `prompts/slide_XX.json` and into `slide_jobs.json`, so workers can see the exact backend, tool, model/config, image context preparation, and output constraints used for the approved sample. Do not blindly reuse the sample's mode for every slide: new slides use `generate` by default, while strict input-asset slides and repairs use `edit`.
 
 Before full production, create structured per-slide image jobs. Prefer the bundled deterministic helper:
 
@@ -120,7 +120,7 @@ Avoid generating every slide as the same three-card layout. For each slide, choo
 }
 ```
 
-If preparing prompts manually instead of using `prepare_slide_prompts.py`, still save each full slide job under `{base_dir}/{deck_name}/prompts/slide_XX.json` before generation. The saved job must include `prompt`, `out`, and `input_images`, including any deck-level approved sample slide style reference and all slide-level source images with explicit role labels.
+If preparing prompts manually instead of using `prepare_slide_prompts.py`, still save each full slide job under `{base_dir}/{deck_name}/prompts/slide_XX.json` before generation. The saved job must include `prompt`, `out`, `style_reference_images`, and `input_images`. Put the approved sample slide in `style_reference_images` so the worker inspects it before generation, and put only strict slide-level source assets in `input_images` with explicit role labels.
 
 ## Parallel Slide Generation With Subagents
 
@@ -133,11 +133,11 @@ Parent agent responsibilities:
 - Own `outline.md`, `deck_spec.json`, `prompts/`, `origin_image/`, QA, `speech.md`, and final PPT assembly.
 - Run `prepare_slide_prompts.py` or otherwise write full per-slide JSON jobs and `slide_jobs.json` before delegation.
 - Run `slide_job_status.py` to see dispatch slots and pending slide ids before each batch.
-- Ensure the approved sample slide is included in every non-sample job as a style-only input image when available.
+- Ensure the approved sample slide is included in every non-sample job as a `style_reference_images` entry when available; it should be inspected by the worker, not passed to `edit --image` by default.
 - Ensure every dispatched slide job is self-contained. If a slide summarizes, compares, continues, or refers to deck-wide concepts, put the required concepts into `deck_context` or the slide's `local_context` before running `prepare_slide_prompts.py`.
-- Ensure `sample_generation_method` is present in `deck_spec.json`, every `prompts/slide_XX.json`, and `slide_jobs.json`; it must describe the exact backend/tool/mode used to generate the approved sample.
+- Ensure `sample_generation_method` is present in `deck_spec.json`, every `prompts/slide_XX.json`, and `slide_jobs.json`; it must describe the backend/tool/config used to generate the approved sample and the rule that new slides default to `generate`.
 - If the approved sample slide already exists and should not be regenerated, mark that slide in `deck_spec.json` with `sample_approved: true` or `approved_sample: true` before running `prepare_slide_prompts.py`; the helper records it as `accepted` when the final image file exists.
-- In local CLI mode, ensure each JSON job lists the required source images and that the selected CLI path can use them with `edit --image`; if the CLI path cannot attach input images for a slide, do not delegate that slide as a text-only replacement for the asset.
+- In local CLI mode, ensure each JSON job lists style references separately from strict input images. Jobs with no strict `input_images` should use `generate`; jobs with strict `input_images` should use `edit --image` for those assets. If the CLI path cannot attach input images for a strict-asset slide, do not delegate that slide as a text-only replacement for the asset.
 - Spawn subagents with exactly one slide job each, up to `dispatch_slots_available`.
 - Immediately after each successful spawn, run `record_slide_dispatch.py` with the real agent id and prompt path.
 - After each worker returns, visually check its selected output, then run `record_slide_result.py` to copy the selected generated image into `origin_image/slide_XX.png` and record backend provenance.
@@ -147,9 +147,9 @@ Subagent responsibilities:
 
 - Read exactly the assigned `prompts/slide_XX.json`.
 - Use the selected image backend only; do not switch between local CLI backends.
-- Follow the `sample_generation_method` from the assigned job. Use the same tool family, generation/edit mode, image context preparation, and model/config details that produced the approved sample.
+- Follow the `sample_generation_method` and `generation_contract` from the assigned job. Use the same tool family and model/config details that produced the approved sample. Use `generate` for normal new slides; use `edit` only when the assigned job has strict `input_images` or when repairing an existing generated slide.
 - Generate the final slide candidate by calling the selected image generation backend. Do not create final slide images with local drawing, HTML/SVG/canvas screenshots, Pillow, python-pptx/PptxGenJS layouts, or manually composited text/image overlays.
-- Treat the approved sample slide as style reference only.
+- Visually inspect the approved sample slide and any `style_reference_images` before calling the image backend. Treat them as style references only, and do not pass them as `--image` inputs unless the job also lists them under `input_images`.
 - Treat any required source images as strict input assets and preserve their content according to the prompt.
 - Inspect the generated candidate for text quality, style consistency, required-image inclusion, and layout issues before returning it.
 - Return only the selected original generated image path, the backend used, and a one-sentence QA note.

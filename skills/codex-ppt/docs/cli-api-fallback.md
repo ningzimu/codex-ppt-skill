@@ -18,17 +18,19 @@ The local image CLI loads `~/.codex-ppt-skill/.env` automatically for image back
 
 ## Generate One Slide
 
-Basic generation command:
+Sample-generation command:
 
 ```bash
 ~/.codex-ppt-skill/.venv/bin/python {skill_root}/scripts/image_gen.py generate \
   --backend auto \
   --model gpt-image-2 \
-  --prompt-file {prompt_file} \
+  --prompt "{sample_prompt}" \
   --size 2048x1152 \
   --quality medium \
   --out {base_dir}/{deck_name}/origin_image/slide_01.png
 ```
+
+For sample generation, pass the prompt directly with `--prompt`. Do not create `style.md`, draft prompt files, formal `prompts/slide_XX.json` job files, or `slide_jobs.json` before the sample is approved. If the sample prompt is too long for a shell argument, pipe it with `--prompt-file -` instead of writing a prompt file.
 
 The local image CLI accepts model names containing `gpt-image-`, such as `gpt-image-2` or `openai/gpt-image-2`.
 
@@ -44,7 +46,7 @@ python3 -c 'import json, pathlib; print(json.loads(pathlib.Path("{base_dir}/{dec
   --out {base_dir}/{deck_name}/origin_image/slide_01.png
 ```
 
-Before using this text-only `generate` path, inspect the assigned `prompts/slide_XX.json`. If `input_images` is non-empty or `requires_context_images` is true, this command is not sufficient because it does not attach those images. Use `scripts/image_gen.py edit --image ...` with every required source image, or stop and ask the user whether to switch backend. Do not generate a text-only replacement for a strict input asset.
+Before using this text-only `generate` path, inspect the assigned `prompts/slide_XX.json`. If `style_reference_images` is non-empty, visually inspect those images first, then continue with `generate`; do not pass style references as `--image` inputs. If `input_images` is non-empty or `requires_context_images` is true, use `scripts/image_gen.py edit --image ...` with every required source image, or stop and ask the user whether to switch backend. Do not generate a text-only replacement for a strict input asset.
 
 ## Capabilities And Sizes
 
@@ -54,6 +56,8 @@ The local image CLI supports:
 - `edit`: edit one or more existing images.
 
 The provider abstraction retries transient network and provider failures up to five attempts before surfacing an error.
+
+When Codex OAuth is selected, the CLI reuses local Codex auth and calls the official Codex images endpoints.
 
 The local image CLI defaults to 2K 16:9 landscape output, `2048x1152`, because it is an official popular GPT Image 2 landscape size and keeps slide text clearer while staying below the pixel limit. For 4K landscape slides, use `--size 3840x2160 --quality high` only when the user asks for 4K, text-heavy slides need sharper output, or the default result is blurry. For portrait assets, use `--size 2160x3840` only if the user requests portrait output.
 

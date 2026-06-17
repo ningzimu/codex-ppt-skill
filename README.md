@@ -201,7 +201,7 @@ skill 会按以下流程执行：
 
 ## 使用技巧
 
-- 默认脚本分辨率是 2K 16:9 横屏（`2048x1152`），适用于 Codex OAuth、本地第三方 provider 和 OpenAI 兼容中转站。如果生成的幻灯片图片比较模糊，尤其是文字较多的页面，可以让 AI 改用 4K 分辨率生成。Codex 会员默认会优先使用本地图片 CLI 的 Codex OAuth 后端，把图片直接写到 PPT 项目的本地路径。
+- 默认脚本分辨率是 2K 16:9 横屏（`2048x1152`），适用于 Codex OAuth、本地第三方 provider 和 OpenAI 兼容中转站。如果生成的幻灯片图片比较模糊，尤其是文字较多的页面，可以让 AI 改用 4K 分辨率生成。Codex 会员默认会优先使用本地图片 CLI 的 Codex OAuth 后端，复用本地 Codex 认证调用官方 images endpoint，并把图片直接写到 PPT 项目的本地路径。
 - 如果只是不满意某一页的内容、排版、配色或文字表达，可以直接让当前 agent 针对这一页做细致修改，不需要整套 PPT 重新生成。
 
 ![单页局部修改示意：打开 PPT、点击标注，并框选需要修改的位置](assets/single-slide-revision-example.png)

@@ -20,6 +20,7 @@ Hard rules:
 - Before outline approval, do not create final `deck_spec.json`, `speech.md`, prompt job files, slide images, or `.pptx` files.
 - If you need an internal planning artifact before approval, name it with `.draft.` such as `deck_spec.draft.json` or `speech.draft.md`, and clearly report that it is not final.
 - Downstream artifacts (`deck_spec.json`, `prompts/`, `slide_jobs.json`, `speech.md`, final slide images, and `.pptx`) should be created only after the relevant gates have been approved.
+- During sample generation, do not write `style.md`, draft prompt files, formal `prompts/slide_XX.json`, or `slide_jobs.json`; pass the sample prompt directly with `--prompt`, or use stdin with `--prompt-file -` only when the prompt is too long for a shell argument.
 - If the deck uses required source images, stop at outline confirmation and ask the user to verify the slide-to-image mapping before style selection or image generation.
 
 ## Visible Progress Plan

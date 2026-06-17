@@ -17,14 +17,19 @@ Sample generation method copied from the approved sample:
 - prompt_source: <approved sample prompt source>
 - input_context_preparation: <how local images were made visible or attached>
 - approved_sample_path: <absolute path to approved origin_image/slide_XX.png>
-- handoff_rule: use this same backend/tool/mode; return a blocker if unavailable
-Input images already prepared by the parent:
+- handoff_rule: use this same backend/tool/config; use generate for new slides unless this job has strict input_images or is a repair
+Style reference images to inspect before generation:
 - <absolute path> - approved sample slide style reference; match style only, do not copy layout
+Strict input images already prepared by the parent:
 - <absolute path> - strict input asset; preserve labels/data/arrows/content
 
 Read the JSON job file, then follow its `prompt` field exactly. Use the selected image backend and the recorded sample generation method only.
 You must produce the final slide candidate by calling the selected image generation backend:
-- Local CLI mode: use `scripts/image_gen.py` with the saved job prompt and required image inputs.
+- Before calling the backend, visually inspect every local image listed in `style_reference_images` and `input_images`.
+- Local CLI mode for normal new slides: use `scripts/image_gen.py generate --prompt-file <job prompt file> --out <deck dir>/drafts/slide_<NN>_candidate.png`.
+- Local CLI mode for slides with strict `input_images`: use `scripts/image_gen.py edit --image <asset> ... --prompt-file <job prompt file> --out <deck dir>/drafts/slide_<NN>_candidate.png`.
+- Local CLI mode for repairing an existing generated slide: use `scripts/image_gen.py edit --image <existing slide> --prompt ... --out <deck dir>/drafts/slide_<NN>_revised.png`.
+- Do not pass approved sample/style reference images as `--image` inputs unless the JSON job also lists them under `input_images`.
 - UI built-in mode is allowed only if the parent explicitly selected it and described how to save the result to the target path.
 
 Forbidden for final slide image creation:
@@ -46,6 +51,6 @@ Before returning, visually check:
 
 Return only:
 backend_used=<exact selected backend label>
-selected_source=/absolute/path/to/$CODEX_HOME/generated_images/.../ig_*.png
+selected_source=<absolute deck dir>/drafts/slide_<NN>_candidate.png
 qa_note=<one sentence>
 ```

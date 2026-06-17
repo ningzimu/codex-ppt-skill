@@ -11,10 +11,13 @@ Release notes are generated from this file. Keep changelog entries in English.
 ### Improvements
 
 - Change the default image generation size to 2K 16:9 (`2048x1152`).
+- Separate approved sample style references from strict input images so slide subagents use generation by default and editing only for strict input assets or repairs.
+- Clarify that sample-slide generation should pass prompt text directly with `--prompt` instead of creating style or prompt files.
 
 ### Fixes
 
 - Add a Codex OAuth image backend so Codex users can generate PPT images through the local CLI without relying on the built-in image tool output path.
+- Use the official Codex images endpoint for the Codex OAuth backend.
 - Retry transient image provider request failures up to five attempts before surfacing an error.
 - Stop requiring explicit image backend confirmation before sample-slide generation; the workflow now announces the backend used when generating the sample.
 
