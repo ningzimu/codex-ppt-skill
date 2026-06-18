@@ -83,7 +83,6 @@ class CodexOAuthImageProvider(ImageProvider):
             "background",
             "output_format",
             "output_compression",
-            "moderation",
         ):
             value = payload.get(key)
             if value is not None:

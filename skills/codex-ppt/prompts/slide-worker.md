@@ -26,8 +26,8 @@ Strict input images already prepared by the parent:
 Read the JSON job file, then follow its `prompt` field exactly. Use the selected image backend and the recorded sample generation method only.
 You must produce the final slide candidate by calling the selected image generation backend:
 - Before calling the backend, visually inspect every local image listed in `style_reference_images` and `input_images`.
-- Local CLI mode for normal new slides: use `scripts/image_gen.py generate --prompt-file <job prompt file> --out <deck dir>/drafts/slide_<NN>_candidate.png`; the CLI reads the JSON job file's `prompt` field.
-- Local CLI mode for slides with strict `input_images`: use `scripts/image_gen.py edit --image <asset> ... --prompt-file <job prompt file> --out <deck dir>/drafts/slide_<NN>_candidate.png`; the CLI reads the JSON job file's `prompt` field.
+- Local CLI mode for normal new slides: use `scripts/image_gen.py generate --prompt-file <job prompt file> --no-augment --out <deck dir>/drafts/slide_<NN>_candidate.png`; the CLI reads the JSON job file's `prompt` field exactly.
+- Local CLI mode for slides with strict `input_images`: use `scripts/image_gen.py edit --image <asset> ... --prompt-file <job prompt file> --no-augment --out <deck dir>/drafts/slide_<NN>_candidate.png`; the CLI reads the JSON job file's `prompt` field exactly.
 - Local CLI mode for repairing an existing generated slide: use `scripts/image_gen.py edit --image <existing slide> --prompt ... --out <deck dir>/drafts/slide_<NN>_revised.png`.
 - Do not pass approved sample/style reference images as `--image` inputs unless the JSON job also lists them under `input_images`.
 - UI built-in mode is allowed only if the parent explicitly selected it and described how to save the result to the target path.

@@ -6,7 +6,7 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ### Fixes
 
-- Teach `image_gen.py --prompt-file` to read prepared JSON slide jobs from their `prompt` field and restore image `output_compression` and `moderation` CLI options.
+- Teach `image_gen.py --prompt-file` to read prepared JSON slide jobs from their `prompt` field and restore the image `output_compression` CLI option. (#66)
 
 ## 0.5.1
 

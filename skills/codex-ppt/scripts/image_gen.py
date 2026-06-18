@@ -431,8 +431,6 @@ def _validate_output_compression(
 def _validate_backend_payload_options(backend: str, payload: Dict[str, Any]) -> None:
     if backend != "atlascloud":
         return
-    if payload.get("moderation") is not None:
-        _die("--moderation is not supported by the AtlasCloud backend")
     if payload.get("output_compression") is not None:
         _die("--output-compression is not supported by the AtlasCloud backend")
 
@@ -713,7 +711,6 @@ async def _run_generate_batch(args: argparse.Namespace) -> int:
         "background": args.background,
         "output_format": args.output_format,
         "output_compression": args.output_compression,
-        "moderation": args.moderation,
     }
 
     provider = _create_provider(args)
@@ -868,7 +865,6 @@ def _generate(args: argparse.Namespace) -> None:
         "background": args.background,
         "output_format": args.output_format,
         "output_compression": args.output_compression,
-        "moderation": args.moderation,
     }
     payload = {k: v for k, v in payload.items() if v is not None}
 
@@ -937,7 +933,6 @@ def _edit(args: argparse.Namespace) -> None:
         "output_format": args.output_format,
         "output_compression": args.output_compression,
         "input_fidelity": args.input_fidelity,
-        "moderation": args.moderation,
     }
     payload = {k: v for k, v in payload.items() if v is not None}
 
@@ -1004,7 +999,6 @@ def _add_shared_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--background")
     parser.add_argument("--output-format")
     parser.add_argument("--output-compression", type=int)
-    parser.add_argument("--moderation")
     parser.add_argument("--out", default=DEFAULT_OUTPUT_PATH)
     parser.add_argument("--out-dir")
     parser.add_argument("--force", action="store_true")
