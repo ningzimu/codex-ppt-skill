@@ -4,6 +4,8 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ## Unreleased
 
+## 0.5.0
+
 ### Features
 
 - Add an AtlasCloud image provider adapter for GPT Image 2 generation and editing. (#60)
