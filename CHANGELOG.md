@@ -4,27 +4,19 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ## Unreleased
 
+### Improvements
+
+- Update the codex-ppt workflow defaults for 2K 16:9 image output, direct sample prompts, mandatory subagent dispatch/refill behavior, and edit-based single-slide revisions.
+
+### Fixes
+
+- Add Codex OAuth image generation through local Codex auth using the official images endpoints, with provider-level retries for transient failures.
+
 ## 0.5.0
 
 ### Features
 
 - Add an AtlasCloud image provider adapter for GPT Image 2 generation and editing. (#60)
-
-### Improvements
-
-- Change the default image generation size to 2K 16:9 (`2048x1152`).
-- Separate approved sample style references from strict input images so slide subagents use generation by default and editing only for strict input assets or repairs.
-- Clarify that available slide subagent tools should be used directly without asking for separate user authorization.
-- Tell the parent agent to refill freed slide subagent dispatch slots while pending slide jobs remain.
-- Clarify that post-assembly single-slide detail changes should use image editing to avoid style and detail drift.
-- Clarify that sample-slide generation should pass prompt text directly with `--prompt` instead of creating style or prompt files.
-
-### Fixes
-
-- Add a Codex OAuth image backend so Codex users can generate PPT images through the local CLI without relying on the built-in image tool output path.
-- Use the official Codex images endpoint for the Codex OAuth backend.
-- Retry transient image provider request failures up to five attempts before surfacing an error.
-- Stop requiring explicit image backend confirmation before sample-slide generation; the workflow now announces the backend used when generating the sample.
 
 ### Documentation
 
