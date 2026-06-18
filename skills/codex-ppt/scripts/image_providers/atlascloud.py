@@ -88,10 +88,6 @@ class AtlasCloudImageProvider(ImageProvider):
         raise TimeoutError(f"AtlasCloud prediction timed out: {last}")
 
     def _atlas_payload(self, payload: Dict[str, Any], *, operation: str) -> Dict[str, Any]:
-        output_format = payload.get("output_format")
-        if output_format not in (None, "png", "jpeg"):
-            raise ValueError("AtlasCloud supports output_format png or jpeg.")
-
         body: Dict[str, Any] = {
             "model": atlascloud_model_for_operation(
                 str(payload.get("model", "gpt-image-2")),
@@ -101,7 +97,7 @@ class AtlasCloudImageProvider(ImageProvider):
             "enable_sync_mode": False,
             "enable_base64_output": True,
         }
-        for key in ("size", "quality", "output_format"):
+        for key in ("size", "quality"):
             value = payload.get(key)
             if value is not None and value != "auto":
                 body[key] = value

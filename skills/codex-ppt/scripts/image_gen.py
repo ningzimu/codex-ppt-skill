@@ -5,7 +5,7 @@ Used when Codex's built-in image tool is unavailable, when the user explicitly
 opts into API mode, or when explicit transparent output requires the
 `gpt-image-1.5` fallback path.
 
-Defaults to gpt-image-2 and a structured prompt augmentation workflow.
+Defaults to gpt-image-2 and sends prompts exactly as provided.
 Reads OPENAI_API_KEY, and optionally OPENAI_BASE_URL for provider adapters or
 OpenAI-compatible proxy providers.
 """
@@ -15,7 +15,6 @@ from __future__ import annotations
 import argparse
 import asyncio
 import base64
-from io import BytesIO
 import json
 import os
 from pathlib import Path
@@ -39,7 +38,6 @@ DEFAULT_SIZE = "2048x1152"
 DEFAULT_QUALITY = "medium"
 DEFAULT_OUTPUT_FORMAT = "png"
 DEFAULT_CONCURRENCY = 5
-DEFAULT_DOWNSCALE_SUFFIX = "-web"
 DEFAULT_OUTPUT_PATH = "output/imagegen/output.png"
 GPT_IMAGE_MODEL_PREFIX = "gpt-image-"
 
@@ -169,27 +167,8 @@ def _preview_model(model: str, kind: str, *, backend: Optional[str] = None) -> s
     return model
 
 
-def _runtime_python_path() -> str:
-    home = _runtime_home()
-    if os.name == "nt":
-        return str(home / ".venv" / "Scripts" / "python.exe")
-    return str(home / ".venv" / "bin" / "python")
-
-
 def _skill_root() -> Path:
     return Path(__file__).resolve().parents[1]
-
-
-def _dependency_hint(package: str, *, upgrade: bool = False) -> str:
-    package_arg = f"-U {package}" if upgrade else package
-    runtime_python = _runtime_python_path()
-    requirements = _skill_root() / "requirements.txt"
-    return (
-        "Install codex-ppt dependencies in the shared runtime first, for example "
-        f"`python3 {_skill_root() / 'scripts' / 'codex_ppt_runtime.py'} bootstrap`, "
-        f"or install {package} directly with `{runtime_python} -m pip install "
-        f"{package_arg}`. Requirements file: `{requirements}`."
-    )
 
 
 def _create_provider(args: argparse.Namespace) -> ImageProvider:
@@ -265,24 +244,34 @@ def _read_prompt(prompt: Optional[str], prompt_file: Optional[str]) -> str:
         _die("Use --prompt or --prompt-file, not both.")
     if prompt_file:
         if prompt_file == "-":
-            return sys.stdin.read().strip()
+            prompt_text = sys.stdin.read().strip()
+            if prompt_text:
+                return prompt_text
+            _die("Prompt from stdin is empty.")
         path = Path(prompt_file)
         if not path.exists():
             _die(f"Prompt file not found: {path}")
         raw = path.read_text(encoding="utf-8").strip()
+        if not raw:
+            _die(f"Prompt file is empty: {path}")
         if path.suffix.lower() == ".json" or raw.startswith("{"):
             try:
                 data = json.loads(raw)
-            except json.JSONDecodeError:
-                return raw
+            except json.JSONDecodeError as exc:
+                _die(f"Invalid JSON prompt file {path}: {exc}")
+            if not isinstance(data, dict):
+                _die(f"JSON prompt file must contain an object with a non-empty prompt field: {path}")
             if isinstance(data, dict) and isinstance(data.get("prompt"), str):
                 prompt_text = data["prompt"].strip()
                 if prompt_text:
                     return prompt_text
                 _die(f"Prompt field is empty in JSON prompt file: {path}")
+            _die(f"Missing non-empty prompt field in JSON prompt file: {path}")
         return raw
     if prompt:
-        return prompt.strip()
+        prompt_text = prompt.strip()
+        if prompt_text:
+            return prompt_text
     _die("Missing prompt. Use --prompt or --prompt-file.")
     return ""  # unreachable
 
@@ -297,15 +286,6 @@ def _check_image_paths(paths: Iterable[str]) -> List[Path]:
             _warn(f"Image exceeds 50MB limit: {path}")
         resolved.append(path)
     return resolved
-
-
-def _normalize_output_format(fmt: Optional[str]) -> str:
-    if not fmt:
-        return DEFAULT_OUTPUT_FORMAT
-    fmt = fmt.lower()
-    if fmt not in {"png", "jpeg", "jpg", "webp"}:
-        _die("output-format must be png, jpeg, jpg, or webp.")
-    return "jpeg" if fmt == "jpg" else fmt
 
 
 def _parse_size(size: str) -> Optional[Tuple[int, int]]:
@@ -379,11 +359,6 @@ def _is_gpt_image_2_model(model: str) -> bool:
     return GPT_IMAGE_2_MODEL in model
 
 
-def _validate_transparency(background: Optional[str], output_format: str) -> None:
-    if background == "transparent" and output_format not in {"png", "webp"}:
-        _die("transparent background requires output-format png or webp.")
-
-
 def _validate_model_specific_options(
     *,
     model: str,
@@ -395,7 +370,7 @@ def _validate_model_specific_options(
     if background == "transparent":
         _die(
             "transparent backgrounds are not supported in gpt-image-2, the latest model. "
-            "Use --model gpt-image-1.5 --background transparent --output-format png instead."
+            "Use --model gpt-image-1.5 --background transparent instead."
         )
     if input_fidelity is not None:
         _die(
@@ -418,30 +393,12 @@ def _validate_generate_payload(payload: Dict[str, Any]) -> None:
     _validate_model_specific_options(model=model, background=background)
 
 
-def _validate_output_compression(
-    output_compression: Optional[int],
-    output_format: Optional[str] = None,
-) -> None:
-    if output_compression is not None and not (0 <= output_compression <= 100):
-        _die("--output-compression must be between 0 and 100")
-    if output_compression is not None and output_format not in (None, "jpeg", "webp"):
-        _die("--output-compression requires --output-format jpeg or webp")
-
-
-def _validate_backend_payload_options(backend: str, payload: Dict[str, Any]) -> None:
-    if backend != "atlascloud":
-        return
-    if payload.get("output_compression") is not None:
-        _die("--output-compression is not supported by the AtlasCloud backend")
-
-
 def _build_output_paths(
     out: str,
-    output_format: str,
     count: int,
     out_dir: Optional[str],
 ) -> List[Path]:
-    ext = "." + output_format
+    ext = "." + DEFAULT_OUTPUT_FORMAT
 
     if out_dir:
         out_base = Path(out_dir)
@@ -455,9 +412,9 @@ def _build_output_paths(
 
     if out_path.suffix == "":
         out_path = out_path.with_suffix(ext)
-    elif output_format and out_path.suffix.lstrip(".").lower() != output_format:
+    elif out_path.suffix.lstrip(".").lower() != DEFAULT_OUTPUT_FORMAT:
         _warn(
-            f"Output extension {out_path.suffix} does not match output-format {output_format}."
+            f"Output extension {out_path.suffix} does not match default png output."
         )
 
     if count == 1:
@@ -467,59 +424,6 @@ def _build_output_paths(
         out_path.with_name(f"{out_path.stem}-{i}{out_path.suffix}")
         for i in range(1, count + 1)
     ]
-
-
-def _augment_prompt(args: argparse.Namespace, prompt: str) -> str:
-    fields = _fields_from_args(args)
-    return _augment_prompt_fields(args.augment, prompt, fields)
-
-
-def _augment_prompt_fields(augment: bool, prompt: str, fields: Dict[str, Optional[str]]) -> str:
-    if not augment:
-        return prompt
-
-    sections: List[str] = []
-    if fields.get("use_case"):
-        sections.append(f"Use case: {fields['use_case']}")
-    sections.append(f"Primary request: {prompt}")
-    if fields.get("scene"):
-        sections.append(f"Scene/background: {fields['scene']}")
-    if fields.get("subject"):
-        sections.append(f"Subject: {fields['subject']}")
-    if fields.get("style"):
-        sections.append(f"Style/medium: {fields['style']}")
-    if fields.get("composition"):
-        sections.append(f"Composition/framing: {fields['composition']}")
-    if fields.get("lighting"):
-        sections.append(f"Lighting/mood: {fields['lighting']}")
-    if fields.get("palette"):
-        sections.append(f"Color palette: {fields['palette']}")
-    if fields.get("materials"):
-        sections.append(f"Materials/textures: {fields['materials']}")
-    if fields.get("text"):
-        sections.append(f"Text (verbatim): \"{fields['text']}\"")
-    if fields.get("constraints"):
-        sections.append(f"Constraints: {fields['constraints']}")
-    if fields.get("negative"):
-        sections.append(f"Avoid: {fields['negative']}")
-
-    return "\n".join(sections)
-
-
-def _fields_from_args(args: argparse.Namespace) -> Dict[str, Optional[str]]:
-    return {
-        "use_case": getattr(args, "use_case", None),
-        "scene": getattr(args, "scene", None),
-        "subject": getattr(args, "subject", None),
-        "style": getattr(args, "style", None),
-        "composition": getattr(args, "composition", None),
-        "lighting": getattr(args, "lighting", None),
-        "palette": getattr(args, "palette", None),
-        "materials": getattr(args, "materials", None),
-        "text": getattr(args, "text", None),
-        "constraints": getattr(args, "constraints", None),
-        "negative": getattr(args, "negative", None),
-    }
 
 
 def _print_request(payload: dict) -> None:
@@ -536,79 +440,6 @@ def _decode_and_write(images: List[str], outputs: List[Path], force: bool) -> No
         out_path.parent.mkdir(parents=True, exist_ok=True)
         out_path.write_bytes(base64.b64decode(image_b64))
         print(f"Wrote {out_path}")
-
-
-def _derive_downscale_path(path: Path, suffix: str) -> Path:
-    if suffix and not suffix.startswith("-") and not suffix.startswith("_"):
-        suffix = "-" + suffix
-    return path.with_name(f"{path.stem}{suffix}{path.suffix}")
-
-
-def _downscale_image_bytes(image_bytes: bytes, *, max_dim: int, output_format: str) -> bytes:
-    try:
-        from PIL import Image
-    except Exception:
-        _die(f"Downscaling requires Pillow. {_dependency_hint('pillow')}")
-
-    if max_dim < 1:
-        _die("--downscale-max-dim must be >= 1")
-
-    with Image.open(BytesIO(image_bytes)) as img:
-        img.load()
-        w, h = img.size
-        scale = min(1.0, float(max_dim) / float(max(w, h)))
-        target = (max(1, int(round(w * scale))), max(1, int(round(h * scale))))
-
-        resized = img if target == (w, h) else img.resize(target, Image.Resampling.LANCZOS)
-
-        fmt = output_format.lower()
-        if fmt == "jpg":
-            fmt = "jpeg"
-
-        if fmt == "jpeg":
-            if resized.mode in ("RGBA", "LA") or ("transparency" in getattr(resized, "info", {})):
-                bg = Image.new("RGB", resized.size, (255, 255, 255))
-                bg.paste(resized.convert("RGBA"), mask=resized.convert("RGBA").split()[-1])
-                resized = bg
-            else:
-                resized = resized.convert("RGB")
-
-        out = BytesIO()
-        resized.save(out, format=fmt.upper())
-        return out.getvalue()
-
-
-def _decode_write_and_downscale(
-    images: List[str],
-    outputs: List[Path],
-    *,
-    force: bool,
-    downscale_max_dim: Optional[int],
-    downscale_suffix: str,
-    output_format: str,
-) -> None:
-    for idx, image_b64 in enumerate(images):
-        if idx >= len(outputs):
-            break
-        out_path = outputs[idx]
-        if out_path.exists() and not force:
-            _die(f"Output already exists: {out_path} (use --force to overwrite)")
-        out_path.parent.mkdir(parents=True, exist_ok=True)
-
-        raw = base64.b64decode(image_b64)
-        out_path.write_bytes(raw)
-        print(f"Wrote {out_path}")
-
-        if downscale_max_dim is None:
-            continue
-
-        derived = _derive_downscale_path(out_path, downscale_suffix)
-        if derived.exists() and not force:
-            _die(f"Output already exists: {derived} (use --force to overwrite)")
-        derived.parent.mkdir(parents=True, exist_ok=True)
-        resized = _downscale_image_bytes(raw, max_dim=downscale_max_dim, output_format=output_format)
-        derived.write_bytes(resized)
-        print(f"Wrote {derived}")
 
 
 def _slugify(value: str) -> str:
@@ -668,22 +499,21 @@ def _merge_non_null(dst: Dict[str, Any], src: Dict[str, Any]) -> Dict[str, Any]:
 def _job_output_paths(
     *,
     out_dir: Path,
-    output_format: str,
     idx: int,
     prompt: str,
     n: int,
     explicit_out: Optional[str],
 ) -> List[Path]:
     out_dir.mkdir(parents=True, exist_ok=True)
-    ext = "." + output_format
+    ext = "." + DEFAULT_OUTPUT_FORMAT
 
     if explicit_out:
         base = Path(explicit_out)
         if base.suffix == "":
             base = base.with_suffix(ext)
-        elif base.suffix.lstrip(".").lower() != output_format:
+        elif base.suffix.lstrip(".").lower() != DEFAULT_OUTPUT_FORMAT:
             _warn(
-                f"Job {idx}: output extension {base.suffix} does not match output-format {output_format}."
+                f"Job {idx}: output extension {base.suffix} does not match default png output."
             )
         base = out_dir / base.name
     else:
@@ -702,15 +532,12 @@ async def _run_generate_batch(args: argparse.Namespace) -> int:
     jobs = _read_jobs_jsonl(args.input)
     out_dir = Path(args.out_dir)
 
-    base_fields = _fields_from_args(args)
     base_payload = {
         "model": args.model,
         "n": args.n,
         "size": args.size,
         "quality": args.quality,
         "background": args.background,
-        "output_format": args.output_format,
-        "output_compression": args.output_compression,
     }
 
     provider = _create_provider(args)
@@ -720,47 +547,28 @@ async def _run_generate_batch(args: argparse.Namespace) -> int:
     if args.dry_run:
         for i, job in enumerate(jobs, start=1):
             prompt = str(job["prompt"]).strip()
-            fields = _merge_non_null(base_fields, job.get("fields", {}))
-            # Allow flat job keys as well (use_case, scene, etc.)
-            fields = _merge_non_null(fields, {k: job.get(k) for k in base_fields.keys()})
-            augmented = _augment_prompt_fields(args.augment, prompt, fields)
 
             job_payload = dict(base_payload)
-            job_payload["prompt"] = augmented
+            job_payload["prompt"] = prompt
             job_payload = _merge_non_null(job_payload, {k: job.get(k) for k in base_payload.keys()})
             job_payload = {k: v for k, v in job_payload.items() if v is not None}
 
             _validate_generate_payload(job_payload)
-            effective_output_format = _normalize_output_format(job_payload.get("output_format"))
-            _validate_transparency(job_payload.get("background"), effective_output_format)
-            _validate_output_compression(
-                job_payload.get("output_compression"),
-                effective_output_format,
-            )
-            job_payload["output_format"] = effective_output_format
-            _validate_backend_payload_options(backend, job_payload)
 
             n = int(job_payload.get("n", 1))
             outputs = _job_output_paths(
                 out_dir=out_dir,
-                output_format=effective_output_format,
                 idx=i,
                 prompt=prompt,
                 n=n,
                 explicit_out=job.get("out"),
             )
-            downscaled = None
-            if args.downscale_max_dim is not None:
-                downscaled = [
-                    str(_derive_downscale_path(p, args.downscale_suffix)) for p in outputs
-                ]
             _print_request(
                 {
                     "backend": backend,
                     "endpoint": _preview_endpoint("generate", backend=backend),
                     "job": i,
                     "outputs": [str(p) for p in outputs],
-                    "outputs_downscaled": downscaled,
                     **_provider_preview(provider),
                     **{
                         **job_payload,
@@ -779,28 +587,15 @@ async def _run_generate_batch(args: argparse.Namespace) -> int:
         prompt = str(job["prompt"]).strip()
         job_label = f"[job {i}/{len(jobs)}]"
 
-        fields = _merge_non_null(base_fields, job.get("fields", {}))
-        fields = _merge_non_null(fields, {k: job.get(k) for k in base_fields.keys()})
-        augmented = _augment_prompt_fields(args.augment, prompt, fields)
-
         payload = dict(base_payload)
-        payload["prompt"] = augmented
+        payload["prompt"] = prompt
         payload = _merge_non_null(payload, {k: job.get(k) for k in base_payload.keys()})
         payload = {k: v for k, v in payload.items() if v is not None}
 
         n = int(payload.get("n", 1))
         _validate_generate_payload(payload)
-        effective_output_format = _normalize_output_format(payload.get("output_format"))
-        _validate_transparency(payload.get("background"), effective_output_format)
-        _validate_output_compression(
-            payload.get("output_compression"),
-            effective_output_format,
-        )
-        payload["output_format"] = effective_output_format
-        _validate_backend_payload_options(backend, payload)
         outputs = _job_output_paths(
             out_dir=out_dir,
-            output_format=effective_output_format,
             idx=i,
             prompt=prompt,
             n=n,
@@ -817,14 +612,7 @@ async def _run_generate_batch(args: argparse.Namespace) -> int:
                 )
                 elapsed = time.time() - started
                 print(f"{job_label} completed in {elapsed:.1f}s", file=sys.stderr)
-            _decode_write_and_downscale(
-                images,
-                outputs,
-                force=args.force,
-                downscale_max_dim=args.downscale_max_dim,
-                downscale_suffix=args.downscale_suffix,
-                output_format=effective_output_format,
-            )
+            _decode_and_write(images, outputs, force=args.force)
             return i, None
         except Exception as exc:
             any_failed = True
@@ -854,7 +642,6 @@ def _generate_batch(args: argparse.Namespace) -> None:
 
 def _generate(args: argparse.Namespace) -> None:
     prompt = _read_prompt(args.prompt, args.prompt_file)
-    prompt = _augment_prompt(args, prompt)
 
     payload = {
         "model": args.model,
@@ -863,24 +650,14 @@ def _generate(args: argparse.Namespace) -> None:
         "size": args.size,
         "quality": args.quality,
         "background": args.background,
-        "output_format": args.output_format,
-        "output_compression": args.output_compression,
     }
     payload = {k: v for k, v in payload.items() if v is not None}
 
-    output_format = _normalize_output_format(args.output_format)
-    _validate_transparency(args.background, output_format)
-    _validate_output_compression(args.output_compression, output_format)
-    payload["output_format"] = output_format
-    output_paths = _build_output_paths(args.out, output_format, args.n, args.out_dir)
-    downscaled = None
-    if args.downscale_max_dim is not None:
-        downscaled = [str(_derive_downscale_path(p, args.downscale_suffix)) for p in output_paths]
+    output_paths = _build_output_paths(args.out, args.n, args.out_dir)
 
     provider = _create_provider(args)
     backend = _provider_backend_name(provider)
     _ensure_provider_config(provider, args.dry_run)
-    _validate_backend_payload_options(backend, payload)
 
     if args.dry_run:
         _print_request(
@@ -888,7 +665,6 @@ def _generate(args: argparse.Namespace) -> None:
                 "backend": backend,
                 "endpoint": _preview_endpoint("generate", backend=backend),
                 "outputs": [str(p) for p in output_paths],
-                "outputs_downscaled": downscaled,
                 **_provider_preview(provider),
                 **{
                     **payload,
@@ -907,19 +683,11 @@ def _generate(args: argparse.Namespace) -> None:
     elapsed = time.time() - started
     print(f"Generation completed in {elapsed:.1f}s.", file=sys.stderr)
 
-    _decode_write_and_downscale(
-        images,
-        output_paths,
-        force=args.force,
-        downscale_max_dim=args.downscale_max_dim,
-        downscale_suffix=args.downscale_suffix,
-        output_format=output_format,
-    )
+    _decode_and_write(images, output_paths, force=args.force)
 
 
 def _edit(args: argparse.Namespace) -> None:
     prompt = _read_prompt(args.prompt, args.prompt_file)
-    prompt = _augment_prompt(args, prompt)
 
     image_paths = _check_image_paths(args.image)
 
@@ -930,26 +698,16 @@ def _edit(args: argparse.Namespace) -> None:
         "size": args.size,
         "quality": args.quality,
         "background": args.background,
-        "output_format": args.output_format,
-        "output_compression": args.output_compression,
         "input_fidelity": args.input_fidelity,
     }
     payload = {k: v for k, v in payload.items() if v is not None}
 
-    output_format = _normalize_output_format(args.output_format)
-    _validate_transparency(args.background, output_format)
-    _validate_output_compression(args.output_compression, output_format)
-    payload["output_format"] = output_format
     _validate_input_fidelity(args.input_fidelity)
-    output_paths = _build_output_paths(args.out, output_format, args.n, args.out_dir)
-    downscaled = None
-    if args.downscale_max_dim is not None:
-        downscaled = [str(_derive_downscale_path(p, args.downscale_suffix)) for p in output_paths]
+    output_paths = _build_output_paths(args.out, args.n, args.out_dir)
 
     provider = _create_provider(args)
     backend = _provider_backend_name(provider)
     _ensure_provider_config(provider, args.dry_run)
-    _validate_backend_payload_options(backend, payload)
 
     if args.dry_run:
         payload_preview = dict(payload)
@@ -959,7 +717,6 @@ def _edit(args: argparse.Namespace) -> None:
                 "backend": backend,
                 "endpoint": _preview_endpoint("edit", backend=backend),
                 "outputs": [str(p) for p in output_paths],
-                "outputs_downscaled": downscaled,
                 **_provider_preview(provider),
                 **{
                     **payload_preview,
@@ -978,14 +735,7 @@ def _edit(args: argparse.Namespace) -> None:
 
     elapsed = time.time() - started
     print(f"Edit completed in {elapsed:.1f}s.", file=sys.stderr)
-    _decode_write_and_downscale(
-        images,
-        output_paths,
-        force=args.force,
-        downscale_max_dim=args.downscale_max_dim,
-        downscale_suffix=args.downscale_suffix,
-        output_format=output_format,
-    )
+    _decode_and_write(images, output_paths, force=args.force)
 
 
 def _add_shared_args(parser: argparse.ArgumentParser) -> None:
@@ -997,32 +747,10 @@ def _add_shared_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--size", default=DEFAULT_SIZE)
     parser.add_argument("--quality", default=DEFAULT_QUALITY)
     parser.add_argument("--background")
-    parser.add_argument("--output-format")
-    parser.add_argument("--output-compression", type=int)
     parser.add_argument("--out", default=DEFAULT_OUTPUT_PATH)
     parser.add_argument("--out-dir")
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
-    parser.add_argument("--augment", dest="augment", action="store_true")
-    parser.add_argument("--no-augment", dest="augment", action="store_false")
-    parser.set_defaults(augment=True)
-
-    # Prompt augmentation hints
-    parser.add_argument("--use-case")
-    parser.add_argument("--scene")
-    parser.add_argument("--subject")
-    parser.add_argument("--style")
-    parser.add_argument("--composition")
-    parser.add_argument("--lighting")
-    parser.add_argument("--palette")
-    parser.add_argument("--materials")
-    parser.add_argument("--text")
-    parser.add_argument("--constraints")
-    parser.add_argument("--negative")
-
-    # Post-processing (optional): generate an additional downscaled copy for fast web loading.
-    parser.add_argument("--downscale-max-dim", type=int)
-    parser.add_argument("--downscale-suffix", default=DEFAULT_DOWNSCALE_SUFFIX)
 
 
 def main() -> int:
@@ -1062,14 +790,11 @@ def main() -> int:
         _die("--max-attempts must be between 1 and 10")
     if args.command == "generate-batch" and not args.out_dir:
         _die("generate-batch requires --out-dir")
-    if getattr(args, "downscale_max_dim", None) is not None and args.downscale_max_dim < 1:
-        _die("--downscale-max-dim must be >= 1")
 
     _validate_model(args.model)
     _validate_size(args.size, args.model)
     _validate_quality(args.quality)
     _validate_background(args.background)
-    _validate_output_compression(args.output_compression)
     _validate_model_specific_options(
         model=args.model,
         background=args.background,

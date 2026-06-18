@@ -81,7 +81,7 @@ Transparent-background requests:
 
 - Built-in mode should use a flat chroma-key background and local removal when appropriate.
 - The local image CLI should also prefer chroma-key generation plus `scripts/remove_chroma_key.py` for simple opaque subjects.
-- `gpt-image-2` does not support `--background transparent`. If the user needs true model-native transparency, ask before switching to `--model gpt-image-1.5 --background transparent --output-format png`.
+- `gpt-image-2` does not support `--background transparent`. If the user needs true model-native transparency, ask before switching to `--model gpt-image-1.5 --background transparent`.
 
 ## Assembly And Doctor
 
