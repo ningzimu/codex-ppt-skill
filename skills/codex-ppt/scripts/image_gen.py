@@ -269,7 +269,18 @@ def _read_prompt(prompt: Optional[str], prompt_file: Optional[str]) -> str:
         path = Path(prompt_file)
         if not path.exists():
             _die(f"Prompt file not found: {path}")
-        return path.read_text(encoding="utf-8").strip()
+        raw = path.read_text(encoding="utf-8").strip()
+        if path.suffix.lower() == ".json" or raw.startswith("{"):
+            try:
+                data = json.loads(raw)
+            except json.JSONDecodeError:
+                return raw
+            if isinstance(data, dict) and isinstance(data.get("prompt"), str):
+                prompt_text = data["prompt"].strip()
+                if prompt_text:
+                    return prompt_text
+                _die(f"Prompt field is empty in JSON prompt file: {path}")
+        return raw
     if prompt:
         return prompt.strip()
     _die("Missing prompt. Use --prompt or --prompt-file.")
@@ -405,6 +416,25 @@ def _validate_generate_payload(payload: Dict[str, Any]) -> None:
     _validate_quality(quality)
     _validate_background(background)
     _validate_model_specific_options(model=model, background=background)
+
+
+def _validate_output_compression(
+    output_compression: Optional[int],
+    output_format: Optional[str] = None,
+) -> None:
+    if output_compression is not None and not (0 <= output_compression <= 100):
+        _die("--output-compression must be between 0 and 100")
+    if output_compression is not None and output_format not in (None, "jpeg", "webp"):
+        _die("--output-compression requires --output-format jpeg or webp")
+
+
+def _validate_backend_payload_options(backend: str, payload: Dict[str, Any]) -> None:
+    if backend != "atlascloud":
+        return
+    if payload.get("moderation") is not None:
+        _die("--moderation is not supported by the AtlasCloud backend")
+    if payload.get("output_compression") is not None:
+        _die("--output-compression is not supported by the AtlasCloud backend")
 
 
 def _build_output_paths(
@@ -682,6 +712,8 @@ async def _run_generate_batch(args: argparse.Namespace) -> int:
         "quality": args.quality,
         "background": args.background,
         "output_format": args.output_format,
+        "output_compression": args.output_compression,
+        "moderation": args.moderation,
     }
 
     provider = _create_provider(args)
@@ -704,7 +736,12 @@ async def _run_generate_batch(args: argparse.Namespace) -> int:
             _validate_generate_payload(job_payload)
             effective_output_format = _normalize_output_format(job_payload.get("output_format"))
             _validate_transparency(job_payload.get("background"), effective_output_format)
+            _validate_output_compression(
+                job_payload.get("output_compression"),
+                effective_output_format,
+            )
             job_payload["output_format"] = effective_output_format
+            _validate_backend_payload_options(backend, job_payload)
 
             n = int(job_payload.get("n", 1))
             outputs = _job_output_paths(
@@ -758,7 +795,12 @@ async def _run_generate_batch(args: argparse.Namespace) -> int:
         _validate_generate_payload(payload)
         effective_output_format = _normalize_output_format(payload.get("output_format"))
         _validate_transparency(payload.get("background"), effective_output_format)
+        _validate_output_compression(
+            payload.get("output_compression"),
+            effective_output_format,
+        )
         payload["output_format"] = effective_output_format
+        _validate_backend_payload_options(backend, payload)
         outputs = _job_output_paths(
             out_dir=out_dir,
             output_format=effective_output_format,
@@ -825,11 +867,14 @@ def _generate(args: argparse.Namespace) -> None:
         "quality": args.quality,
         "background": args.background,
         "output_format": args.output_format,
+        "output_compression": args.output_compression,
+        "moderation": args.moderation,
     }
     payload = {k: v for k, v in payload.items() if v is not None}
 
     output_format = _normalize_output_format(args.output_format)
     _validate_transparency(args.background, output_format)
+    _validate_output_compression(args.output_compression, output_format)
     payload["output_format"] = output_format
     output_paths = _build_output_paths(args.out, output_format, args.n, args.out_dir)
     downscaled = None
@@ -839,6 +884,7 @@ def _generate(args: argparse.Namespace) -> None:
     provider = _create_provider(args)
     backend = _provider_backend_name(provider)
     _ensure_provider_config(provider, args.dry_run)
+    _validate_backend_payload_options(backend, payload)
 
     if args.dry_run:
         _print_request(
@@ -889,12 +935,15 @@ def _edit(args: argparse.Namespace) -> None:
         "quality": args.quality,
         "background": args.background,
         "output_format": args.output_format,
+        "output_compression": args.output_compression,
         "input_fidelity": args.input_fidelity,
+        "moderation": args.moderation,
     }
     payload = {k: v for k, v in payload.items() if v is not None}
 
     output_format = _normalize_output_format(args.output_format)
     _validate_transparency(args.background, output_format)
+    _validate_output_compression(args.output_compression, output_format)
     payload["output_format"] = output_format
     _validate_input_fidelity(args.input_fidelity)
     output_paths = _build_output_paths(args.out, output_format, args.n, args.out_dir)
@@ -905,6 +954,7 @@ def _edit(args: argparse.Namespace) -> None:
     provider = _create_provider(args)
     backend = _provider_backend_name(provider)
     _ensure_provider_config(provider, args.dry_run)
+    _validate_backend_payload_options(backend, payload)
 
     if args.dry_run:
         payload_preview = dict(payload)
@@ -953,6 +1003,8 @@ def _add_shared_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--quality", default=DEFAULT_QUALITY)
     parser.add_argument("--background")
     parser.add_argument("--output-format")
+    parser.add_argument("--output-compression", type=int)
+    parser.add_argument("--moderation")
     parser.add_argument("--out", default=DEFAULT_OUTPUT_PATH)
     parser.add_argument("--out-dir")
     parser.add_argument("--force", action="store_true")
@@ -1023,6 +1075,7 @@ def main() -> int:
     _validate_size(args.size, args.model)
     _validate_quality(args.quality)
     _validate_background(args.background)
+    _validate_output_compression(args.output_compression)
     _validate_model_specific_options(
         model=args.model,
         background=args.background,
