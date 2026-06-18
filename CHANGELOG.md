@@ -4,13 +4,15 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ## Unreleased
 
+## 0.5.1
+
 ### Improvements
 
-- Update the codex-ppt workflow defaults for 2K 16:9 image output, direct sample prompts, mandatory subagent dispatch/refill behavior, and edit-based single-slide revisions.
+- Update the codex-ppt workflow defaults for 2K 16:9 image output, direct sample prompts, mandatory subagent dispatch/refill behavior, and edit-based single-slide revisions. (#64)
 
 ### Fixes
 
-- Add Codex OAuth image generation through local Codex auth using the official images endpoints, with provider-level retries for transient failures.
+- Add Codex OAuth image generation through local Codex auth using the official images endpoints, with provider-level retries for transient failures. (#64)
 
 ## 0.5.0
 
