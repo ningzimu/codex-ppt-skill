@@ -117,18 +117,21 @@ class OpenAICompatibleImageProvider(ImageProvider):
         self._async_client_factory = async_client_factory
         self._async_client: Optional[Any] = None
 
-    def _generate(self, payload: Dict[str, Any]) -> List[str]:
+    def generate(self, payload: Dict[str, Any]) -> List[str]:
         result = self._create_client().images.generate(**payload)
         return [item.b64_json for item in result.data]
 
-    def _edit(
+    def edit(
         self,
         payload: Dict[str, Any],
         image_paths: List[Path],
+        mask_path: Optional[Path],
     ) -> List[str]:
-        with _open_files(image_paths) as image_files:
+        with _open_files(image_paths) as image_files, _open_mask(mask_path) as mask_file:
             request = dict(payload)
             request["image"] = image_files if len(image_files) > 1 else image_files[0]
+            if mask_file is not None:
+                request["mask"] = mask_file
             result = self._create_client().images.edit(**request)
         return [item.b64_json for item in result.data]
 
@@ -183,6 +186,38 @@ class OpenAICompatibleImageProvider(ImageProvider):
 
 def _open_files(paths: List[Path]):
     return _FileBundle(paths)
+
+
+def _open_mask(mask_path: Optional[Path]):
+    if mask_path is None:
+        return _NullContext()
+    return _SingleFile(mask_path)
+
+
+class _NullContext:
+    def __enter__(self):
+        return None
+
+    def __exit__(self, exc_type, exc, tb):
+        return False
+
+
+class _SingleFile:
+    def __init__(self, path: Path):
+        self._path = path
+        self._handle = None
+
+    def __enter__(self):
+        self._handle = self._path.open("rb")
+        return self._handle
+
+    def __exit__(self, exc_type, exc, tb):
+        if self._handle:
+            try:
+                self._handle.close()
+            except Exception:
+                pass
+        return False
 
 
 class _FileBundle:

@@ -21,19 +21,10 @@ import urllib.parse
 import urllib.request
 import venv
 
-from image_providers.codex_oauth import codex_auth_file, load_codex_access_token
 
 DEFAULT_RUNTIME_HOME = "~/.codex-ppt-skill"
 DEFAULT_MODEL = "gpt-image-2"
-DEFAULT_IMAGE_BACKEND = "auto"
-ENV_FIELDS = (
-    "OPENAI_API_KEY",
-    "OPENAI_BASE_URL",
-    "CODEX_PPT_IMAGE_MODEL",
-    "CODEX_PPT_IMAGE_BACKEND",
-    "CODEX_IMAGES_BASE_URL",
-)
-VALID_IMAGE_BACKENDS = ("auto", "codex-oauth", "atlascloud", "openai-compatible")
+ENV_FIELDS = ("OPENAI_API_KEY", "OPENAI_BASE_URL", "CODEX_PPT_IMAGE_MODEL")
 
 
 def _runtime_home() -> Path:
@@ -162,8 +153,6 @@ def _config(args: argparse.Namespace) -> int:
         values["OPENAI_BASE_URL"] = args.base_url.strip()
     if args.model is not None:
         values["CODEX_PPT_IMAGE_MODEL"] = args.model.strip()
-    if args.backend is not None:
-        values["CODEX_PPT_IMAGE_BACKEND"] = args.backend.strip()
 
     if args.clear_base_url:
         values.pop("OPENAI_BASE_URL", None)
@@ -239,15 +228,10 @@ def _doctor(args: argparse.Namespace) -> int:
     api_key = values.get("OPENAI_API_KEY", "")
     base_url = values.get("OPENAI_BASE_URL", "https://api.openai.com/v1")
     model = values.get("CODEX_PPT_IMAGE_MODEL", DEFAULT_MODEL)
-    backend = values.get("CODEX_PPT_IMAGE_BACKEND", DEFAULT_IMAGE_BACKEND)
-    auth_file = codex_auth_file()
-    codex_ready = load_codex_access_token(auth_file) is not None
 
     print(f"OPENAI_API_KEY={'set (' + _mask_secret(api_key) + ')' if api_key else '<unset>'}")
     print(f"OPENAI_BASE_URL={base_url}")
     print(f"CODEX_PPT_IMAGE_MODEL={model}")
-    print(f"CODEX_PPT_IMAGE_BACKEND={backend}")
-    print(f"CODEX_AUTH_FILE={auth_file} ({'ready' if codex_ready else 'missing or invalid'})")
 
     if "gpt-image-" not in model:
         print("model check: warning, model name should contain 'gpt-image-'")
@@ -256,12 +240,7 @@ def _doctor(args: argparse.Namespace) -> int:
         print("model check: ok")
 
     if args.check_api:
-        if backend in {"auto", "codex-oauth"} and codex_ready:
-            print("api check: Codex OAuth provider detected; skipping /models probe")
-        elif backend == "codex-oauth":
-            print("api check: failed, Codex OAuth auth is missing or invalid")
-            ok = False
-        elif not api_key:
+        if not api_key:
             print("api check: skipped, OPENAI_API_KEY is unset")
             ok = False
         elif _is_atlascloud_base_url(base_url):
@@ -285,7 +264,6 @@ def _build_parser() -> argparse.ArgumentParser:
     config.add_argument("--base-url")
     config.add_argument("--clear-base-url", action="store_true")
     config.add_argument("--model")
-    config.add_argument("--backend", choices=VALID_IMAGE_BACKENDS)
     config.set_defaults(func=_config)
 
     doctor = subparsers.add_parser("doctor", help="Check runtime and optional API access")

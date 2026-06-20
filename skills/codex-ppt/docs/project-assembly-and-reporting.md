@@ -42,7 +42,7 @@ Before assembling the PPT, inspect every slide image. Check:
 - No page number appears unless the user requested one.
 - Important elements do not overlap.
 
-If a slide has severe text or layout issues, regenerate it with a more constrained prompt. If a slide is mostly correct but needs revision, use the selected backend's edit capability when available. In local CLI mode, use `scripts/image_gen.py edit --backend auto --image {slide_path} --prompt ... --out {new_slide_path}` and replace the final slide only after validating the edited output.
+If a slide has severe text or layout issues, regenerate it with a more constrained prompt. If a slide is mostly correct but has a localized issue, use the selected backend's edit capability when available. In CLI/API fallback mode, use `scripts/image_gen.py edit --image {slide_path} --prompt ... --out {new_slide_path}` and replace the final slide only after validating the edited output.
 
 ## Speaker Notes
 
@@ -123,7 +123,7 @@ Use headings that the assembly script can map back to slide numbers:
 
 ## Assembly
 
-Before running `scripts/assemble_ppt.py` or the local image CLI, make sure the shared runtime exists. If `~/.codex-ppt-skill/.venv/bin/python` is missing, or if importing script dependencies fails, create or refresh the environment:
+Before running `scripts/assemble_ppt.py` or the CLI/API fallback scripts, make sure the shared runtime exists. If `~/.codex-ppt-skill/.venv/bin/python` is missing, or if importing script dependencies fails, create or refresh the environment:
 
 ```bash
 python3 {skill_root}/scripts/codex_ppt_runtime.py bootstrap
@@ -147,7 +147,7 @@ Important:
 - If `{base_dir}/{deck_name}/speech.md` exists and uses `Slide N` headings, the script writes those notes into the corresponding PPT speaker notes.
 - The script writes `{base_dir}/{deck_name}/{deck_name}.pptx`.
 
-`assemble_ppt.py` supports `16:9` and `4:3`. Use `16:9` unless the user requests otherwise. `image_gen.py` loads `~/.codex-ppt-skill/.env` automatically for image backend configuration and prefers Codex OAuth when local Codex auth is available. Run `python3 {skill_root}/scripts/codex_ppt_runtime.py doctor --check-api` when troubleshooting backend access.
+`assemble_ppt.py` supports `16:9` and `4:3`. Use `16:9` unless the user requests otherwise. `image_gen.py` loads `~/.codex-ppt-skill/.env` automatically for `OPENAI_API_KEY`, `OPENAI_BASE_URL`, and `CODEX_PPT_IMAGE_MODEL`. Run `python3 {skill_root}/scripts/codex_ppt_runtime.py doctor --check-api` when troubleshooting API access.
 
 ## Final Report
 

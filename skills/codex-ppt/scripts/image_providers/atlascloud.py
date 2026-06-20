@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+import asyncio
 import base64
 import json
 import mimetypes
 from pathlib import Path
+import sys
 import time
 from typing import Any, Callable, Dict, List, Optional
 from urllib.parse import urlparse
@@ -37,18 +39,22 @@ class AtlasCloudImageProvider(ImageProvider):
         self.poll_interval = poll_interval
         self.max_polls = max_polls
 
-    def _generate(self, payload: Dict[str, Any]) -> List[str]:
+    def generate(self, payload: Dict[str, Any]) -> List[str]:
         count = int(payload.get("n", 1))
         outputs: List[str] = []
         for _ in range(count):
             outputs.extend(self._submit_and_collect(payload, operation="text-to-image"))
         return outputs
 
-    def _edit(
+    def edit(
         self,
         payload: Dict[str, Any],
         image_paths: List[Path],
+        mask_path: Optional[Path],
     ) -> List[str]:
+        if mask_path is not None:
+            raise ValueError("AtlasCloud image edit does not support --mask.")
+
         count = int(payload.get("n", 1))
         edit_payload = dict(payload)
         edit_payload["images"] = [_image_to_data_url(path) for path in image_paths]
@@ -56,6 +62,29 @@ class AtlasCloudImageProvider(ImageProvider):
         for _ in range(count):
             outputs.extend(self._submit_and_collect(edit_payload, operation="edit"))
         return outputs
+
+    async def generate_batch(
+        self,
+        payload: Dict[str, Any],
+        *,
+        attempts: int,
+        job_label: str,
+    ) -> List[str]:
+        last_exc: Optional[Exception] = None
+        for attempt in range(1, attempts + 1):
+            try:
+                return await asyncio.to_thread(self.generate, payload)
+            except Exception as exc:
+                last_exc = exc
+                if attempt == attempts:
+                    raise
+                sleep_s = min(60.0, 2.0**attempt)
+                print(
+                    f"{job_label} attempt {attempt}/{attempts} failed ({exc.__class__.__name__}); retrying in {sleep_s:.1f}s",
+                    file=sys.stderr,
+                )
+                await asyncio.sleep(sleep_s)
+        raise last_exc or RuntimeError("unknown error")
 
     def _submit_and_collect(self, payload: Dict[str, Any], *, operation: str) -> List[str]:
         request_payload = self._atlas_payload(payload, operation=operation)
@@ -88,6 +117,10 @@ class AtlasCloudImageProvider(ImageProvider):
         raise TimeoutError(f"AtlasCloud prediction timed out: {last}")
 
     def _atlas_payload(self, payload: Dict[str, Any], *, operation: str) -> Dict[str, Any]:
+        output_format = payload.get("output_format")
+        if output_format not in (None, "png", "jpeg"):
+            raise ValueError("AtlasCloud supports output_format png or jpeg.")
+
         body: Dict[str, Any] = {
             "model": atlascloud_model_for_operation(
                 str(payload.get("model", "gpt-image-2")),
@@ -97,7 +130,7 @@ class AtlasCloudImageProvider(ImageProvider):
             "enable_sync_mode": False,
             "enable_base64_output": True,
         }
-        for key in ("size", "quality"):
+        for key in ("size", "quality", "output_format"):
             value = payload.get(key)
             if value is not None and value != "auto":
                 body[key] = value

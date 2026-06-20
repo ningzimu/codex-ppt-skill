@@ -1,49 +1,33 @@
 # Image Model Configuration
 
-Use this reference only when the local image CLI reports missing config or the runtime config must be changed.
+Use this reference only when the local API/CLI fallback is needed and the runtime config is missing or must be changed.
 
-Do not manually parse `.env`. The local image CLI loads the shared config automatically. Run the image command first, then use this document only if the selected backend reports missing or invalid configuration.
+Do not manually parse `.env`. The fallback CLI loads the shared config automatically. Run the fallback command first, then use this document only if the CLI reports missing or invalid configuration.
 
 Ask the user to configure or update settings only when:
 
-- The selected AtlasCloud or OpenAI-compatible provider reports missing `OPENAI_API_KEY`.
-- The user explicitly wants to change API key, base URL, backend, or model.
+- The fallback CLI reports missing `OPENAI_API_KEY`.
+- The user explicitly wants to change API key, base URL, or model.
 - A real API call fails with authentication, permission, base URL, or model-not-found errors.
 
 ## When Configuration Is Needed
 
-Configure image API access only for AtlasCloud or OpenAI-compatible image generation.
+Configure image API access only for API/CLI fallback image generation.
 
 Typical cases:
 
-- The user explicitly chooses AtlasCloud or another third-party API.
-- The skill is being used from Claude Code, OpenClaw, Hermes Agent, or another agent without Codex OAuth auth and without another local image backend.
+- Codex is using a third-party API or OpenAI-compatible proxy for image generation.
+- The skill is being used from Claude Code, OpenClaw, Hermes Agent, or another agent without Codex's built-in image tool.
 
-If Codex is being used through a GPT subscription and `~/.codex/auth.json` or `CODEX_AUTH_FILE` is available, the local CLI can use `--backend auto` / Codex OAuth and should not ask the user to configure `OPENAI_API_KEY`.
+If Codex is being used through a GPT subscription and the built-in image tool is available, do not ask the user to configure `gpt-image-2`.
 
 ## Required And Optional Values
 
-- `OPENAI_API_KEY` is required only for AtlasCloud and OpenAI-compatible providers.
-- `OPENAI_BASE_URL` is optional. When it is unset, the CLI uses the official OpenAI API for `openai-compatible`. When it is set, the CLI uses the configured third-party provider base URL.
+- `OPENAI_API_KEY` is required for real API/CLI fallback calls.
+- `OPENAI_BASE_URL` is optional. When it is unset, the CLI uses the official OpenAI API. When it is set, the CLI uses the configured third-party provider base URL.
 - `CODEX_PPT_IMAGE_MODEL` is optional. The default is `gpt-image-2`. Use a custom value only when the provider requires one.
-- `CODEX_PPT_IMAGE_BACKEND` is optional. The default is `auto`, which prefers Codex OAuth when available.
 
 Configure provided API settings with `scripts/codex_ppt_runtime.py config --api-key`. The config command writes `~/.codex-ppt-skill/.env`.
-
-## Codex OAuth Example
-
-No `OPENAI_API_KEY` is required when local Codex auth is available:
-
-```bash
-~/.codex-ppt-skill/.venv/bin/python {skill_root}/scripts/image_gen.py generate \
-  --backend auto \
-  --prompt "{sample_prompt}" \
-  --out {base_dir}/{deck_name}/origin_image/slide_01.png
-```
-
-The Codex OAuth backend reuses local Codex auth and calls the official Codex images endpoints, `/backend-api/codex/images/generations` and `/backend-api/codex/images/edits`.
-
-Use `--backend codex-oauth` only when you want to require this route and fail if Codex auth is missing.
 
 ## Official OpenAI Example
 
@@ -55,7 +39,7 @@ python3 {skill_root}/scripts/codex_ppt_runtime.py config \
 
 ## OpenAI-Compatible Provider Example
 
-Use this shape for providers that implement the OpenAI Images API paths used by the local image CLI.
+Use this shape for providers that implement the OpenAI Images API paths used by the fallback CLI.
 
 ```bash
 python3 {skill_root}/scripts/codex_ppt_runtime.py config \
@@ -70,10 +54,9 @@ This produces the same effective runtime config as:
 OPENAI_API_KEY=your-provider-api-key
 OPENAI_BASE_URL=https://xxxx.example.com/v1
 CODEX_PPT_IMAGE_MODEL=gpt-image-2
-CODEX_PPT_IMAGE_BACKEND=openai-compatible
 ```
 
-For OpenAI-compatible providers, `OPENAI_BASE_URL` should normally end at the provider's `/v1` root. Do not set it to `/images/generations`, `/images/edits`, or another terminal endpoint. The local image CLI appends the image-generation or image-edit path through the OpenAI SDK.
+For OpenAI-compatible providers, `OPENAI_BASE_URL` should normally end at the provider's `/v1` root. Do not set it to `/images/generations`, `/images/edits`, or another terminal endpoint. The fallback CLI appends the image-generation or image-edit path through the OpenAI SDK.
 
 Use the provider's model name only when the provider documents a custom name. Otherwise prefer `gpt-image-2`.
 
@@ -85,8 +68,7 @@ For AtlasCloud, set `--model` to the base model name. The CLI chooses the matchi
 python3 {skill_root}/scripts/codex_ppt_runtime.py config \
   --api-key "your-atlascloud-api-key" \
   --base-url "https://api.atlascloud.ai/api/v1/model" \
-  --model openai/gpt-image-2 \
-  --backend atlascloud
+  --model openai/gpt-image-2
 ```
 
 ## Runtime Config

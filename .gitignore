@@ -40,7 +40,6 @@ ENV/
 .env
 
 # Generated files
-/docs/
 *.png
 *.jpg
 *.jpeg

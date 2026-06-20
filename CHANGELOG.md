@@ -6,8 +6,7 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ### Fixes
 
-- Teach `image_gen.py --prompt-file` to read prepared JSON slide jobs from their `prompt` field. (#66)
-- Remove unused image CLI prompt augmentation and downscale options so prompts are sent exactly as provided. (#66)
+- Revert the codex-ppt skill contents to the v0.5.0 release state.
 
 ## 0.5.1
 
