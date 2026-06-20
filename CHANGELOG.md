@@ -6,7 +6,7 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ### Fixes
 
-- Revert the codex-ppt skill contents to the v0.5.0 release state.
+- Revert the codex-ppt skill contents to the v0.5.0 release state. (#67)
 
 ## 0.5.1
 
