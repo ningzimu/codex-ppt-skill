@@ -2,7 +2,7 @@
 
 [![中文](https://img.shields.io/badge/docs-中文-red)](README.md) [![ClawHub](https://img.shields.io/badge/ClawHub-codex--ppt-cd3b35)](https://clawhub.ai/ningzimu/codex-ppt) [![GitHub stars](https://img.shields.io/github/stars/ningzimu/codex-ppt-skill?style=flat&logo=github&label=stars)](https://github.com/ningzimu/codex-ppt-skill/stargazers) [![GitHub forks](https://img.shields.io/github/forks/ningzimu/codex-ppt-skill?style=flat&logo=github&label=forks)](https://github.com/ningzimu/codex-ppt-skill/forks)
 
-A Codex skill for generating PowerPoint decks. It can also be used in Claude Code, OpenClaw, Hermes Agent, and other agents that support `SKILL.md`; these non-Codex environments usually require configuring `gpt-image-2`, a third-party image API, or an OpenAI-compatible image generation endpoint. It turns articles, reports, papers, course notes, and other source materials into image-based presentations: first plan the outline and visual style, then generate each full-slide image, and finally assemble the images into a `.pptx` file with a local script.
+A Codex skill for generating PowerPoint decks. It can also be used in Claude Code, OpenClaw, Autohand Code, Hermes Agent, and other agents that support `SKILL.md`; these non-Codex environments usually require configuring `gpt-image-2`, a third-party image API, or an OpenAI-compatible image generation endpoint. It turns articles, reports, papers, course notes, and other source materials into image-based presentations: first plan the outline and visual style, then generate each full-slide image, and finally assemble the images into a `.pptx` file with a local script.
 
 ## Sponsor
 
@@ -35,7 +35,7 @@ For a basic introduction to skill design and usage, see [good-skill-design.pptx]
 
 ## Features
 
-- Works across multiple agents: supports Codex, Claude Code, OpenClaw, Hermes Agent, and other `SKILL.md`-based environments; Codex is the recommended environment because it can use the built-in image generation and image editing tools first.
+- Works across multiple agents: supports Codex, Claude Code, OpenClaw, Autohand Code, Hermes Agent, and other `SKILL.md`-based environments; Codex is the recommended environment because it can use the built-in image generation and image editing tools first.
 - Supports third-party image providers: works with OpenAI-compatible endpoints, AtlasCloud, `base URL`, and custom model names, so API/CLI fallback can use `gpt-image-2` or compatible image models.
 - Stable staged workflow: confirms the outline, slide count, visual style, image backend, and sample slide before full-deck generation, reducing drift and rework when generating a complete PPT.
 - Guided instead of one-shot: the skill asks you to confirm `outline.md`, per-slide key points, style direction, and sample-slide quality before continuing.
@@ -167,6 +167,28 @@ Common target directories are `~/.claude/skills/codex-ppt` for Claude Code and `
 
 If you are developing this repository locally, you can use a symlink instead of copying so changes are reflected immediately.
 
+### Autohand Code
+
+Autohand Code can read `SKILL.md` skills. To install manually at user level:
+
+```bash
+git clone https://github.com/ningzimu/codex-ppt-skill.git
+mkdir -p ~/.autohand/skills
+cp -R codex-ppt-skill/skills/codex-ppt ~/.autohand/skills/
+```
+
+To install into the current project:
+
+```bash
+git clone https://github.com/ningzimu/codex-ppt-skill.git
+mkdir -p .autohand/skills
+cp -R codex-ppt-skill/skills/codex-ppt .autohand/skills/
+```
+
+If this skill is later published to an Autohand Skills index, users can install the cataloged skill with `autohand --skill-install codex-ppt`, or add `--project` to install it into the current project.
+
+When using Autohand Code, confirm that the current environment has an image generation backend available, or configure `gpt-image-2` / an OpenAI-compatible endpoint as needed, just like other non-Codex environments.
+
 ## Image Model Configuration
 
 > [!TIP]
@@ -179,7 +201,7 @@ Asking for a specific resolution, higher quality, or edits to one slide does not
 
 ## Usage
 
-Ask Codex, Claude Code, OpenClaw, or Hermes Agent and explicitly specify the `codex-ppt` skill, for example:
+Ask Codex, Claude Code, OpenClaw, Autohand Code, or Hermes Agent and explicitly specify the `codex-ppt` skill, for example:
 
 ```text
 Use the codex-ppt skill to turn /path/to/article.md into a roughly 10-slide PPT.

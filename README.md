@@ -2,7 +2,7 @@
 
 [![English](https://img.shields.io/badge/docs-English-blue)](README_en.md) [![ClawHub](https://img.shields.io/badge/ClawHub-codex--ppt-cd3b35)](https://clawhub.ai/ningzimu/codex-ppt) [![GitHub stars](https://img.shields.io/github/stars/ningzimu/codex-ppt-skill?style=flat&logo=github&label=stars)](https://github.com/ningzimu/codex-ppt-skill/stargazers) [![GitHub forks](https://img.shields.io/github/forks/ningzimu/codex-ppt-skill?style=flat&logo=github&label=forks)](https://github.com/ningzimu/codex-ppt-skill/forks)
 
-一个面向 Codex 的 PPT 生成 skill，也可在 Claude Code、OpenClaw、Hermes Agent 等支持 `SKILL.md` 的 agent 中使用；在这些非 Codex 环境中通常需要配置 `gpt-image-2`、第三方生图 API 或 OpenAI 兼容格式的生图接口。它把文章、报告、论文、课程笔记等内容转换成“整页图片式”的演示文稿：先规划大纲和视觉风格，再生成每页幻灯片图片，最后用本地脚本组装为 `.pptx`。
+一个面向 Codex 的 PPT 生成 skill，也可在 Claude Code、OpenClaw、Autohand Code、Hermes Agent 等支持 `SKILL.md` 的 agent 中使用；在这些非 Codex 环境中通常需要配置 `gpt-image-2`、第三方生图 API 或 OpenAI 兼容格式的生图接口。它把文章、报告、论文、课程笔记等内容转换成“整页图片式”的演示文稿：先规划大纲和视觉风格，再生成每页幻灯片图片，最后用本地脚本组装为 `.pptx`。
 
 ## 赞助
 
@@ -35,7 +35,7 @@
 
 ## 特点
 
-- 多 agent 可用：支持 Codex、Claude Code、OpenClaw、Hermes Agent 等支持 `SKILL.md` 的环境；最推荐在 Codex 中使用，优先走内置生图和编辑图能力。
+- 多 agent 可用：支持 Codex、Claude Code、OpenClaw、Autohand Code、Hermes Agent 等支持 `SKILL.md` 的环境；最推荐在 Codex 中使用，优先走内置生图和编辑图能力。
 - 第三方生图供应商接入：支持 OpenAI 兼容接口、AtlasCloud、`base URL` 和自定义模型名配置，方便通过 API/CLI fallback 使用 `gpt-image-2` 或兼容模型。
 - 稳定的阶段化流程：先确认大纲、页数、视觉风格、生图后端和样张，再进入整套生成，降低一次生成完整 PPT 时的返工和偏航。
 - 不是无脑生成：会先引导你确认 `outline.md`、每页要点、风格方向和样张效果，再按确认后的方案继续。
@@ -167,6 +167,28 @@ npx -y skills@latest add ningzimu/codex-ppt-skill \
 
 如果你是在本地开发这个仓库，也可以用软链接替代复制，方便实时调试修改。
 
+### Autohand Code
+
+Autohand Code 可以读取 `SKILL.md` 形式的 skill。手动安装到用户级目录：
+
+```bash
+git clone https://github.com/ningzimu/codex-ppt-skill.git
+mkdir -p ~/.autohand/skills
+cp -R codex-ppt-skill/skills/codex-ppt ~/.autohand/skills/
+```
+
+安装到当前项目目录：
+
+```bash
+git clone https://github.com/ningzimu/codex-ppt-skill.git
+mkdir -p .autohand/skills
+cp -R codex-ppt-skill/skills/codex-ppt .autohand/skills/
+```
+
+如果这个 skill 后续发布到 Autohand Skills 索引，也可以用 `autohand --skill-install codex-ppt` 安装到用户级目录，或加 `--project` 安装到当前项目。
+
+在 Autohand Code 中使用时，和其他非 Codex 环境一样，请确认当前环境有可用的图片生成后端，或按需配置 `gpt-image-2` / OpenAI 兼容接口。
+
 ## 生图模型配置
 
 > [!TIP]
@@ -179,7 +201,7 @@ npx -y skills@latest add ningzimu/codex-ppt-skill \
 
 ## 使用方式
 
-在 Codex、Claude Code、OpenClaw 或 Hermes Agent 中明确指定使用 `codex-ppt` skill，例如：
+在 Codex、Claude Code、OpenClaw、Autohand Code 或 Hermes Agent 中明确指定使用 `codex-ppt` skill，例如：
 
 ```text
 请使用 codex-ppt skill 把 /path/to/article.md 做成 10 页左右的 PPT。
