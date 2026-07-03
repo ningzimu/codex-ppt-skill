@@ -4,6 +4,10 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ## Unreleased
 
+### Documentation
+
+- Add Autohand Code install and usage notes. (#73)
+
 ## 0.5.2
 
 ### Fixes
