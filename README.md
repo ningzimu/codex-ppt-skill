@@ -219,6 +219,8 @@ skill 会按以下流程执行：
 
 <img src="assets/codex-ppt-community-qr.png" alt="Codex PPT Skill 交流群二维码" width="220">
 
+Telegram：[CodexPPT](https://t.me/CodexPPT)
+
 ## 我的其他项目
 
 - [image-to-editable-ppt-skill](https://github.com/ningzimu/image-to-editable-ppt-skill)：把幻灯片截图、PDF 页面或图片版 PPTX 重建为可编辑 PowerPoint，适合在 `codex-ppt` 生成整页图片后继续做可编辑化。

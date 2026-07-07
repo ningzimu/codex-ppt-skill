@@ -219,6 +219,8 @@ Scan the QR code to join the Skill community group, share usage experience, repo
 
 <img src="assets/codex-ppt-community-qr.png" alt="Codex PPT Skill community QR code" width="220">
 
+Telegram: [CodexPPT](https://t.me/CodexPPT)
+
 ## More Projects
 
 - [image-to-editable-ppt-skill](https://github.com/ningzimu/image-to-editable-ppt-skill): Rebuild slide screenshots, PDF pages, or image-based PPTX files into editable PowerPoint decks, useful after `codex-ppt` generates image-based slides.
