@@ -4,9 +4,13 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ## Unreleased
 
+### Improvements
+
+- Simplify generated speaker notes to include only the spoken talk track for each slide. (#76)
+
 ### Documentation
 
-- Add a GitHub Pages documentation site for codex-ppt usage notes.
+- Add a GitHub Pages documentation site for codex-ppt usage notes. (#76)
 
 ## 0.5.2
 
