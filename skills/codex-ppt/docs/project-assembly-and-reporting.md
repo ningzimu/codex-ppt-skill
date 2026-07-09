@@ -50,12 +50,7 @@ Make sure `outline.md` reflects the final confirmed deck outline. Do not recreat
 
 Create `speech.md` as presenter notes that a speaker can use directly. Do not write a brief summary of visible slide text. Write in the presentation language; for Chinese decks, speaker notes should be in Chinese.
 
-For each slide, keep the spoken script and presenter cues separate:
-
-- The talk track appears directly under the slide heading, without an extra label. It is the script the presenter can read or closely follow. It should connect the slide to the deck's main story, explain the point the audience should take away, and include a natural transition at the end when useful.
-- `注意点：` is not meant to be read aloud. Use it for emphasis, pacing, visual reading order, caveats, examples, source reminders, or audience interaction prompts.
-
-Separate these two sections with a standalone `---` line, so the presenter can quickly distinguish the readable script from the cue list.
+For each slide, write only the spoken talk track directly under the slide heading, without an extra label. It is the script the presenter can read or closely follow. It should connect the slide to the deck's main story, explain the point the audience should take away, and include a natural transition at the end when useful.
 
 Before writing the slide notes, choose a delivery style based on the deck content, audience, and purpose. The delivery style is not a label added after writing; it should shape the actual talk track, including how direct the claim is, how much background is explained, which examples are used, how quickly the speaker moves, and how transitions are phrased.
 
@@ -89,13 +84,6 @@ Write the talk track from the presenter's point of view, facing the audience. Av
 - Prefer concrete explanations, examples, and audience-oriented transitions over broad filler like "本页主要介绍了..." or "综上所述...".
 - Do not mention that the notes were generated, inferred, or prepared by an AI.
 
-Use `注意点：` for short cues such as:
-
-- `重点：` the one or two ideas the presenter must emphasize.
-- `画面引导：` where the audience should look first, second, and last.
-- `节奏：` where to slow down, pause, or ask a question.
-- `补充：` caveats, examples, source details, or context that should stay out of the spoken script unless needed.
-
 Use headings that the assembly script can map back to slide numbers:
 
 ```markdown
@@ -103,22 +91,9 @@ Use headings that the assembly script can map back to slide numbers:
 
 {Presenter talk track for slide 1. For Chinese decks, write this in Chinese. Include an optional transition sentence at the end when useful.}
 
----
-
-注意点：
-- 重点：{Key point the presenter should emphasize}
-- 画面引导：{How to guide the audience through the visual}
-- 节奏：{Where to slow down, pause, or ask a question}
-- 补充：{Caveat, example, source detail, or audience takeaway}
-
 ## Slide 2: {Title}
 
 {Presenter talk track for slide 2}
-
----
-
-注意点：
-- 重点：{Key point for slide 2}
 ```
 
 ## Assembly

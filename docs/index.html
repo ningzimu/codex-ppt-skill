@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Codex PPT Skill 文档</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="description" content="Codex PPT Skill usage documentation">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@latest/lib/themes/vue.css">
+  <style>
+    :root {
+      --theme-color: #111827;
+      --content-max-width: 920px;
+      --sidebar-width: 300px;
+      --page-bg: #fbfbf8;
+      --sidebar-bg: #ffffff;
+      --text-color: #1f2937;
+      --heading-color: #111827;
+      --border-color: #d9d6cc;
+      --inline-code-bg: #f1f0ea;
+      --inline-code-color: #111827;
+      --pre-bg: #1f2937;
+      --pre-color: #f9fafb;
+    }
+
+    body {
+      color: var(--text-color);
+      background: var(--page-bg);
+    }
+
+    .sidebar {
+      border-right: 1px solid var(--border-color);
+      background: var(--sidebar-bg);
+    }
+
+    .sidebar > h1 {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .sidebar ul li a {
+      color: var(--text-color);
+      font-size: 14px;
+    }
+
+    .sidebar ul li::before {
+      display: none;
+    }
+
+    .sidebar ul li p {
+      margin: 0;
+    }
+
+    .sidebar ul ul {
+      padding-left: 18px;
+    }
+
+    .sidebar ul li.active > a {
+      border-right: 3px solid var(--theme-color);
+      color: var(--theme-color);
+      font-weight: 600;
+    }
+
+    .markdown-section {
+      max-width: var(--content-max-width);
+      padding: 36px 48px;
+    }
+
+    .markdown-section h1,
+    .markdown-section h2,
+    .markdown-section h3 {
+      color: var(--heading-color);
+      letter-spacing: 0;
+    }
+
+    .markdown-section h1 {
+      margin-bottom: 24px;
+      font-size: 34px;
+      line-height: 1.25;
+    }
+
+    .markdown-section h2 {
+      margin-top: 40px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 24px;
+    }
+
+    .markdown-section p,
+    .markdown-section li {
+      line-height: 1.78;
+    }
+
+    .markdown-section code {
+      border-radius: 4px;
+      background: var(--inline-code-bg);
+      color: var(--inline-code-color);
+    }
+
+    .markdown-section pre {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background: var(--pre-bg);
+    }
+
+    .markdown-section pre > code {
+      background: transparent;
+      color: var(--pre-color);
+    }
+
+    @media (max-width: 768px) {
+      .markdown-section {
+        padding: 24px 20px;
+      }
+
+      .markdown-section h1 {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+    window.$docsify = {
+      name: 'Codex PPT Skill',
+      repo: 'https://github.com/ningzimu/codex-ppt-skill',
+      loadSidebar: true,
+      auto2top: true,
+      subMaxLevel: 2,
+      alias: {
+        '/.*/_sidebar.md': '/_sidebar.md'
+      },
+      pagination: {
+        previousText: '上一章',
+        nextText: '下一章',
+        crossChapter: true,
+        crossChapterText: true
+      },
+      search: {
+        placeholder: '搜索',
+        noData: '找不到结果'
+      }
+    };
+  </script>
+  <script src="//cdn.jsdelivr.net/npm/docsify@latest/lib/docsify.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify@latest/lib/plugins/search.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-pagination@latest/dist/docsify-pagination.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code"></script>
+</body>
+</html>

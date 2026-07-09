@@ -4,6 +4,10 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ## Unreleased
 
+### Documentation
+
+- Add a GitHub Pages documentation site for codex-ppt usage notes.
+
 ## 0.5.2
 
 ### Fixes
