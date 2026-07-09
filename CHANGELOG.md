@@ -4,6 +4,8 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ## Unreleased
 
+## 0.5.3
+
 ### Improvements
 
 - Simplify generated speaker notes to include only the spoken talk track for each slide. (#76)
