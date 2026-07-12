@@ -4,6 +4,10 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ## Unreleased
 
+### Features
+
+- Add a reusable Party-and-Government Red style reference and preview for formal public-sector presentations.
+
 ## 0.5.3
 
 ### Improvements
