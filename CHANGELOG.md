@@ -7,6 +7,7 @@ Release notes are generated from this file. Keep changelog entries in English.
 ### Features
 
 - Add a reusable Party-and-Government Red style reference and preview for formal public-sector presentations. (#79)
+- Add a reusable Teaching Courseware style reference and preview for academic and technical learning presentations. (#79)
 
 ## 0.5.3
 

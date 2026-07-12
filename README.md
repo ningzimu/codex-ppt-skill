@@ -40,7 +40,7 @@
 - 稳定的阶段化流程：先确认大纲、页数、视觉风格、生图后端和样张，再进入整套生成，降低一次生成完整 PPT 时的返工和偏航。
 - 不是无脑生成：会先引导你确认 `outline.md`、每页要点、风格方向和样张效果，再按确认后的方案继续。
 - 低门槛输入：文章、报告、论文、课程笔记、Markdown、大纲、PDF、Word 等材料都可以作为起点。
-- 内置 11 种 PPT 风格参考：包括清爽专业、科研答辩、党政红、电子墨水杂志、手绘技术解释、仪表盘、麦肯锡等；不会写提示词也可以先从内置风格开始，尤其推荐手绘技术解释风。
+- 内置 12 种 PPT 风格参考：包括清爽专业、科研答辩、党政红、教学课件、电子墨水杂志、手绘技术解释、仪表盘、麦肯锡等；不会写提示词也可以先从内置风格开始，尤其推荐手绘技术解释风。
 - 支持自定义风格复刻：可以上传喜欢的图片、PDF 或 PPT/PPTX，让 agent 先分析配色、版式、字体和视觉元素，再按该风格生成新 PPT。
 - 可沉淀个人风格库：生成满意后，可以把当前风格保存到 skill 的 `references/` 目录，下次直接复用，让这个 skill 越用越贴合你的偏好。
 - 多 agent 并发生成：样张确认后，支持一个子 agent 负责一页，并对文字清晰度、风格一致性和内容完整性做自检，发现问题及时返修。
@@ -72,8 +72,8 @@
 | ![手绘白板风](assets/style-previews/handdrawn-whiteboard.png) | ![温暖手工风](assets/style-previews/warm-handmade.png) |
 | 科研答辩风 | 麦肯锡风格 |
 | ![科研答辩风](assets/style-previews/scientific-defense.png) | ![麦肯锡风格](assets/style-previews/mckinsey-style.png) |
-| 党政红风格 |  |
-| ![党政红风格](assets/style-previews/party-government-red.png) |  |
+| 党政红风格 | 教学课件风 |
+| ![党政红风格](assets/style-previews/party-government-red.png) | ![教学课件风](assets/style-previews/teaching-courseware.png) |
 
 ## 输出结构
 
