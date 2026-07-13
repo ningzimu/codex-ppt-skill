@@ -4,10 +4,20 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ## Unreleased
 
+### Features
+
+- Store user custom styles in `${CODEX_PPT_HOME:-~/.codex-ppt-skill}/references/` outside the skill install so they survive skill updates and reinstalls, with automatic discovery and same-name priority over built-in styles. (#83)
+- Proactively offer to save custom or adapted deck styles to the personal style library in the final report. (#83)
+
 ### Improvements
 
 - Make the Party-and-Government Red style more adaptable by replacing fixed layout and motif prescriptions with content-driven visual guidance. (#82)
 - Make the Teaching Courseware style more adaptable across disciplines by removing example-specific subject matter, fixed module counts, and repetitive card-grid assumptions. (#82)
+
+### Documentation
+
+- Add a styles page to the documentation site and expand workflow, installation, and FAQ coverage. (#83)
+- Replace the deprecated codex-gpt-image pairing tip with guidance to use the gpt-image-2 API for higher-resolution slides, and add a ClawMama badge to the README. (#83)
 
 ## 0.5.4
 
