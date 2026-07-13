@@ -4,6 +4,8 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ## Unreleased
 
+## 0.5.5
+
 ### Features
 
 - Store user custom styles in `${CODEX_PPT_HOME:-~/.codex-ppt-skill}/references/` outside the skill install so they survive skill updates and reinstalls, with automatic discovery and same-name priority over built-in styles. (#83)
