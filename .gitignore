@@ -61,7 +61,7 @@ examples/
 # Test outputs
 tests/
 test_output/
-output/
+outputs/
 temp/
 
 # macOS
