@@ -4,6 +4,8 @@ Read this when the user asks to save a finished deck style, a sample-slide style
 
 The goal is to save a reusable visual system, not the current deck's private content.
 
+User custom styles are saved to `${CODEX_PPT_HOME:-~/.codex-ppt-skill}/references/`, outside the skill install directory, so they survive skill updates and reinstalls. Never write user custom styles into the skill's own `references/` directory; that directory is reserved for built-in styles shipped with the skill.
+
 ## When To Use
 
 Use this workflow when the user says things like:
@@ -14,7 +16,7 @@ Use this workflow when the user says things like:
 - Turn this image/PDF/PPT/PPTX style into a built-in reference.
 - Save the style from the finished deck.
 
-If the user only wants to use a style once, extract a temporary style description for the current deck instead of writing a new `references/` file.
+If the user only wants to use a style once, extract a temporary style description for the current deck instead of writing a new style file.
 
 ## Inspect The Visual Source
 
@@ -49,15 +51,17 @@ Do not save private or one-off content as style:
 - Do not save the user's original article text, business data, personal information, customer names, private project names, paper results, exact quotes, or slide copy.
 - Do not save source images or screenshots as required dependencies of the style file.
 - Do not preserve identifiable logos or brand names unless the user explicitly asks for a reusable brand style.
-- Do not make the style depend on files outside `references/`.
+- Do not make the style depend on external files; the style file must be self-contained.
 
 ## Name The Style
 
 Name the file:
 
 ```text
-references/{style_name}.md
+${CODEX_PPT_HOME:-~/.codex-ppt-skill}/references/{style_name}.md
 ```
+
+Create the directory first if it does not exist.
 
 Naming rules:
 
@@ -67,11 +71,11 @@ Naming rules:
 - Avoid vague names like `我的风格1`, `好看风`, or `新风格`.
 - Good examples: `深色数据科技风`, `极简发布会风`, `柔和学术插画风`, `高密度咨询风`.
 
-If the target filename already exists, ask whether to overwrite, merge, or choose a new name.
+If the target filename already exists in the user style directory, ask whether to overwrite, merge, or choose a new name. If the filename matches a built-in style in the skill's `references/`, tell the user the custom file will take priority over the built-in style with the same name, and confirm that is intended before saving.
 
 ## Write The Style File
 
-Match the existing `references/*.md` structure:
+Match the structure of the built-in files in the skill's `references/`:
 
     # {style_name}
 
@@ -137,23 +141,15 @@ Match the existing `references/*.md` structure:
 
 The JSON should be directly reusable as a slide generation style brief. Keep it descriptive enough for future agents, but avoid embedding task-specific content.
 
-## Make The Style Discoverable
+## Discovery
 
-After writing `references/{style_name}.md`, update `docs/outline-style-and-sample.md`.
-
-Add the new file to the `Available references` list:
-
-```markdown
-- `references/{style_name}.md`
-```
-
-That list is what future style confirmation steps read before offering or using reusable style references.
+No registration step is needed. Future style confirmation steps scan `${CODEX_PPT_HOME:-~/.codex-ppt-skill}/references/` and merge its files with the built-in style list, so the saved file is discoverable automatically. Do not edit `docs/outline-style-and-sample.md` or any other file inside the skill for a user custom style.
 
 ## Final Response
 
 Report:
 
 - The new style name.
-- The saved `references/{style_name}.md` path.
-- That `docs/outline-style-and-sample.md` was updated.
+- The saved file path under `${CODEX_PPT_HOME:-~/.codex-ppt-skill}/references/`.
+- That the style is stored outside the skill install, so it survives skill updates and reinstalls.
 - A one-sentence note on how to request it later, for example: "以后可以说：用「深色数据科技风」生成这份 PPT。"

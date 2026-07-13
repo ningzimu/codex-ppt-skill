@@ -21,6 +21,15 @@ npx -y skills@latest add ningzimu/codex-ppt-skill \
 
 安装后重启 Codex，让新 skill 生效。
 
+也可以从 [GitHub Releases](https://github.com/ningzimu/codex-ppt-skill/releases) 下载 `codex-ppt-skill-v*.zip`，解压后把其中的 `codex-ppt` 文件夹放到 `~/.codex/skills/codex-ppt`，然后重启 Codex。
+
+如果你在本地开发这个仓库，可以把 skill 目录软链接到 Codex skills 目录，方便实时调试修改：
+
+```bash
+mkdir -p ~/.codex/skills
+ln -s /path/to/codex-ppt-skill/skills/codex-ppt ~/.codex/skills/codex-ppt
+```
+
 ## OpenClaw 安装
 
 ```bash
@@ -48,6 +57,8 @@ npx -y skills@latest add ningzimu/codex-ppt-skill \
   --agent hermes-agent \
   --global
 ```
+
+常见目标目录：Claude Code 使用 `~/.claude/skills/codex-ppt`，Hermes Agent 使用 `~/.hermes/skills/codex-ppt`。本地开发时同样可以用软链接替代复制。
 
 ## 生图模型配置
 

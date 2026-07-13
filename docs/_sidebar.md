@@ -3,5 +3,6 @@
 * [设计理念](design.md)
 * [安装与配置](installation.md)
 * [标准工作流](workflow.md)
+* [风格与个人风格库](styles.md)
 * [常见问题](faq.md)
 * [示例提示词](prompts.md)

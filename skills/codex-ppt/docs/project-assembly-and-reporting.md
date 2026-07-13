@@ -138,6 +138,7 @@ Report:
 - Confirm which image backend was used and that every non-sample slide result was recorded with `record_slide_result.py`.
 - Confirm that speaker notes from `speech.md` were written into the PPT, if applicable
 - Any slides that were regenerated, blocked, or still have known limitations
+- If the deck's style is custom or noticeably adapted (extracted from user references, tuned during sampling, or otherwise not an unmodified built-in style), end with a one-sentence tip that the style can be saved to the personal style library for future reuse, for example: "如果你喜欢这套风格，可以说「保存这个风格」，我会把它存入个人风格库（`~/.codex-ppt-skill/references/`），以后可以直接复用，更新 skill 也不会丢失。" If the user agrees, read `docs/style-library.md`. Skip this tip when the deck used an unmodified built-in style.
 
 ## Prompting Principles
 

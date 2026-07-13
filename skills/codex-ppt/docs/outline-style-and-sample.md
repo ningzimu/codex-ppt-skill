@@ -70,11 +70,18 @@ If the user has not provided a clear style, prefer a multiple-choice question: o
 
 After the user chooses a style, create one final style direction and keep the visual identity consistent across all slide prompts. Keep color palette, typography, texture, icon/illustration language, and overall mood stable. Do not reuse the same layout on every page.
 
-The `references/` directory contains optional style references. Use them as inspiration, not as rigid templates. Adapt the style to the topic and audience.
+Reusable style references come from two locations:
+
+- Built-in styles: the skill's `references/` directory, listed below. They ship with the skill and update with it.
+- User custom styles: `${CODEX_PPT_HOME:-~/.codex-ppt-skill}/references/*.md`. They live outside the skill install so they survive skill updates and reinstalls.
+
+Before offering or using reusable styles, list the user custom style directory (if it exists) and merge its `*.md` files with the built-in list below. User custom styles are discovered by scanning that directory; they are never registered in this document. If a user custom style has the same filename as a built-in style, the user custom file takes priority and replaces the built-in one.
+
+Use style references as inspiration, not as rigid templates. Adapt the style to the topic and audience.
 
 Important: a deck should have one coherent visual identity, not one repeated composition. Treat each reference as a style system: stable palette, typography, icon language, texture, and visual mood; variable page layout chosen from the slide's content role. `layout_blueprints` are candidate starting points only. Do not apply the same blueprint to every slide.
 
-Available references:
+Available built-in references:
 
 - `references/清爽专业风.md`
 - `references/创意杂志风.md`
@@ -89,7 +96,7 @@ Available references:
 - `references/党政红风格.md`
 - `references/教学课件风.md`
 
-When adding a reusable style to the library, also add its `references/{style_name}.md` file to this list.
+This list only tracks built-in styles shipped with the skill. Do not add user custom styles here; they are saved to `${CODEX_PPT_HOME:-~/.codex-ppt-skill}/references/` via `docs/style-library.md` and discovered by directory scan, so they need no registration.
 
 Example style confirmation:
 
