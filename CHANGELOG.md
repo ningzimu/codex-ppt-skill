@@ -6,7 +6,7 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ### Improvements
 
-- Make the Party-and-Government Red style more adaptable by replacing fixed layout and motif prescriptions with content-driven visual guidance.
+- Make the Party-and-Government Red style more adaptable by replacing fixed layout and motif prescriptions with content-driven visual guidance. (#82)
 
 ## 0.5.4
 
