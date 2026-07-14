@@ -60,6 +60,18 @@ npx -y skills@latest add ningzimu/codex-ppt-skill \
 
 常见目标目录：Claude Code 使用 `~/.claude/skills/codex-ppt`，Hermes Agent 使用 `~/.hermes/skills/codex-ppt`。本地开发时同样可以用软链接替代复制。
 
+## 更新 skill
+
+推荐直接把下面这句话发给你的 agent，让它帮你更新：
+
+```text
+请帮我更新 codex-ppt skill 到最新版本，仓库是：https://github.com/ningzimu/codex-ppt-skill
+```
+
+手动更新时，重新执行上面对应 agent 的安装命令即可，会用最新版本覆盖已安装的 skill；也可以从 [GitHub Releases](https://github.com/ningzimu/codex-ppt-skill/releases) 下载最新的 `codex-ppt-skill-v*.zip`，解压后替换原来的 `codex-ppt` 目录。更新完成后重启 agent 生效。
+
+更新是安全的：API key 等运行时配置保存在 `~/.codex-ppt-skill/.env`，个人风格库保存在 `~/.codex-ppt-skill/references/`，都在 skill 安装目录之外，更新或重装不会丢失。每个版本的变更内容可以查看 [Releases 页面](https://github.com/ningzimu/codex-ppt-skill/releases)或仓库的 `CHANGELOG.md`。
+
 ## 生图模型配置
 
 如果你没有 `gpt-image-2` 模型的使用权限，就无法使用该 skill。该 skill 强依赖 `gpt-image-2` 生图模型。

@@ -169,6 +169,16 @@ Common target directories are `~/.claude/skills/codex-ppt` for Claude Code and `
 
 If you are developing this repository locally, you can use a symlink instead of copying so changes are reflected immediately.
 
+### Updating
+
+Re-run the matching install command above to overwrite the installed skill with the latest version, or simply ask your agent to update it:
+
+```text
+Please update the codex-ppt skill to the latest version. The repository is: https://github.com/ningzimu/codex-ppt-skill
+```
+
+Restart the agent after updating. Your API key configuration (`~/.codex-ppt-skill/.env`) and personal style library (`~/.codex-ppt-skill/references/`) live outside the skill install directory, so updates and reinstalls never lose them.
+
 ## Image Model Configuration
 
 > [!TIP]

@@ -169,6 +169,16 @@ npx -y skills@latest add ningzimu/codex-ppt-skill \
 
 如果你是在本地开发这个仓库，也可以用软链接替代复制，方便实时调试修改。
 
+### 更新
+
+重新执行一遍上面对应的安装命令即可覆盖为最新版本，也可以直接让 agent 帮你更新：
+
+```text
+请帮我更新 codex-ppt skill 到最新版本，仓库是：https://github.com/ningzimu/codex-ppt-skill
+```
+
+更新后重启 agent 生效。API key 配置（`~/.codex-ppt-skill/.env`）和个人风格库（`~/.codex-ppt-skill/references/`）都在 skill 安装目录之外，更新或重装不会丢失。
+
 ## 生图模型配置
 
 > [!TIP]

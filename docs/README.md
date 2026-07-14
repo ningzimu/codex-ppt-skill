@@ -16,7 +16,7 @@ Codex PPT 是一个面向 Codex 的 PPT 生成 skill，也可在 Claude Code、O
 
 - [快速开始](quickstart.md)：第一次使用时的最短路径、示例命令和产物说明。
 - [设计理念](design.md)：为什么采用图片式 PPT、阶段确认和双 skill 分工的设计。
-- [安装与配置](installation.md)：Codex、OpenClaw、Claude Code、Hermes Agent 的安装方式，以及 API/CLI fallback 配置。
+- [安装与配置](installation.md)：Codex、OpenClaw、Claude Code、Hermes Agent 的安装与更新方式，以及 API/CLI fallback 配置。
 - [标准工作流](workflow.md)：从大纲确认、风格确认、后端确认、样张确认到整套生成和组装的完整流程。
 - [风格与个人风格库](styles.md)：12 种内置风格预览、仿照参考材料复刻风格，以及把满意的风格保存到个人风格库长期复用。
 - [常见问题](faq.md)：可编辑性、API key、样张、素材插入、单页修改等高频问题。
