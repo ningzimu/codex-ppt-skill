@@ -4,6 +4,32 @@
 
 A Codex skill for generating PowerPoint decks. It can also be used in Claude Code, OpenClaw, Hermes Agent, and other agents that support `SKILL.md`; these non-Codex environments usually require configuring `gpt-image-2`, a third-party image API, or an OpenAI-compatible image generation endpoint. It turns articles, reports, papers, course notes, and other source materials into image-based presentations: first plan the outline and visual style, then generate each full-slide image, and finally assemble the images into a `.pptx` file with a local script.
 
+## HTML-first Presentation Skill
+
+This repository also includes the standalone [`codex-html-slides`](skills/codex-html-slides/SKILL.md) skill. It outputs one offline-ready, self-contained HTML file, does not call an image-generation model, and does not generate full-slide PNG, JPEG, PPTX, or PDF files. Every page is built from editable HTML, CSS, and inline SVG. A fixed 1600×900 canvas, uniform browser scaling, typographic hierarchy, texture, cropping, charts, and SVG illustration help it reproduce the visual finish of image-based decks.
+
+|  | `codex-ppt` | `codex-html-slides` |
+| --- | --- | --- |
+| Final output | Image-based `.pptx` | One self-contained `.html` |
+| Slide implementation | One generated image per page | DOM + CSS + inline SVG |
+| Image model | Required | Not required |
+| Page elements | Not directly editable | Editable in source |
+
+Install only the HTML skill:
+
+```bash
+npx -y skills@latest add ningzimu/codex-ppt-skill \
+  --skill codex-html-slides \
+  --agent codex \
+  --global
+```
+
+Example request:
+
+```text
+Use the codex-html-slides skill to turn /path/to/article.md into a 10-slide, self-contained HTML presentation. Reproduce the visual style of my reference screenshot without generating slide images.
+```
+
 ## Sponsor
 
 <table>

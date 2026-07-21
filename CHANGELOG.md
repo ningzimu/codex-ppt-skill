@@ -4,6 +4,10 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ## Unreleased
 
+### Features
+
+- Add the standalone `codex-html-slides` skill for image-quality, self-contained HTML presentations built from editable DOM, CSS, and inline SVG, with 12 native style recipes, a reusable presentation runtime, and deterministic validation.
+
 ## 0.5.5
 
 ### Features

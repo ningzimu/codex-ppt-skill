@@ -1,0 +1,729 @@
+<!doctype html>
+<html lang="{{DECK_LANG}}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark light">
+  <title>{{DECK_TITLE}}</title>
+  <style>
+    :root {
+      --canvas-width: 1600px;
+      --canvas-height: 900px;
+      --deck-scale: 1;
+      --font-sans: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      --font-serif: Georgia, "Songti SC", "STSong", serif;
+      --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      --stage-shadow: 0 32px 100px rgb(5 15 35 / 34%);
+      color-scheme: light;
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #090e19;
+      color: #eef3fb;
+      font-family: var(--font-sans);
+    }
+
+    button { font: inherit; }
+
+    .viewport {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 15% 18%, rgb(57 86 150 / 22%), transparent 28%),
+        radial-gradient(circle at 86% 76%, rgb(64 47 122 / 18%), transparent 30%),
+        #090e19;
+    }
+
+    .stage {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: var(--canvas-width);
+      height: var(--canvas-height);
+      overflow: hidden;
+      transform: translate(-50%, -50%) scale(var(--deck-scale));
+      transform-origin: center center;
+      background: var(--bg);
+      box-shadow: var(--stage-shadow);
+      isolation: isolate;
+    }
+
+    .deck {
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    .deck[data-theme="clean-professional"] {
+      --bg: #f7f9fc;
+      --surface: #ffffff;
+      --ink: #152238;
+      --muted: #667085;
+      --accent: #2563eb;
+      --accent-2: #06b6d4;
+      --accent-soft: #dbeafe;
+      --line: #d9e2ef;
+      --radius: 24px;
+      --panel-shadow: 0 24px 70px rgb(37 99 235 / 12%);
+      --display-font: var(--font-sans);
+    }
+
+    .deck[data-theme="creative-magazine"] {
+      --bg: #f8f6f1;
+      --surface: #ffffff;
+      --ink: #111111;
+      --muted: #5f5f5f;
+      --accent: #ff006e;
+      --accent-2: #111111;
+      --accent-soft: #ffd7e8;
+      --line: #161616;
+      --radius: 0px;
+      --panel-shadow: 12px 12px 0 #111111;
+      --display-font: var(--font-serif);
+    }
+
+    .deck[data-theme="e-ink-magazine"] {
+      --bg: #f3f0e8;
+      --surface: #faf8f2;
+      --ink: #1b1b1b;
+      --muted: #77736a;
+      --accent: #c44736;
+      --accent-2: #44423e;
+      --accent-soft: #ead9d0;
+      --line: #2d2c29;
+      --radius: 2px;
+      --panel-shadow: 0 14px 30px rgb(27 27 27 / 10%);
+      --display-font: var(--font-serif);
+    }
+
+    .deck[data-theme="data-dashboard"] {
+      --bg: #08111f;
+      --surface: #111d2e;
+      --ink: #e7eef8;
+      --muted: #91a4bd;
+      --accent: #22d3ee;
+      --accent-2: #34d399;
+      --accent-soft: #113647;
+      --line: #28415d;
+      --radius: 18px;
+      --panel-shadow: 0 22px 65px rgb(0 0 0 / 32%);
+      --display-font: var(--font-sans);
+      color-scheme: dark;
+    }
+
+    .deck[data-theme="retro-flat"] {
+      --bg: #f5f3e8;
+      --surface: #fffaf0;
+      --ink: #34495e;
+      --muted: #6c7a89;
+      --accent: #ff6b6b;
+      --accent-2: #95e1d3;
+      --accent-soft: #f9e29a;
+      --line: #263747;
+      --radius: 14px;
+      --panel-shadow: 9px 9px 0 rgb(38 55 71 / 16%);
+      --display-font: var(--font-serif);
+    }
+
+    .deck[data-theme="handdrawn-technical"] {
+      --bg: #fcfbf7;
+      --surface: #fffefa;
+      --ink: #2f3437;
+      --muted: #6f7476;
+      --accent: #7ba8d1;
+      --accent-2: #9fbea4;
+      --accent-soft: #dce9f5;
+      --line: #4d5356;
+      --radius: 9px;
+      --panel-shadow: 5px 7px 0 rgb(47 52 55 / 8%);
+      --display-font: var(--font-sans);
+    }
+
+    .deck[data-theme="handdrawn-whiteboard"] {
+      --bg: #fffefa;
+      --surface: #ffffff;
+      --ink: #202124;
+      --muted: #6f7378;
+      --accent: #4285f4;
+      --accent-2: #34a853;
+      --accent-soft: #dbe7fd;
+      --line: #202124;
+      --radius: 7px;
+      --panel-shadow: 4px 6px 0 rgb(32 33 36 / 9%);
+      --display-font: var(--font-sans);
+    }
+
+    .deck[data-theme="warm-handmade"] {
+      --bg: #f7efe3;
+      --surface: #fffaf2;
+      --ink: #4a3728;
+      --muted: #7d6857;
+      --accent: #c96c4b;
+      --accent-2: #7a8b58;
+      --accent-soft: #eed6bf;
+      --line: #8c715d;
+      --radius: 5px;
+      --panel-shadow: 10px 14px 28px rgb(74 55 40 / 15%);
+      --display-font: var(--font-serif);
+    }
+
+    .deck[data-theme="scientific-defense"] {
+      --bg: #ffffff;
+      --surface: #f8fbfe;
+      --ink: #102a43;
+      --muted: #5d7184;
+      --accent: #145da0;
+      --accent-2: #c62828;
+      --accent-soft: #dceaf5;
+      --line: #c7d5e3;
+      --radius: 8px;
+      --panel-shadow: 0 16px 38px rgb(20 93 160 / 11%);
+      --display-font: var(--font-sans);
+    }
+
+    .deck[data-theme="consulting"] {
+      --bg: #f6f8fa;
+      --surface: #ffffff;
+      --ink: #243447;
+      --muted: #6b7280;
+      --accent: #527896;
+      --accent-2: #111111;
+      --accent-soft: #e5edf3;
+      --line: #cfd8e3;
+      --radius: 2px;
+      --panel-shadow: 0 18px 46px rgb(36 52 71 / 9%);
+      --display-font: var(--font-sans);
+    }
+
+    .deck[data-theme="party-red"] {
+      --bg: #fff9f2;
+      --surface: #ffffff;
+      --ink: #262626;
+      --muted: #665c56;
+      --accent: #c41e3a;
+      --accent-2: #d6a84b;
+      --accent-soft: #f5d7dc;
+      --line: #c9b8aa;
+      --radius: 6px;
+      --panel-shadow: 0 18px 44px rgb(158 21 48 / 12%);
+      --display-font: var(--font-sans);
+    }
+
+    .deck[data-theme="teaching-courseware"] {
+      --bg: #f8fbf7;
+      --surface: #ffffff;
+      --ink: #24332c;
+      --muted: #66756c;
+      --accent: #2f7d5c;
+      --accent-2: #e58c3a;
+      --accent-soft: #ddefe6;
+      --line: #cbded4;
+      --radius: 18px;
+      --panel-shadow: 0 18px 45px rgb(47 125 92 / 11%);
+      --display-font: var(--font-sans);
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      width: var(--canvas-width);
+      height: var(--canvas-height);
+      overflow: hidden;
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 83% 18%, color-mix(in srgb, var(--accent) 15%, transparent), transparent 28%),
+        linear-gradient(145deg, var(--bg), color-mix(in srgb, var(--bg) 86%, var(--accent-soft)));
+      transition: opacity 280ms ease, visibility 280ms ease;
+    }
+
+    .slide.is-active {
+      z-index: 1;
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .3;
+      background-image:
+        linear-gradient(color-mix(in srgb, var(--line) 10%, transparent) 1px, transparent 1px),
+        linear-gradient(90deg, color-mix(in srgb, var(--line) 10%, transparent) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(100deg, transparent 4%, black 45%, transparent 92%);
+    }
+
+    .slide-content {
+      position: absolute;
+      inset: 72px 96px 76px;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: minmax(0, 1.04fr) minmax(470px, .96fr);
+      gap: 68px;
+      align-items: center;
+    }
+
+    .slide-copy { align-self: center; }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 0 0 28px;
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 54px;
+      height: 4px;
+      background: var(--accent);
+    }
+
+    h1 {
+      max-width: 860px;
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--display-font);
+      font-size: 98px;
+      font-weight: 760;
+      letter-spacing: -.055em;
+      line-height: .98;
+      text-wrap: balance;
+    }
+
+    .lede {
+      max-width: 780px;
+      margin: 34px 0 0;
+      color: var(--muted);
+      font-size: 31px;
+      line-height: 1.48;
+      text-wrap: pretty;
+    }
+
+    .signal-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin: 38px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .signal-list li {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 12px 18px;
+      background: color-mix(in srgb, var(--surface) 82%, transparent);
+      color: var(--ink);
+      font-family: var(--font-mono);
+      font-size: 18px;
+      letter-spacing: .025em;
+    }
+
+    .visual-system {
+      position: relative;
+      width: 560px;
+      height: 560px;
+      justify-self: end;
+      border: 1px solid color-mix(in srgb, var(--line) 75%, transparent);
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at center, color-mix(in srgb, var(--accent) 20%, transparent), transparent 16%),
+        radial-gradient(circle at 68% 28%, color-mix(in srgb, var(--accent-2) 22%, transparent), transparent 19%),
+        color-mix(in srgb, var(--surface) 72%, transparent);
+      box-shadow: var(--panel-shadow);
+    }
+
+    .visual-system::before,
+    .visual-system::after {
+      content: "";
+      position: absolute;
+      border: 1px solid color-mix(in srgb, var(--line) 64%, transparent);
+      border-radius: inherit;
+    }
+
+    .visual-system::before { inset: 56px; }
+    .visual-system::after { inset: 124px; border-style: dashed; }
+
+    .visual-system svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .orbit-line {
+      fill: none;
+      stroke: var(--line);
+      stroke-width: 2;
+      stroke-dasharray: 7 10;
+    }
+
+    .orbit-path {
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: 5;
+      stroke-linecap: round;
+    }
+
+    .orbit-node { fill: var(--surface); stroke: var(--accent); stroke-width: 4; }
+    .orbit-node.is-alt { stroke: var(--accent-2); }
+
+    .system-label {
+      position: absolute;
+      display: grid;
+      min-width: 138px;
+      gap: 4px;
+      border-left: 4px solid var(--accent);
+      padding: 12px 14px;
+      background: color-mix(in srgb, var(--surface) 90%, transparent);
+      box-shadow: 0 10px 24px rgb(0 0 0 / 8%);
+    }
+
+    .system-label strong { color: var(--ink); font-size: 22px; }
+    .system-label span { color: var(--muted); font-family: var(--font-mono); font-size: 15px; }
+    .system-label.one { top: 52px; right: -24px; }
+    .system-label.two { bottom: 74px; right: -38px; border-color: var(--accent-2); }
+    .system-label.three { bottom: 48px; left: -28px; }
+
+    .chapter-mark {
+      position: absolute;
+      right: 42px;
+      bottom: 32px;
+      z-index: 3;
+      color: color-mix(in srgb, var(--muted) 72%, transparent);
+      font-family: var(--font-mono);
+      font-size: 16px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .speaker-notes { display: none; }
+
+    .controls {
+      position: fixed;
+      left: 50%;
+      bottom: max(16px, env(safe-area-inset-bottom));
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transform: translateX(-50%);
+      border: 1px solid rgb(255 255 255 / 14%);
+      border-radius: 999px;
+      padding: 7px;
+      background: rgb(9 14 25 / 80%);
+      box-shadow: 0 14px 36px rgb(0 0 0 / 32%);
+      backdrop-filter: blur(18px);
+    }
+
+    .controls button {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      color: #f4f7fb;
+      cursor: pointer;
+    }
+
+    .controls button:hover,
+    .controls button:focus-visible { background: rgb(255 255 255 / 12%); outline: none; }
+
+    .controls svg { width: 20px; height: 20px; fill: currentColor; }
+
+    .counter {
+      min-width: 72px;
+      color: #f4f7fb;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .progress {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 30;
+      height: 3px;
+      background: rgb(255 255 255 / 9%);
+    }
+
+    .progress::after {
+      content: "";
+      display: block;
+      width: var(--progress, 0%);
+      height: 100%;
+      background: linear-gradient(90deg, #5da8ff, #74f0d1);
+      transition: width 220ms ease;
+    }
+
+    .notes-panel {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      z-index: 40;
+      display: none;
+      width: min(440px, calc(100vw - 36px));
+      max-height: calc(100vh - 110px);
+      overflow: auto;
+      border: 1px solid rgb(255 255 255 / 16%);
+      border-radius: 18px;
+      padding: 22px 24px;
+      background: rgb(9 14 25 / 92%);
+      color: #f5f7fb;
+      font-size: 18px;
+      line-height: 1.55;
+      box-shadow: 0 24px 70px rgb(0 0 0 / 38%);
+      backdrop-filter: blur(20px);
+    }
+
+    .notes-panel.is-open { display: block; }
+    .notes-panel h2 { margin: 0 0 12px; font-size: 18px; }
+    .notes-panel p { margin: 0; color: #cfd8e8; }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+
+    @page { size: 13.333in 7.5in; margin: 0; }
+
+    @media print {
+      html,
+      body {
+        width: auto;
+        height: auto;
+        overflow: visible;
+        background: #fff;
+      }
+
+      .viewport { position: static; overflow: visible; background: #fff; }
+      .stage { position: static; width: 1600px; height: auto; transform: none !important; box-shadow: none; }
+      .deck { height: auto; }
+      .slide {
+        position: relative;
+        display: block;
+        visibility: visible;
+        width: 1600px;
+        height: 900px;
+        opacity: 1;
+        break-after: page;
+        page-break-after: always;
+      }
+      .controls, .progress, .notes-panel { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="viewport">
+    <main class="stage" aria-label="{{DECK_TITLE}} presentation">
+      <div class="deck" data-deck data-theme="{{DECK_THEME}}">
+        <section class="slide is-active" id="slide-1" data-slide aria-labelledby="slide-1-title">
+          <div class="slide-content">
+            <div class="slide-copy">
+              <p class="eyebrow">HTML-FIRST / 01</p>
+              <h1 id="slide-1-title">{{DECK_TITLE}}</h1>
+              <p class="lede">Replace this sample with one precise message. Keep the page native, editable, and visually art-directed.</p>
+              <ul class="signal-list" aria-label="Presentation qualities">
+                <li>DOM</li>
+                <li>CSS</li>
+                <li>INLINE SVG</li>
+              </ul>
+            </div>
+
+            <div class="visual-system" aria-label="Native HTML visual system">
+              <svg viewBox="0 0 560 560" role="img" aria-labelledby="visual-system-title">
+                <title id="visual-system-title">Three connected native layers: structure, style, and motion</title>
+                <defs>
+                  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)"></path>
+                  </marker>
+                </defs>
+                <circle class="orbit-line" cx="280" cy="280" r="226"></circle>
+                <path class="orbit-path" d="M110 300 C155 140 344 92 454 205 C505 257 470 390 352 444" marker-end="url(#arrow)"></path>
+                <circle class="orbit-node" cx="126" cy="248" r="18"></circle>
+                <circle class="orbit-node is-alt" cx="405" cy="154" r="18"></circle>
+                <circle class="orbit-node" cx="388" cy="421" r="18"></circle>
+              </svg>
+              <div class="system-label one"><strong>Structure</strong><span>semantic DOM</span></div>
+              <div class="system-label two"><strong>Expression</strong><span>CSS + SVG</span></div>
+              <div class="system-label three"><strong>Delivery</strong><span>single HTML</span></div>
+            </div>
+          </div>
+
+          <p class="chapter-mark">1600 × 900 / EDITABLE BY DESIGN</p>
+          <aside class="speaker-notes">Introduce the deck's central promise and explain why a native HTML presentation remains easier to inspect, revise, and deliver.</aside>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="progress" aria-hidden="true"></div>
+
+  <nav class="controls" aria-label="Presentation controls">
+    <button type="button" data-action="previous" aria-label="Previous slide" title="Previous slide (←)">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 5.4 8.8 12l6.6 6.6-1.4 1.4L6 12l8-8 1.4 1.4Z"></path></svg>
+    </button>
+    <span class="counter" data-counter aria-live="polite">1 / 1</span>
+    <button type="button" data-action="next" aria-label="Next slide" title="Next slide (→)">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8.6 18.6 6.6-6.6-6.6-6.6L10 4l8 8-8 8-1.4-1.4Z"></path></svg>
+    </button>
+    <button type="button" data-action="notes" aria-label="Toggle speaker notes" title="Speaker notes (N)">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm2 5v2h10V8H7Zm0 4v2h10v-2H7Zm0 4v2h6v-2H7Z"></path></svg>
+    </button>
+    <button type="button" data-action="fullscreen" aria-label="Toggle fullscreen" title="Fullscreen (F)">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6v2H6v4H4V4Zm10 0h6v6h-2V6h-4V4Zm4 10h2v6h-6v-2h4v-4ZM4 14h2v4h4v2H4v-6Z"></path></svg>
+    </button>
+  </nav>
+
+  <aside class="notes-panel" data-notes-panel aria-live="polite" aria-label="Current slide speaker notes">
+    <h2>Speaker notes</h2>
+    <p data-notes-content></p>
+  </aside>
+
+  <p class="sr-only" data-live-region aria-live="polite"></p>
+
+  <script>
+    (() => {
+      const stage = document.querySelector('.stage');
+      const slides = [...document.querySelectorAll('[data-slide]')];
+      const counter = document.querySelector('[data-counter]');
+      const notesPanel = document.querySelector('[data-notes-panel]');
+      const notesContent = document.querySelector('[data-notes-content]');
+      const liveRegion = document.querySelector('[data-live-region]');
+      let index = Math.max(0, slides.findIndex((slide) => `#${slide.id}` === location.hash));
+      let pointerStart = null;
+
+      const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+      function resizeStage() {
+        const padding = 20;
+        const scale = Math.min(
+          (window.innerWidth - padding * 2) / 1600,
+          (window.innerHeight - padding * 2) / 900
+        );
+        document.documentElement.style.setProperty('--deck-scale', Math.max(.1, scale).toFixed(5));
+      }
+
+      function updateNotes() {
+        const notes = slides[index]?.querySelector('.speaker-notes');
+        notesContent.textContent = notes?.textContent.trim() || 'No speaker notes for this slide.';
+      }
+
+      function showSlide(next, updateHash = true) {
+        index = clamp(next, 0, slides.length - 1);
+        slides.forEach((slide, slideIndex) => {
+          const active = slideIndex === index;
+          slide.classList.toggle('is-active', active);
+          slide.setAttribute('aria-hidden', String(!active));
+          if ('inert' in slide) slide.inert = !active;
+        });
+
+        counter.textContent = `${index + 1} / ${slides.length}`;
+        document.documentElement.style.setProperty('--progress', `${((index + 1) / slides.length) * 100}%`);
+        updateNotes();
+        liveRegion.textContent = `Slide ${index + 1} of ${slides.length}: ${slides[index].textContent.trim().slice(0, 90)}`;
+
+        if (updateHash) history.replaceState(null, '', `#${slides[index].id}`);
+      }
+
+      function toggleNotes() {
+        notesPanel.classList.toggle('is-open');
+      }
+
+      async function toggleFullscreen() {
+        if (!document.fullscreenElement) await document.documentElement.requestFullscreen?.();
+        else await document.exitFullscreen?.();
+      }
+
+      document.querySelector('[data-action="previous"]').addEventListener('click', () => showSlide(index - 1));
+      document.querySelector('[data-action="next"]').addEventListener('click', () => showSlide(index + 1));
+      document.querySelector('[data-action="notes"]').addEventListener('click', toggleNotes);
+      document.querySelector('[data-action="fullscreen"]').addEventListener('click', toggleFullscreen);
+
+      document.addEventListener('keydown', (event) => {
+        if (/^(INPUT|TEXTAREA|SELECT)$/.test(event.target.tagName) || event.target.isContentEditable) return;
+        if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(event.key)) {
+          event.preventDefault();
+          showSlide(index + 1);
+        } else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(event.key)) {
+          event.preventDefault();
+          showSlide(index - 1);
+        } else if (event.key === 'Home') {
+          event.preventDefault();
+          showSlide(0);
+        } else if (event.key === 'End') {
+          event.preventDefault();
+          showSlide(slides.length - 1);
+        } else if (event.key.toLowerCase() === 'f') {
+          event.preventDefault();
+          toggleFullscreen();
+        } else if (event.key.toLowerCase() === 'n') {
+          event.preventDefault();
+          toggleNotes();
+        }
+      });
+
+      window.addEventListener('hashchange', () => {
+        const target = slides.findIndex((slide) => `#${slide.id}` === location.hash);
+        if (target >= 0) showSlide(target, false);
+      });
+
+      window.addEventListener('resize', resizeStage, { passive: true });
+      window.addEventListener('pointerdown', (event) => {
+        pointerStart = { x: event.clientX, y: event.clientY };
+      }, { passive: true });
+      window.addEventListener('pointerup', (event) => {
+        if (!pointerStart) return;
+        const dx = event.clientX - pointerStart.x;
+        const dy = event.clientY - pointerStart.y;
+        pointerStart = null;
+        if (Math.abs(dx) > 72 && Math.abs(dx) > Math.abs(dy) * 1.25) showSlide(index + (dx < 0 ? 1 : -1));
+      }, { passive: true });
+
+      resizeStage();
+      showSlide(index, false);
+    })();
+  </script>
+</body>
+</html>
+

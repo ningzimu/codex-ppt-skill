@@ -113,11 +113,14 @@ jobs:
 
           (
             cd skills
-            zip -r "${asset_dir}/${asset_name}" codex-ppt \
+            zip -r "${asset_dir}/${asset_name}" codex-ppt codex-html-slides \
               -x "codex-ppt/.DS_Store" \
               -x "codex-ppt/.venv/*" \
               -x "codex-ppt/**/__pycache__/*" \
-              -x "codex-ppt/**/*.pyc"
+              -x "codex-ppt/**/*.pyc" \
+              -x "codex-html-slides/.DS_Store" \
+              -x "codex-html-slides/**/__pycache__/*" \
+              -x "codex-html-slides/**/*.pyc"
           )
 
           echo "SKILL_ZIP=${asset_dir}/${asset_name}" >> "$GITHUB_ENV"

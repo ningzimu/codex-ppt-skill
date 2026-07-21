@@ -1,0 +1,4 @@
+interface:
+  display_name: "Codex HTML Slides"
+  short_description: "Build image-quality, self-contained HTML decks"
+  default_prompt: "Use $codex-html-slides to turn my source material into a polished, self-contained HTML presentation."

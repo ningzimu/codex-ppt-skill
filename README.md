@@ -4,6 +4,32 @@
 
 一个面向 Codex 的 PPT 生成 skill，也可在 Claude Code、OpenClaw、Hermes Agent 等支持 `SKILL.md` 的 agent 中使用；在这些非 Codex 环境中通常需要配置 `gpt-image-2`、第三方生图 API 或 OpenAI 兼容格式的生图接口。它把文章、报告、论文、课程笔记等内容转换成“整页图片式”的演示文稿：先规划大纲和视觉风格，再生成每页幻灯片图片，最后用本地脚本组装为 `.pptx`。
 
+## HTML-first 演示 Skill
+
+仓库同时提供独立的 [`codex-html-slides`](skills/codex-html-slides/SKILL.md) skill。它只输出一个可离线播放的自包含 HTML 文件，不调用生图模型，也不生成整页 PNG、JPG、PPTX 或 PDF。每页都使用可编辑的 HTML、CSS 和内联 SVG 构建，并通过固定 1600×900 画布、浏览器等比缩放、排版层级、纹理、裁切、图表和 SVG 插画，尽量复刻图片式 PPT 的视觉质感。
+
+|  | `codex-ppt` | `codex-html-slides` |
+| --- | --- | --- |
+| 最终产物 | 图片式 `.pptx` | 单个自包含 `.html` |
+| 页面实现 | 每页完整生成图片 | DOM + CSS + 内联 SVG |
+| 生图模型 | 需要 | 不需要 |
+| 页面元素 | 不可直接编辑 | 可直接编辑源码 |
+
+单独安装 HTML skill：
+
+```bash
+npx -y skills@latest add ningzimu/codex-ppt-skill \
+  --skill codex-html-slides \
+  --agent codex \
+  --global
+```
+
+使用示例：
+
+```text
+请使用 codex-html-slides skill，把 /path/to/article.md 做成 10 页、自包含的 HTML 演示文稿，视觉风格参考我提供的截图，但不要生成页面图片。
+```
+
 ## 赞助
 
 <table>
