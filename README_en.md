@@ -248,7 +248,3 @@ MIT
 ## Acknowledgements
 
 Thanks to the [LinuxDO](https://linux.do) community for its support.
-
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=ningzimu/codex-ppt-skill&type=Date)](https://www.star-history.com/#ningzimu/codex-ppt-skill&Date)
