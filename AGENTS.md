@@ -8,7 +8,7 @@
   - `fix: handle missing image API key`
   - `docs: clarify installation steps`
 - Commit messages, PR titles, changelog entries, and release notes must be written in English.
-- Documentation changes that affect README content must update both `README.md` and `README_en.md` in sync.
+- Documentation changes that affect README content must update all existing language versions in sync.
 
 ## Changelog
 
