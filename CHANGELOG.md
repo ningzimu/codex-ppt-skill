@@ -6,7 +6,7 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ### Documentation
 
-- Add a Korean translation of the README (`README_ko.md`) and a language badge linking to it from `README.md` and `README_en.md`.
+- Add a Korean translation of the README (`README_ko.md`) and a language badge linking to it from `README.md` and `README_en.md`. (#90)
 
 ## 0.5.5
 
