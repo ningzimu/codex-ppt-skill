@@ -2,7 +2,7 @@
 
 [简体中文](README.md) · [English](README_en.md) · **한국어**
 
-[![Docs](https://img.shields.io/badge/docs-Guide-111827)](https://ningzimu.github.io/codex-ppt-skill/#/ko/) [![ClawHub](https://img.shields.io/badge/ClawHub-codex--ppt-cd3b35)](https://clawhub.ai/ningzimu/codex-ppt) [![ClawMama](https://img.shields.io/badge/ClawMama-codex--ppt-2CA5E0)](https://app.clawmama.run/skills/5lak48/hermes?utm_source=github&utm_medium=issue&utm_campaign=skill_outreach_ningzimu_codex_ppt_skill) [![GitHub stars](https://img.shields.io/github/stars/ningzimu/codex-ppt-skill?style=flat&logo=github&label=stars)](https://github.com/ningzimu/codex-ppt-skill/stargazers) [![GitHub forks](https://img.shields.io/github/forks/ningzimu/codex-ppt-skill?style=flat&logo=github&label=forks)](https://github.com/ningzimu/codex-ppt-skill/forks)
+[![문서](https://img.shields.io/badge/%EB%AC%B8%EC%84%9C-%EC%82%AC%EC%9A%A9%20%EC%95%88%EB%82%B4-111827)](https://ningzimu.github.io/codex-ppt-skill/#/ko/) [![ClawHub](https://img.shields.io/badge/ClawHub-codex--ppt-cd3b35)](https://clawhub.ai/ningzimu/codex-ppt) [![ClawMama](https://img.shields.io/badge/ClawMama-codex--ppt-2CA5E0)](https://app.clawmama.run/skills/5lak48/hermes?utm_source=github&utm_medium=issue&utm_campaign=skill_outreach_ningzimu_codex_ppt_skill) [![GitHub stars](https://img.shields.io/github/stars/ningzimu/codex-ppt-skill?style=flat&logo=github&label=stars)](https://github.com/ningzimu/codex-ppt-skill/stargazers) [![GitHub forks](https://img.shields.io/github/forks/ningzimu/codex-ppt-skill?style=flat&logo=github&label=forks)](https://github.com/ningzimu/codex-ppt-skill/forks)
 
 PowerPoint 덱을 생성하는 Codex용 skill입니다. Codex 외에도 Claude Code, OpenClaw, Hermes Agent 등 `SKILL.md`를 지원하는 다른 에이전트에서도 사용할 수 있으며, 이런 비(非)Codex 환경에서는 보통 `gpt-image-2`, 서드파티 이미지 API, 또는 OpenAI 호환 이미지 생성 엔드포인트 설정이 필요합니다. 이 skill은 글, 리포트, 논문, 강의 노트 등의 원본 자료를 "한 페이지 통이미지" 형식의 프레젠테이션으로 변환합니다. 먼저 개요와 시각 스타일을 기획하고, 각 슬라이드를 전면 이미지로 생성한 뒤, 마지막에 로컬 스크립트로 이미지들을 `.pptx` 파일로 조립합니다.
 
@@ -223,18 +223,6 @@ skill은 다음 워크플로를 따릅니다:
 - 마음에 드는 PPT 스타일 레퍼런스(스크린샷 하나, 여러 장, 또는 전체 PPT/PDF)를 제공할 수도 있습니다. 현재 에이전트에게 먼저 색상, 레이아웃, 타이포그래피, 시각 요소를 분석한 뒤 해당 스타일로 새 덱을 생성해 달라고 요청하세요. 결과가 좋으면 그 스타일을 개인 스타일 라이브러리 `~/.codex-ppt-skill/references/`에 저장하도록 요청해 이후에 재사용할 수 있으며, skill을 업데이트해도 사라지지 않습니다.
 - 논문 그림, 실험 차트, 스크린샷, 아키텍처 다이어그램을 포함해야 한다면, 개요에서 각 이미지의 대상 슬라이드와 역할을 지정하세요.
 
-## QA
-
-- 문서: [codex-ppt FAQ 및 사용 노트](https://ningzimu.github.io/codex-ppt-skill/#/faq)
-
-## 커뮤니티
-
-QR 코드를 스캔해 Skill 커뮤니티 그룹에 참여하고, 사용 경험을 공유하고, 이슈를 제보하고, 업데이트 소식을 받아보세요.
-
-<img src="assets/codex-ppt-community-qr.png" alt="Codex PPT Skill 커뮤니티 QR 코드" width="220">
-
-Telegram: [CodexPPT](https://t.me/CodexPPT)
-
 ## 관련 프로젝트
 
 - [image-to-editable-ppt-skill](https://github.com/ningzimu/image-to-editable-ppt-skill): 슬라이드 스크린샷, PDF 페이지, 이미지 기반 PPTX 파일을 편집 가능한 PowerPoint 덱으로 재구성합니다. `codex-ppt`가 이미지 기반 슬라이드를 생성한 뒤에 유용합니다.
@@ -242,6 +230,10 @@ Telegram: [CodexPPT](https://t.me/CodexPPT)
 - [handdrawn-tech-illustrations](https://github.com/ningzimu/handdrawn-tech-illustrations): 중국어 기술 콘텐츠를 위한 손그림 일러스트 skill입니다. 기술 아티클, 제품 노트, 스크린샷, 개요, 대략적인 아이디어를 아티클 삽화, 개념 설명 그래픽, WeChat 커버 이미지, Rednote 커버로 변환하며, 친근하고 가벼운 카툰풍에 중국어 가독성이 좋고 적당한 정보 밀도를 갖습니다.
 - [awesome-ai-ppt](https://github.com/ningzimu/awesome-ai-ppt): 오픈소스 AI PPT 프로젝트를 HTML-first, image-first, PPTX-native, 변환, 자동화 인프라 등의 워크플로별로 정리한 큐레이션 목록입니다. 에이전트나 개발자가 PPT 덱을 만들고, 편집하고, 변환하고, 검사하는 데 도움이 되는 GitHub 프로젝트에 초점을 둡니다.
 - [claude-code-lens](https://github.com/ningzimu/claude-code-lens): Claude Code의 API 트래픽, 로그, 프롬프트, 도구 호출을 위한 로컬 관찰(observability) 도구로, 에이전트가 실제로 무엇을 하는지 이해하는 데 유용합니다.
+
+## 지원
+
+문제가 있나요? [사용 설명서](https://ningzimu.github.io/codex-ppt-skill/#/ko/)를 확인하고, [CodexPPT](https://t.me/CodexPPT)에 참여하거나, [Issue를 등록하세요](https://github.com/ningzimu/codex-ppt-skill/issues/new).
 
 ## 라이선스
 

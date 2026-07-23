@@ -2,7 +2,7 @@
 
 [简体中文](README.md) · **English** · [한국어](README_ko.md)
 
-[![Docs](https://img.shields.io/badge/docs-Guide-111827)](https://ningzimu.github.io/codex-ppt-skill/#/en/) [![ClawHub](https://img.shields.io/badge/ClawHub-codex--ppt-cd3b35)](https://clawhub.ai/ningzimu/codex-ppt) [![ClawMama](https://img.shields.io/badge/ClawMama-codex--ppt-2CA5E0)](https://app.clawmama.run/skills/5lak48/hermes?utm_source=github&utm_medium=issue&utm_campaign=skill_outreach_ningzimu_codex_ppt_skill) [![GitHub stars](https://img.shields.io/github/stars/ningzimu/codex-ppt-skill?style=flat&logo=github&label=stars)](https://github.com/ningzimu/codex-ppt-skill/stargazers) [![GitHub forks](https://img.shields.io/github/forks/ningzimu/codex-ppt-skill?style=flat&logo=github&label=forks)](https://github.com/ningzimu/codex-ppt-skill/forks)
+[![Docs](https://img.shields.io/badge/Docs-Guide-111827)](https://ningzimu.github.io/codex-ppt-skill/#/en/) [![ClawHub](https://img.shields.io/badge/ClawHub-codex--ppt-cd3b35)](https://clawhub.ai/ningzimu/codex-ppt) [![ClawMama](https://img.shields.io/badge/ClawMama-codex--ppt-2CA5E0)](https://app.clawmama.run/skills/5lak48/hermes?utm_source=github&utm_medium=issue&utm_campaign=skill_outreach_ningzimu_codex_ppt_skill) [![GitHub stars](https://img.shields.io/github/stars/ningzimu/codex-ppt-skill?style=flat&logo=github&label=stars)](https://github.com/ningzimu/codex-ppt-skill/stargazers) [![GitHub forks](https://img.shields.io/github/forks/ningzimu/codex-ppt-skill?style=flat&logo=github&label=forks)](https://github.com/ningzimu/codex-ppt-skill/forks)
 
 A Codex skill for generating PowerPoint decks. It can also be used in Claude Code, OpenClaw, Hermes Agent, and other agents that support `SKILL.md`; these non-Codex environments usually require configuring `gpt-image-2`, a third-party image API, or an OpenAI-compatible image generation endpoint. It turns articles, reports, papers, course notes, and other source materials into image-based presentations: first plan the outline and visual style, then generate each full-slide image, and finally assemble the images into a `.pptx` file with a local script.
 
@@ -223,18 +223,6 @@ The skill follows this workflow:
 - You can also provide PPT style references you like — a single screenshot, multiple screenshots, or a full PPT/PDF. Ask the current agent to analyze the colors, layout, typography, and visual elements first, then generate a new deck in that style. Once the result looks good, you can ask the agent to save the style into your personal style library at `~/.codex-ppt-skill/references/` for future reuse; it will not be lost when the skill is updated.
 - If you need to include paper figures, experiment charts, screenshots, or architecture diagrams, specify the target slide and role for each image in the outline.
 
-## QA
-
-- Documentation: [codex-ppt FAQ and usage notes](https://ningzimu.github.io/codex-ppt-skill/#/faq)
-
-## Community
-
-Scan the QR code to join the Skill community group, share usage experience, report issues, and receive update notices.
-
-<img src="assets/codex-ppt-community-qr.png" alt="Codex PPT Skill community QR code" width="220">
-
-Telegram: [CodexPPT](https://t.me/CodexPPT)
-
 ## More Projects
 
 - [image-to-editable-ppt-skill](https://github.com/ningzimu/image-to-editable-ppt-skill): Rebuild slide screenshots, PDF pages, or image-based PPTX files into editable PowerPoint decks, useful after `codex-ppt` generates image-based slides.
@@ -242,6 +230,10 @@ Telegram: [CodexPPT](https://t.me/CodexPPT)
 - [handdrawn-tech-illustrations](https://github.com/ningzimu/handdrawn-tech-illustrations): A hand-drawn illustration skill for Chinese technical content. It turns technical articles, product notes, screenshots, outlines, or rough ideas into article illustrations, concept explainer graphics, WeChat cover images, and Rednote covers, with a friendly, light-cartoon, Chinese-readable style and moderate information density.
 - [awesome-ai-ppt](https://github.com/ningzimu/awesome-ai-ppt): A curated list of open-source AI PPT projects, organized by workflows such as HTML-first, image-first, PPTX-native, conversion, and automation infrastructure, focused on GitHub projects that help agents or developers create, edit, convert, or inspect PPT decks.
 - [claude-code-lens](https://github.com/ningzimu/claude-code-lens): A local observability tool for Claude Code API traffic, logs, prompts, and tool calls, useful for understanding what an agent is actually doing.
+
+## Support
+
+Having trouble? Check the [usage documentation](https://ningzimu.github.io/codex-ppt-skill/#/en/), join [CodexPPT](https://t.me/CodexPPT), or [open an issue](https://github.com/ningzimu/codex-ppt-skill/issues/new).
 
 ## License
 
