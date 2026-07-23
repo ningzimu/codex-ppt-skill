@@ -1,0 +1,8 @@
+* [Documentation Home](/en/README.md)
+* [Quick Start](/en/quickstart.md)
+* [Design Philosophy](/en/design.md)
+* [Installation and Configuration](/en/installation.md)
+* [Standard Workflow](/en/workflow.md)
+* [Styles and Personal Style Library](/en/styles.md)
+* [FAQ](/en/faq.md)
+* [Example Prompts](/en/prompts.md)

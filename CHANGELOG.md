@@ -8,6 +8,7 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 - Add a Korean translation of the README (`README_ko.md`) and a language badge linking to it from `README.md` and `README_en.md`. (#90)
 - Replace README language badges with a consistent text-based language switcher across all translations.
+- Add complete English and Korean versions of the Docsify usage documentation with localized navigation, search, and pagination.
 
 ## 0.5.5
 
