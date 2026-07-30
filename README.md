@@ -229,6 +229,7 @@ skill 会按以下流程执行：
 - [codex-gpt-image](https://github.com/ningzimu/codex-gpt-image)：通过 Codex OAuth / 会员登录调用 `gpt-image-2` 的生图 skill。
 - [handdrawn-tech-illustrations](https://github.com/ningzimu/handdrawn-tech-illustrations)：面向中文技术内容的手绘配图 skill，可以把技术文章、产品笔记、截图、大纲或粗略想法生成正文配图、概念解释图、微信公众号封面和小红书封面；风格强调亲和、轻卡通、中文可读和适中的信息密度。
 - [awesome-ai-ppt](https://github.com/ningzimu/awesome-ai-ppt)：精选的 AI PPT 相关开源项目，按 HTML-first、图片生成式、PPTX-native、转换与自动化基础设施等工作流分类，关注能帮助 agent 或开发者创建、编辑、转换、检查 PPT 的 GitHub 仓库。
+- [awesome-skills](https://github.com/ningzimu/awesome-skills)：精选实用的 AI Agent Skills 与配套工具；安装一个入口后，Agent 会根据任务从持续更新的清单中选择、安装并使用合适的 skill。
 - [claude-code-lens](https://github.com/ningzimu/claude-code-lens)：Claude Code 本地观测工具，用来查看 API 流量、日志、prompt 和工具调用，适合排查 agent 实际在做什么。
 
 ## 支持

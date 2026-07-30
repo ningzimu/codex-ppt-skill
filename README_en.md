@@ -229,6 +229,7 @@ The skill follows this workflow:
 - [codex-gpt-image](https://github.com/ningzimu/codex-gpt-image): A `gpt-image-2` image generation skill powered by Codex OAuth / member login.
 - [handdrawn-tech-illustrations](https://github.com/ningzimu/handdrawn-tech-illustrations): A hand-drawn illustration skill for Chinese technical content. It turns technical articles, product notes, screenshots, outlines, or rough ideas into article illustrations, concept explainer graphics, WeChat cover images, and Rednote covers, with a friendly, light-cartoon, Chinese-readable style and moderate information density.
 - [awesome-ai-ppt](https://github.com/ningzimu/awesome-ai-ppt): A curated list of open-source AI PPT projects, organized by workflows such as HTML-first, image-first, PPTX-native, conversion, and automation infrastructure, focused on GitHub projects that help agents or developers create, edit, convert, or inspect PPT decks.
+- [awesome-skills](https://github.com/ningzimu/awesome-skills): A curated list of practical AI Agent Skills and related tools. Install one entry point, and your agent can consult the continuously updated list to select, install, and use the right skill for each task.
 - [claude-code-lens](https://github.com/ningzimu/claude-code-lens): A local observability tool for Claude Code API traffic, logs, prompts, and tool calls, useful for understanding what an agent is actually doing.
 
 ## Support

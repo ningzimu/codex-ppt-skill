@@ -229,6 +229,7 @@ skill은 다음 워크플로를 따릅니다:
 - [codex-gpt-image](https://github.com/ningzimu/codex-gpt-image): Codex OAuth / 멤버 로그인 기반의 `gpt-image-2` 이미지 생성 skill입니다.
 - [handdrawn-tech-illustrations](https://github.com/ningzimu/handdrawn-tech-illustrations): 중국어 기술 콘텐츠를 위한 손그림 일러스트 skill입니다. 기술 아티클, 제품 노트, 스크린샷, 개요, 대략적인 아이디어를 아티클 삽화, 개념 설명 그래픽, WeChat 커버 이미지, Rednote 커버로 변환하며, 친근하고 가벼운 카툰풍에 중국어 가독성이 좋고 적당한 정보 밀도를 갖습니다.
 - [awesome-ai-ppt](https://github.com/ningzimu/awesome-ai-ppt): 오픈소스 AI PPT 프로젝트를 HTML-first, image-first, PPTX-native, 변환, 자동화 인프라 등의 워크플로별로 정리한 큐레이션 목록입니다. 에이전트나 개발자가 PPT 덱을 만들고, 편집하고, 변환하고, 검사하는 데 도움이 되는 GitHub 프로젝트에 초점을 둡니다.
+- [awesome-skills](https://github.com/ningzimu/awesome-skills): 실용적인 AI Agent Skills와 관련 도구를 엄선한 목록입니다. 하나의 진입점을 설치하면 에이전트가 지속적으로 업데이트되는 목록을 참고해 작업에 맞는 skill을 선택하고 설치해 사용할 수 있습니다.
 - [claude-code-lens](https://github.com/ningzimu/claude-code-lens): Claude Code의 API 트래픽, 로그, 프롬프트, 도구 호출을 위한 로컬 관찰(observability) 도구로, 에이전트가 실제로 무엇을 하는지 이해하는 데 유용합니다.
 
 ## 지원
