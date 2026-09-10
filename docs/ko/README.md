@@ -2,6 +2,19 @@
 
 Codex PPT는 Codex용 PPT 생성 skill이며, Claude Code, OpenClaw, Hermes Agent 등 `SKILL.md`를 지원하는 agent에서도 사용할 수 있습니다. 글, 보고서, 논문, 수업 노트 또는 거친 아이디어를 이미지형 프레젠테이션으로 변환합니다. 먼저 개요와 시각 스타일을 설계하고, 각 슬라이드의 완성 이미지를 차례로 생성한 뒤, 마지막으로 `.pptx` 파일로 조립합니다.
 
+## 스폰서
+
+<table>
+<tr>
+<td width="180"><img src="https://raw.githubusercontent.com/ningzimu/codex-ppt-skill/main/assets/atlas-cloud-logo.png" alt="Atlas Cloud" width="160"></td>
+<td>본 프로젝트를 후원해 주신 <a href="https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=codex-ppt-skill">Atlas Cloud</a>에 감사드립니다. AtlasCloud는 이미지 생성, 비디오 생성, LLM 등을 하나의 API로 제공하는 멀티모달 AI 추론 플랫폼입니다. 본 skill은 기존의 API key, base URL, 모델명 설정을 그대로 사용해 AtlasCloud의 GPT Image 2 생성·편집 엔드포인트를 호출할 수 있으며, 사용량 기반 과금과 즉시 사용 가능한 설정을 제공합니다. 전체 모델 목록은 <a href="https://www.atlascloud.ai/zh/models">Atlas Cloud 모델 페이지</a>를 참고하세요.</td>
+</tr>
+<tr>
+<td width="180" align="center"><img src="https://raw.githubusercontent.com/ningzimu/codex-ppt-skill/main/assets/codia-noteslide-logo.png" alt="Codia NoteSlide" width="64"><br><strong>Codia NoteSlide</strong></td>
+<td>생성한 슬라이드를 편집할 수 있게 만드세요. Codex PPT로 생성한 슬라이드 이미지, PDF 또는 NotebookLM에서 내보낸 프레젠테이션을 편집 가능한 PowerPoint로 변환합니다. 빠른 변환, 합리적인 가격, 우수한 시각적 재현으로 대량 이미지의 PPT 변환과 잦은 납품에 적합합니다. <a href="https://codia.ai/noteslide/r/12daee802"><strong>Codia NoteSlide 사용해 보기 →</strong></a></td>
+</tr>
+</table>
+
 ## 문서 읽는 순서
 
 빠르게 시작하려면 먼저 [빠른 시작](/ko/quickstart.md)을 읽으세요.

@@ -13,6 +13,10 @@
 <td width="180"><img src="assets/atlas-cloud-logo.png" alt="Atlas Cloud" width="160"></td>
 <td>感谢 <a href="https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=codex-ppt-skill">Atlas Cloud</a> 赞助本项目。AtlasCloud 是多模态 AI 推理平台，提供统一 API 接入图片生成、视频生成和大语言模型等能力；本 skill 已支持通过现有 API key、base URL 和模型名配置接入 AtlasCloud 的 GPT Image 2 生图和编辑图接口，按量计费，开箱即用。完整模型列表可查看 <a href="https://www.atlascloud.ai/zh/models">Atlas Cloud 模型页</a>。</td>
 </tr>
+<tr>
+<td width="180" align="center"><img src="assets/codia-noteslide-logo.png" alt="Codia NoteSlide" width="64"><br><strong>Codia NoteSlide</strong></td>
+<td>让生成的幻灯片变得可编辑。将 Codex PPT 生成的幻灯片图片、PDF 或 NotebookLM 导出的演示文稿转换为可编辑 PowerPoint。转换快、价格亲民、还原效果好，适合批量图片转 PPT 和高频交付。 <a href="https://codia.ai/noteslide/r/12daee802"><strong>体验 Codia NoteSlide →</strong></a></td>
+</tr>
 </table>
 
 ## 温馨提示

@@ -13,6 +13,10 @@ PowerPoint 덱을 생성하는 Codex용 skill입니다. Codex 외에도 Claude C
 <td width="180"><img src="assets/atlas-cloud-logo.png" alt="Atlas Cloud" width="160"></td>
 <td>본 프로젝트를 후원해 주신 <a href="https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=codex-ppt-skill">Atlas Cloud</a>에 감사드립니다. AtlasCloud는 이미지 생성, 비디오 생성, LLM 등을 하나의 API로 제공하는 멀티모달 AI 추론 플랫폼입니다. 본 skill은 기존의 API key, base URL, 모델명 설정을 그대로 사용해 AtlasCloud의 GPT Image 2 생성·편집 엔드포인트를 호출할 수 있으며, 사용량 기반 과금과 즉시 사용 가능한 설정을 제공합니다. 전체 모델 목록은 <a href="https://www.atlascloud.ai/zh/models">Atlas Cloud 모델 페이지</a>를 참고하세요.</td>
 </tr>
+<tr>
+<td width="180" align="center"><img src="assets/codia-noteslide-logo.png" alt="Codia NoteSlide" width="64"><br><strong>Codia NoteSlide</strong></td>
+<td>생성한 슬라이드를 편집할 수 있게 만드세요. Codex PPT로 생성한 슬라이드 이미지, PDF 또는 NotebookLM에서 내보낸 프레젠테이션을 편집 가능한 PowerPoint로 변환합니다. 빠른 변환, 합리적인 가격, 우수한 시각적 재현으로 대량 이미지의 PPT 변환과 잦은 납품에 적합합니다. <a href="https://codia.ai/noteslide/r/12daee802"><strong>Codia NoteSlide 사용해 보기 →</strong></a></td>
+</tr>
 </table>
 
 ## 참고 사항
