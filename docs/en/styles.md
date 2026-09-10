@@ -4,7 +4,7 @@ Codex PPT draws its visual styles from two sources: the **built-in styles** ship
 
 ## Built-in Styles
 
-The skill includes 12 built-in style references, so you can get started without knowing how to write prompts. When creating a presentation, simply name the style you want. For example:
+The skill includes 13 built-in style references, so you can get started without knowing how to write prompts. When creating a presentation, simply name the style you want. For example:
 
 ```text
 Please use the codex-ppt skill to turn this material into a 10-slide presentation using the built-in "Hand-Drawn Technical Explanation" style.
@@ -23,6 +23,8 @@ Please use the codex-ppt skill to turn this material into a 10-slide presentatio
 | ![Scientific Defense](https://raw.githubusercontent.com/ningzimu/codex-ppt-skill/main/assets/style-previews/scientific-defense.png) | ![McKinsey-Style](https://raw.githubusercontent.com/ningzimu/codex-ppt-skill/main/assets/style-previews/mckinsey-style.png) |
 | Party and Government Red | Teaching Courseware |
 | ![Party and Government Red](https://raw.githubusercontent.com/ningzimu/codex-ppt-skill/main/assets/style-previews/party-government-red.png) | ![Teaching Courseware](https://raw.githubusercontent.com/ningzimu/codex-ppt-skill/main/assets/style-previews/teaching-courseware.png) |
+| China Electronics Cloud |  |
+| ![China Electronics Cloud](https://raw.githubusercontent.com/ningzimu/codex-ppt-skill/main/assets/style-previews/china-electronics-cloud.png) |  |
 
 A style is a visual system—including color palette, typographic character, layout density, and illustration language—not a fixed template. Within one style, each slide's layout changes according to its content role, so the slides do not all look identical.
 

@@ -4,7 +4,7 @@ Codex PPT의 시각 스타일은 두 곳에서 가져옵니다. skill과 함께 
 
 ## 내장 스타일
 
-skill에는 12가지 참고 스타일이 내장되어 있어 프롬프트를 잘 작성하지 못해도 바로 시작할 수 있습니다. PPT를 만들 때 다음 예시처럼 스타일 이름을 직접 말하면 됩니다.
+skill에는 13가지 참고 스타일이 내장되어 있어 프롬프트를 잘 작성하지 못해도 바로 시작할 수 있습니다. PPT를 만들 때 다음 예시처럼 스타일 이름을 직접 말하면 됩니다.
 
 ```text
 codex-ppt skill을 사용해서 이 자료를 10페이지 PPT로 만들고, 내장된 「손그림 기술 설명 스타일」을 사용해 주세요.
@@ -23,6 +23,8 @@ codex-ppt skill을 사용해서 이 자료를 10페이지 PPT로 만들고, 내�
 | ![연구 발표 스타일](https://raw.githubusercontent.com/ningzimu/codex-ppt-skill/main/assets/style-previews/scientific-defense.png) | ![McKinsey 스타일](https://raw.githubusercontent.com/ningzimu/codex-ppt-skill/main/assets/style-previews/mckinsey-style.png) |
 | 당·정 홍보용 레드 스타일 | 교육용 코스웨어 스타일 |
 | ![당·정 홍보용 레드 스타일](https://raw.githubusercontent.com/ningzimu/codex-ppt-skill/main/assets/style-previews/party-government-red.png) | ![교육용 코스웨어 스타일](https://raw.githubusercontent.com/ningzimu/codex-ppt-skill/main/assets/style-previews/teaching-courseware.png) |
+| 중국전자클라우드 스타일 |  |
+| ![중국전자클라우드 스타일](https://raw.githubusercontent.com/ningzimu/codex-ppt-skill/main/assets/style-previews/china-electronics-cloud.png) |  |
 
 스타일은 색상, 글꼴의 분위기, 레이아웃 밀도와 일러스트 언어로 이루어진 하나의 시각 시스템이지, 고정된 템플릿이 아닙니다. 같은 스타일에서도 각 페이지의 레이아웃은 콘텐츠 역할에 따라 달라지므로 모든 페이지가 똑같아 보이지 않습니다.
 

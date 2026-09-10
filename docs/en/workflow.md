@@ -30,7 +30,7 @@ No final slide images, `speech.md`, or `.pptx` file should be generated before t
 
 ## Stage 3: Confirm the Visual Style
 
-The agent proposes 2-3 style directions and recommends one. Candidates come from the 12 built-in styles, including clean professional, scientific defense, hand-drawn technical explanation, McKinsey-style, party and government red, and teaching courseware, as well as your personal style library. The agent can also reproduce a style from screenshots, a PDF, or a presentation you provide. See [Styles and Personal Style Library](/en/styles.md) for complete style previews.
+The agent proposes 2-3 style directions and recommends one. Candidates come from the 13 built-in styles, including clean professional, scientific defense, hand-drawn technical explanation, McKinsey-style, party and government red, teaching courseware, and China Electronics Cloud, as well as your personal style library. The agent can also reproduce a style from screenshots, a PDF, or a presentation you provide. See [Styles and Personal Style Library](/en/styles.md) for complete style previews.
 
 After a style is selected, the entire presentation should maintain a consistent visual language, while individual slide layouts may vary according to the content.
 

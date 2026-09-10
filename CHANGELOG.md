@@ -4,6 +4,10 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ## Unreleased
 
+### Features
+
+- Add a reusable China Electronics Cloud style reference and preview for enterprise cloud, data, AI, security, and digital-transformation presentations.
+
 ### Documentation
 
 - Replace the redundant QA and community sections with compact documentation, Telegram, and issue support links across all README language versions, and remove the obsolete community QR code. (#92)

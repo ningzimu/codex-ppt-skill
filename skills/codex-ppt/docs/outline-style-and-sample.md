@@ -95,6 +95,7 @@ Available built-in references:
 - `references/麦肯锡风格.md`
 - `references/党政红风格.md`
 - `references/教学课件风.md`
+- `references/中国电子云风.md`
 
 This list only tracks built-in styles shipped with the skill. Do not add user custom styles here; they are saved to `${CODEX_PPT_HOME:-~/.codex-ppt-skill}/references/` via `docs/style-library.md` and discovered by directory scan, so they need no registration.
 

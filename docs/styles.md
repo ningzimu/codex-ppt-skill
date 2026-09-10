@@ -4,7 +4,7 @@ Codex PPT 的视觉风格来自两个地方：随 skill 发布的**内置风格*
 
 ## 内置风格
 
-skill 内置 12 种风格参考，不会写提示词也可以直接从这里开始。制作 PPT 时直接说风格名即可，例如：
+skill 内置 13 种风格参考，不会写提示词也可以直接从这里开始。制作 PPT 时直接说风格名即可，例如：
 
 ```text
 请使用 codex-ppt skill，把这份材料做成 10 页 PPT，使用内置的「手绘技术解释风」。
@@ -23,6 +23,8 @@ skill 内置 12 种风格参考，不会写提示词也可以直接从这里开�
 | ![科研答辩风](https://raw.githubusercontent.com/ningzimu/codex-ppt-skill/main/assets/style-previews/scientific-defense.png) | ![麦肯锡风格](https://raw.githubusercontent.com/ningzimu/codex-ppt-skill/main/assets/style-previews/mckinsey-style.png) |
 | 党政红风格 | 教学课件风 |
 | ![党政红风格](https://raw.githubusercontent.com/ningzimu/codex-ppt-skill/main/assets/style-previews/party-government-red.png) | ![教学课件风](https://raw.githubusercontent.com/ningzimu/codex-ppt-skill/main/assets/style-previews/teaching-courseware.png) |
+| 中国电子云风 |  |
+| ![中国电子云风](https://raw.githubusercontent.com/ningzimu/codex-ppt-skill/main/assets/style-previews/china-electronics-cloud.png) |  |
 
 风格是一套视觉系统（配色、字体气质、版式密度、插画语言），不是固定模板；同一套风格下，每页版式会根据内容角色变化，不会每页长得一样。
 

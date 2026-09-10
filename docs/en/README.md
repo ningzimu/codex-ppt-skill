@@ -18,7 +18,7 @@ If you are already using the skill and have encountered a problem, see the [FAQ]
 - [Design Philosophy](/en/design.md): Why the skill uses image-based presentations, staged confirmation, and a two-skill design.
 - [Installation and Configuration](/en/installation.md): Installation and update methods for Codex, OpenClaw, Claude Code, and Hermes Agent, plus API/CLI fallback configuration.
 - [Standard Workflow](/en/workflow.md): The complete process, from confirming the outline, style, backend, and sample slide to generating and assembling the full deck.
-- [Styles and Personal Style Library](/en/styles.md): Previews of the 12 built-in styles, reproducing a style from reference materials, and saving styles you like to your personal style library for long-term reuse.
+- [Styles and Personal Style Library](/en/styles.md): Previews of the 13 built-in styles, reproducing a style from reference materials, and saving styles you like to your personal style library for long-term reuse.
 - [FAQ](/en/faq.md): Common questions about editability, API keys, sample slides, inserting source materials, and revising individual slides.
 - [Example Prompts](/en/prompts.md): Reusable prompts for turning articles into presentations, thesis defenses, executive reports, specified styles, and single-slide revisions.
 
@@ -26,7 +26,7 @@ If you are already using the skill and have encountered a problem, see the [FAQ]
 
 - Image-based presentation generation: Each slide is a complete 16:9 slide image, ideal for scenarios that require strong visual expression and a consistent style.
 - Staged confirmation workflow: Confirm the outline, visual style, image-generation method, and sample slide before generating the full deck to reduce rework.
-- 12 built-in styles: Options include clean professional, scientific defense, hand-drawn technical explanation, McKinsey-style, party and government red, and teaching courseware. See [Styles and Personal Style Library](/en/styles.md).
+- 13 built-in styles: Options include clean professional, scientific defense, hand-drawn technical explanation, McKinsey-style, party and government red, teaching courseware, and China Electronics Cloud. See [Styles and Personal Style Library](/en/styles.md).
 - Style matching from reference materials: The skill can review a user-provided presentation, PDF, or screenshots, understand the visual style of each page, and generate a similar style.
 - Personal style library: Styles you like can be saved to `~/.codex-ppt-skill/references/`, outside the skill installation directory. They remain available after skill updates and can be reused by name in future projects.
 - Place specified source materials on designated slides: You can assign original paper figures, experiment results, architecture diagrams, or screenshots to specific slides.
