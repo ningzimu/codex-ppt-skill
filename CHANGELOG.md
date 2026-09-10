@@ -6,7 +6,7 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ### Features
 
-- Add a reusable China Electronics Cloud style reference and preview for enterprise cloud, data, AI, security, and digital-transformation presentations.
+- Add a reusable China Electronics Cloud style reference and preview for enterprise cloud, data, AI, security, and digital-transformation presentations. (#99)
 
 ### Documentation
 
