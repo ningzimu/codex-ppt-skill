@@ -6,8 +6,8 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ### Improvements
 
-- Default image requests to GPT Image 2.5 Flare, support Sunburst, xhigh/max quality and transparent PNG/WebP, and retain legacy model validation.
-- Refresh image backend guidance across all languages without claiming a fixed model for built-in tools.
+- Default image requests to GPT Image 2.5 Flare, support Sunburst, xhigh/max quality and transparent PNG/WebP, and retain legacy model validation. (#101)
+- Refresh image backend guidance across all languages without claiming a fixed model for built-in tools. (#101)
 
 ### Documentation
 
