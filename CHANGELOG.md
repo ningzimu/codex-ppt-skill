@@ -4,6 +4,8 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ## Unreleased
 
+## 0.6.0
+
 ### Improvements
 
 - Default image requests to GPT Image 2.5 Flare, support Sunburst, xhigh/max quality and transparent PNG/WebP, and retain legacy model validation. (#101)
