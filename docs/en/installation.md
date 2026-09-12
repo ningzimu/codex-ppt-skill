@@ -74,25 +74,21 @@ Updates are safe: runtime configuration such as API keys is stored in `~/.codex-
 
 ## Image-Generation Model Configuration
 
-You cannot use this skill without access to the `gpt-image-2` model. The skill depends heavily on the `gpt-image-2` image-generation model.
+You need an image backend available in the current environment: a built-in tool or a compatible image API. No single model is required.
 
-## How Do I Know Whether I Have Access to `gpt-image-2`?
+API/CLI fallback defaults to `gpt-image-2.5-flare`; select `--model gpt-image-2.5-sunburst` to switch. Both support `xhigh` / `max` quality and transparent PNG/WebP. Defaults remain 2K 16:9 and `medium`. Older models retain their parameter limits; check which models and parameters your provider supports.
 
-- If you subscribe to ChatGPT Plus or Pro, you have access to the `gpt-image-2` model by default. Codex includes a built-in image-generation tool.
-- If you access Codex through a third-party relay API, ask it to generate an image containing complex Chinese text, such as a poem written in running script. Check whether the image is generated successfully and whether the Chinese characters contain errors. If everything works, no further configuration is required.
-- If neither option works, you will need to purchase access to a relay API that provides the `gpt-image-2` model.
-
-You usually do not need to configure the image-generation model manually. While you use Codex PPT, the AI automatically detects the image-generation backend. If none is available, it will ask you to configure an image-generation backend API and guide you through the setup.
+The AI checks whether the built-in tool is callable, then generates a sample to validate text and visual quality. Its actual model and parameters depend on the environment; a ChatGPT subscription or successful image response does not prove that 2.5 was used. Once API/CLI fallback is selected, configure the API key, base URL, and a provider-supported model as needed based on errors.
 
 ## Notes on Third-Party APIs
 
-This skill includes a script compatible with OpenAI's official image-generation interface. If you use a third-party `gpt-image-2` relay API, try providing:
+This skill includes a script compatible with OpenAI's official image-generation interface. If you use a third-party `gpt-image-2.5-flare` relay API, try providing:
 
 - The relay service's base URL
   - If the relay service gives an endpoint such as `https://xxx/v1/images/generations`, set the base URL to `https://xxx/v1`.
   - If the relay service already gives `https://xxx/v1`, do not append another layer, which would produce `.../v1/v1`.
   - For official OpenAI, `OPENAI_BASE_URL` can be omitted; the default is the official `https://api.openai.com/v1`.
 - The relay service's API key
-- The exact `gpt-image-2` model name used by the relay service
+- The exact `gpt-image-2.5-flare` model name used by the relay service
 
 After providing this information to the AI, ask it to generate an image. If it still does not work, the relay service may use a custom image-generation scheme that is not fully compatible with the OpenAI image API. Send the relay service's official image-generation documentation to the AI so it can learn the interface and adapt the image-generation script.

@@ -16,7 +16,7 @@ Yes. Codex PPT is a `SKILL.md`-based skill. In addition to Codex, it works with 
 
 This skill is developed and tested primarily with Codex, so Codex offers the best compatibility and is recommended.
 
-Different agents have different image-generation capabilities and tool interfaces. Outside Codex, you will usually need to configure `gpt-image-2` or a third-party OpenAI-compatible image-generation API. See [Installation and Configuration](/en/installation.md), and let the AI guide you through setup based on your current environment.
+Different agents have different image-generation capabilities and tool interfaces. Outside Codex, you will usually need to configure `gpt-image-2.5-flare` or a third-party OpenAI-compatible image-generation API. See [Installation and Configuration](/en/installation.md), and let the AI guide you through setup based on your current environment.
 
 ## Q: How Do I Update the Skill to the Latest Version?
 
@@ -32,15 +32,15 @@ Do not regenerate the entire deck. First select one or two slides with obvious d
 
 ## Q: What Should I Do If the Generated Presentation Looks Bad?
 
-First confirm that your `gpt-image-2` model can generate images correctly. If the model is unavailable, returns abnormal quality, or a third-party API or relay service does not correctly support `gpt-image-2`, the output quality will be significantly worse.
+First confirm that your selected image backend can generate images correctly. If it is unavailable, returns abnormal quality, or the provider does not support the selected model and parameters, the output quality will be significantly worse.
 
 After confirming that the model works, ask the AI to address specific issues such as inconsistent styling, text that is too small, overcrowded layouts, unattractive colors, or illustrations that do not match the topic. It is best to regenerate one sample slide first and continue with the full deck only after you are satisfied.
 
 ## Q: What Should I Do If the Generated Slide Images Are Blurry?
 
-Codex subscribers use the built-in image-generation tool by default. Its generated images have a relatively low resolution, which currently cannot be specified manually. For higher-resolution images, use the `gpt-image-2` API instead—the API/CLI fallback—and configure the API key, base URL, and model name. See [Installation and Configuration](/en/installation.md).
+Prefer the built-in image tool available in the current environment. Its actual model, resolution, and controls depend on that environment; a subscription or successful image response does not verify them. If precise size or quality settings are required and the built-in tool does not expose them, use an API/CLI fallback that supports those parameters. API/CLI fallback output defaults to 2K 16:9; try 4K for text-heavy or blurry slides. GPT Image 2.5 output above `2560x1440` pixels is experimental; inspect the actual result.
 
-With the API/CLI fallback, the script defaults to 2K resolution in a 16:9 landscape format. If the image is still blurry, especially on slides with substantial text, ask the AI to generate it at 4K resolution.
+API/CLI fallback defaults to `gpt-image-2.5-flare`; select `--model gpt-image-2.5-sunburst` to switch. Both support `xhigh` / `max` quality and transparent PNG/WebP. Defaults remain 2K 16:9 and `medium`. Older models retain their parameter limits; check which models and parameters your provider supports.
 
 ## Q: Why Confirm the Outline First?
 

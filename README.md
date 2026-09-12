@@ -4,7 +4,7 @@
 
 [![文档](https://img.shields.io/badge/%E6%96%87%E6%A1%A3-%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97-111827)](https://ningzimu.github.io/codex-ppt-skill/#/) [![支持](https://img.shields.io/badge/%E6%94%AF%E6%8C%81-%E8%8E%B7%E5%8F%96%E5%B8%AE%E5%8A%A9-2CA5E0)](https://t.me/CodexPPT) [![ClawHub](https://img.shields.io/badge/ClawHub-codex--ppt-cd3b35)](https://clawhub.ai/ningzimu/codex-ppt) [![ClawMama](https://img.shields.io/badge/ClawMama-codex--ppt-2CA5E0)](https://app.clawmama.run/skills/5lak48/hermes?utm_source=github&utm_medium=issue&utm_campaign=skill_outreach_ningzimu_codex_ppt_skill) [![GitHub stars](https://img.shields.io/github/stars/ningzimu/codex-ppt-skill?style=flat&logo=github&label=stars)](https://github.com/ningzimu/codex-ppt-skill/stargazers) [![GitHub forks](https://img.shields.io/github/forks/ningzimu/codex-ppt-skill?style=flat&logo=github&label=forks)](https://github.com/ningzimu/codex-ppt-skill/forks)
 
-一个面向 Codex 的 PPT 生成 skill，也可在 Claude Code、OpenClaw、Hermes Agent 等支持 `SKILL.md` 的 agent 中使用；在这些非 Codex 环境中通常需要配置 `gpt-image-2`、第三方生图 API 或 OpenAI 兼容格式的生图接口。它把文章、报告、论文、课程笔记等内容转换成“整页图片式”的演示文稿：先规划大纲和视觉风格，再生成每页幻灯片图片，最后用本地脚本组装为 `.pptx`。
+一个面向 Codex 的 PPT 生成 skill，也可在 Claude Code、OpenClaw、Hermes Agent 等支持 `SKILL.md` 的 agent 中使用；在这些非 Codex 环境中通常需要配置 `gpt-image-2.5-flare`、第三方生图 API 或 OpenAI 兼容格式的生图接口。它把文章、报告、论文、课程笔记等内容转换成“整页图片式”的演示文稿：先规划大纲和视觉风格，再生成每页幻灯片图片，最后用本地脚本组装为 `.pptx`。
 
 ## 赞助
 
@@ -42,7 +42,7 @@
 ## 特点
 
 - 多 agent 可用：支持 Codex、Claude Code、OpenClaw、Hermes Agent 等支持 `SKILL.md` 的环境；最推荐在 Codex 中使用，优先走内置生图和编辑图能力。
-- 第三方生图供应商接入：支持 OpenAI 兼容接口、AtlasCloud、`base URL` 和自定义模型名配置，方便通过 API/CLI fallback 使用 `gpt-image-2` 或兼容模型。
+- 第三方生图供应商接入：支持 OpenAI 兼容接口、AtlasCloud、`base URL` 和自定义模型名配置，方便通过 API/CLI fallback 使用 `gpt-image-2.5-flare` 或兼容模型。
 - 稳定的阶段化流程：先确认大纲、页数、视觉风格、生图后端和样张，再进入整套生成，降低一次生成完整 PPT 时的返工和偏航。
 - 不是无脑生成：会先引导你确认 `outline.md`、每页要点、风格方向和样张效果，再按确认后的方案继续。
 - 低门槛输入：文章、报告、论文、课程笔记、Markdown、大纲、PDF、Word 等材料都可以作为起点。
@@ -219,7 +219,8 @@ skill 会按以下流程执行：
 
 ## 使用技巧
 
-- Codex 会员默认会优先使用内置生图工具，其生成的图片分辨率比较低，且目前不能手动指定分辨率。如果需要更高分辨率的图像，需要改用 `gpt-image-2` API 的方式生成（即 API/CLI fallback，提供 API key、base URL 和模型名）。API/CLI fallback 场景下，脚本默认分辨率是 2K 16:9 横屏；如果生成的幻灯片图片仍然比较模糊，尤其是文字较多的页面，可以让 AI 改用 4K 分辨率生成。
+- 优先使用当前环境可调用的内置生图工具；实际模型、分辨率和可调参数取决于环境，不能仅凭会员身份或成功出图确认。若需精确指定尺寸或质量，而内置工具未暴露这些参数，可选择支持相应参数的 API/CLI fallback。API/CLI fallback 默认输出为 2K 16:9；文字较多或仍模糊时可尝试 4K；GPT Image 2.5 超过 `2560x1440` 像素的输出属于实验性能力，需检查实际结果。
+- API/CLI fallback 默认使用 `gpt-image-2.5-flare`，可用 `--model gpt-image-2.5-sunburst` 切换。两者支持 `xhigh` / `max` 质量及透明 PNG/WebP；默认仍为 2K 16:9、`medium`。旧模型保留原参数限制，第三方服务需确认其支持的模型和参数。
 - 如果只是不满意某一页的内容、排版、配色或文字表达，可以直接让当前 agent 针对这一页做细致修改，不需要整套 PPT 重新生成。
 
 ![单页局部修改示意：打开 PPT、点击标注，并框选需要修改的位置](assets/single-slide-revision-example.png)
@@ -230,7 +231,7 @@ skill 会按以下流程执行：
 ## 我的其他项目
 
 - [image-to-editable-ppt-skill](https://github.com/ningzimu/image-to-editable-ppt-skill)：把幻灯片截图、PDF 页面或图片版 PPTX 重建为可编辑 PowerPoint，适合在 `codex-ppt` 生成整页图片后继续做可编辑化。
-- [codex-gpt-image](https://github.com/ningzimu/codex-gpt-image)：通过 Codex OAuth / 会员登录调用 `gpt-image-2` 的生图 skill。
+- [codex-gpt-image](https://github.com/ningzimu/codex-gpt-image)：通过 Codex OAuth / 会员登录生成图片，支持 GPT Image 2.5 请求参数；实际后端模型取决于服务端。
 - [handdrawn-tech-illustrations](https://github.com/ningzimu/handdrawn-tech-illustrations)：面向中文技术内容的手绘配图 skill，可以把技术文章、产品笔记、截图、大纲或粗略想法生成正文配图、概念解释图、微信公众号封面和小红书封面；风格强调亲和、轻卡通、中文可读和适中的信息密度。
 - [awesome-ai-ppt](https://github.com/ningzimu/awesome-ai-ppt)：精选的 AI PPT 相关开源项目，按 HTML-first、图片生成式、PPTX-native、转换与自动化基础设施等工作流分类，关注能帮助 agent 或开发者创建、编辑、转换、检查 PPT 的 GitHub 仓库。
 - [awesome-skills](https://github.com/ningzimu/awesome-skills)：精选实用的 AI Agent Skills 与配套工具；安装一个入口后，Agent 会根据任务从持续更新的清单中选择、安装并使用合适的 skill。

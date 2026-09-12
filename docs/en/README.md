@@ -45,7 +45,7 @@ If you are already using the skill and have encountered a problem, see the [FAQ]
 - Place specified source materials on designated slides: You can assign original paper figures, experiment results, architecture diagrams, or screenshots to specific slides.
 - Multiple agent environments: In addition to Codex, the skill works with agents that support `SKILL.md`, including Claude Code, OpenClaw, and Hermes Agent.
 - Automatic PowerPoint assembly: The skill generates `outline.md`, individual slide images, and `speech.md`, then assembles everything into a `.pptx` file.
-- Third-party API support for text models and the `gpt-image-2` image-generation model.
+- Third-party API support for text models and the `gpt-image-2.5-flare` image-generation model.
 - Companion speaker notes: Speaker notes are generated and inserted into the PowerPoint notes pages by default.
 - Targeted post-generation edits for specific slides that need improvement. See the [FAQ](/en/faq.md).
 
@@ -64,7 +64,7 @@ Codex PPT generates image-based presentations. They offer strong visual consiste
 
 If you need to convert the result into an editable presentation, you can use [image-to-editable-ppt-skill](https://github.com/ningzimu/image-to-editable-ppt-skill) after generation.
 
-You cannot use this skill without access to the `gpt-image-2` image-generation model. See [Installation and Configuration](/en/installation.md).
+This skill requires an available built-in image tool or compatible image API. See [Installation and Configuration](/en/installation.md).
 
 ## Related Links
 

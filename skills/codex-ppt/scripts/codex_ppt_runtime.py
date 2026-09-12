@@ -23,7 +23,7 @@ import venv
 
 
 DEFAULT_RUNTIME_HOME = "~/.codex-ppt-skill"
-DEFAULT_MODEL = "gpt-image-2"
+DEFAULT_MODEL = "gpt-image-2.5-flare"
 ENV_FIELDS = ("OPENAI_API_KEY", "OPENAI_BASE_URL", "CODEX_PPT_IMAGE_MODEL")
 
 

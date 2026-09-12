@@ -4,6 +4,11 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ## Unreleased
 
+### Improvements
+
+- Default image requests to GPT Image 2.5 Flare, support Sunburst, xhigh/max quality and transparent PNG/WebP, and retain legacy model validation.
+- Refresh image backend guidance across all languages without claiming a fixed model for built-in tools.
+
 ### Documentation
 
 - Add Codia NoteSlide sponsor cards and links across Chinese, English, and Korean READMEs and documentation homepages. (#100)

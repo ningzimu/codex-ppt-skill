@@ -22,14 +22,14 @@ Basic generation command:
 
 ```bash
 ~/.codex-ppt-skill/.venv/bin/python {skill_root}/scripts/image_gen.py generate \
-  --model gpt-image-2 \
+  --model gpt-image-2.5-flare \
   --prompt-file {prompt_file} \
   --size 2560x1440 \
   --quality medium \
   --out {base_dir}/{deck_name}/origin_image/slide_01.png
 ```
 
-The fallback CLI accepts model names containing `gpt-image-`, such as `gpt-image-2` or `openai/gpt-image-2`.
+The fallback CLI defaults to `gpt-image-2.5-flare`. Select `--model gpt-image-2.5-sunburst` for Sunburst. It also accepts provider-prefixed names and older GPT Image models; verify provider support before using a model.
 
 When generating from saved `prompts/slide_XX.json` files, use the job's `prompt` field only when the job does not require input images:
 
@@ -51,7 +51,7 @@ The fallback CLI supports:
 - `generate`: create one or more images from a prompt.
 - `edit`: edit one or more existing images, optionally with a mask.
 
-The fallback CLI defaults to 2K 16:9 landscape output, `2560x1440`, because it keeps slide text clearer while staying below the `gpt-image-2` pixel limit. For 4K landscape slides, use `--size 3840x2160 --quality high` only when the user asks for 4K, text-heavy slides need sharper output, or the default result is blurry. For portrait assets, use `--size 2160x3840` only if the user requests portrait output.
+The fallback CLI defaults to 2K 16:9 landscape output, `2560x1440`, with `medium` quality. GPT Image 2.5 also supports `xhigh` and `max`; older models retain their existing quality limits. For 4K landscape slides, use `--size 3840x2160 --quality high` only when the user asks for 4K, text-heavy slides need sharper output, or the default result is blurry. For portrait assets, use `--size 2160x3840` only if the user requests portrait output. For GPT Image 2.5, output above `2560x1440` pixels is experimental; inspect the actual size and visual quality.
 
 ## Editing Slides
 
@@ -70,9 +70,9 @@ Replace the final slide only after validating the edited output.
 
 Transparent-background requests:
 
-- Built-in mode should use a flat chroma-key background and local removal when appropriate.
-- CLI/API fallback should also prefer chroma-key generation plus `scripts/remove_chroma_key.py` for simple opaque subjects.
-- `gpt-image-2` does not support `--background transparent`. If the user needs true model-native transparency, ask before switching to `--model gpt-image-1.5 --background transparent --output-format png`.
+- GPT Image 2.5 Flare and Sunburst support `--background transparent --output-format png` (or `webp`) through compatible APIs. JPEG cannot preserve transparency. The current AtlasCloud adapter does not forward `background` and accepts only PNG/JPEG; do not promise native transparency through that adapter.
+- `gpt-image-2` does not support native transparent backgrounds; GPT Image 1 / 1.5 do. Preserve the selected model unless a switch has been agreed.
+- In built-in mode, use native transparency if the tool supports it; otherwise use a flat chroma-key background and `scripts/remove_chroma_key.py` when appropriate.
 
 ## Assembly And Doctor
 

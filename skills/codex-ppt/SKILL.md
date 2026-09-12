@@ -16,7 +16,7 @@ metadata:
         description: API base URL.
       - name: CODEX_PPT_IMAGE_MODEL
         required: false
-        description: Image model, defaults to gpt-image-2.
+        description: Image model, defaults to gpt-image-2.5-flare.
       - name: CODEX_PPT_HOME
         required: false
         description: Runtime home override.
