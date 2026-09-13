@@ -45,7 +45,7 @@ Codex PPT 是一个面向 Codex 的 PPT 生成 skill，也可在 Claude Code、O
 - 支持指定素材入页：可以把论文原图、实验结果图、架构图或截图指定到具体页面中使用。
 - 支持多 agent 环境：除 Codex 外，也可在 Claude Code、OpenClaw、Hermes Agent 等支持 `SKILL.md` 的 agent 中使用。
 - 自动组装 PowerPoint：生成 `outline.md`、每页图片、`speech.md`，并最终组装为 `.pptx` 文件。
-- 支持通过第三方 API 使用文本模型和 `gpt-image-2.5-flare` 生图模型。
+- 支持通过第三方 API 使用文本模型、`gpt-image-2.5-flare` 生图模型和 MuAPI 生成专用的 URL 图片结果。
 - 支持配套生成 PPT 演讲稿，默认会自动插入 PPT 备注页。
 - 支持生成后针对特定不满意的页面做定向修改，参见[常见问题](faq.md)。
 

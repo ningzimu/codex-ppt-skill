@@ -92,3 +92,7 @@ AI 会先检查内置工具是否可调用，再生成样张验证文字和视�
 - 中转站的 `gpt-image-2.5-flare` 具体模型名
 
 将上述信息提供给 AI 之后，尝试让其生图。如果跑不通，则可能你使用的中转站有自定义的生图使用方案，不完全兼容 OpenAI 生图接口。请将中转站官方的生图使用文档发给 AI，让它学习并适配生图脚本。
+
+### MuAPI
+
+MuAPI 提供仅生成图片的 OpenAI 兼容接口。将 base URL 配置为 `https://api.muapi.ai/v1`，模型配置为 `flux-schnell`；适配器只发送文档中的 `model`、`prompt`、`n` 和 `size`，支持文档列出的三种尺寸，并通过 HTTPS 下载返回的图片 URL，且不会把 API key 转发到图片地址。图片编辑和不支持的输出选项会在发送请求前被拒绝。详见 [MuAPI OpenAI 兼容文档](https://muapi.ai/docs/openai-compatible)。

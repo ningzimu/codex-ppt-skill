@@ -24,8 +24,9 @@ import time
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 from urllib.parse import urlparse
 
-from image_providers import create_image_provider
+from image_providers import create_image_provider, is_muapi_base_url
 from image_providers.atlascloud import atlascloud_model_for_operation
+from image_providers.muapi import MUAPI_ALLOWED_SIZES, MUAPI_DEFAULT_MODEL
 
 DEFAULT_MODEL = "gpt-image-2.5-flare"
 DEFAULT_SIZE = "2560x1440"
@@ -86,7 +87,18 @@ def _load_runtime_env() -> None:
 
 
 def _default_model() -> str:
-    return os.getenv("CODEX_PPT_IMAGE_MODEL", DEFAULT_MODEL)
+    configured = os.getenv("CODEX_PPT_IMAGE_MODEL")
+    if configured:
+        return configured
+    if _is_muapi_base_url(_api_base_url()):
+        return MUAPI_DEFAULT_MODEL
+    return DEFAULT_MODEL
+
+
+def _default_size() -> str:
+    if _is_muapi_base_url(_api_base_url()):
+        return "1024x1024"
+    return DEFAULT_SIZE
 
 
 def _api_base_url() -> Optional[str]:
@@ -96,6 +108,8 @@ def _api_base_url() -> Optional[str]:
 def _api_target_label() -> str:
     base_url = _api_base_url()
     if base_url:
+        if _is_muapi_base_url(base_url):
+            return f"MuAPI provider adapter (OPENAI_BASE_URL={base_url})"
         if _is_atlascloud_base_url(base_url):
             return f"AtlasCloud provider adapter (OPENAI_BASE_URL={base_url})"
         return f"third-party image API or OpenAI-compatible proxy (OPENAI_BASE_URL={base_url})"
@@ -105,6 +119,10 @@ def _api_target_label() -> str:
 def _is_atlascloud_base_url(base_url: str) -> bool:
     hostname = urlparse(base_url).hostname or ""
     return "atlascloud.ai" in hostname.lower()
+
+
+def _is_muapi_base_url(base_url: Optional[str]) -> bool:
+    return is_muapi_base_url(base_url)
 
 
 def _preview_endpoint(kind: str) -> str:
@@ -247,6 +265,10 @@ def _validate_gpt_image_2_size(size: str) -> None:
 
 
 def _validate_size(size: str, model: str) -> None:
+    if _is_muapi_base_url(_api_base_url()):
+        if size not in MUAPI_ALLOWED_SIZES:
+            _die("MuAPI size must be one of 1024x1024, 1792x1024, or 1024x1792.")
+        return
     if _is_gpt_image_2_model(model) or _is_gpt_image_2_5_model(model):
         _validate_gpt_image_2_size(size)
         return
@@ -275,6 +297,10 @@ def _validate_input_fidelity(input_fidelity: Optional[str]) -> None:
 
 
 def _validate_model(model: str) -> None:
+    if _is_muapi_base_url(_api_base_url()):
+        if not model.strip():
+            _die("model must be a non-empty MuAPI model name.")
+        return
     if GPT_IMAGE_MODEL_PREFIX not in model:
         _die(
             "model must be a GPT Image model name containing 'gpt-image-' "
@@ -318,6 +344,38 @@ def _validate_model_specific_options(
         )
 
 
+def _validate_muapi_options(
+    *,
+    quality: str,
+    background: Optional[str],
+    output_format: Optional[str],
+    output_compression: Optional[int],
+    moderation: Optional[str],
+    input_fidelity: Optional[str] = None,
+) -> None:
+    if not _is_muapi_base_url(_api_base_url()):
+        return
+
+    unsupported = []
+    if quality != DEFAULT_QUALITY:
+        unsupported.append("--quality")
+    if background is not None:
+        unsupported.append("--background")
+    if output_format not in (None, "png"):
+        unsupported.append("--output-format")
+    if output_compression is not None:
+        unsupported.append("--output-compression")
+    if moderation is not None:
+        unsupported.append("--moderation")
+    if input_fidelity is not None:
+        unsupported.append("--input-fidelity")
+    if unsupported:
+        _die(
+            "MuAPI's documented OpenAI-compatible image endpoint accepts only model, prompt, n, and size; "
+            f"unsupported option(s): {', '.join(unsupported)}."
+        )
+
+
 def _validate_generate_payload(payload: Dict[str, Any]) -> None:
     model = str(payload.get("model", DEFAULT_MODEL))
     _validate_model(model)
@@ -331,6 +389,13 @@ def _validate_generate_payload(payload: Dict[str, Any]) -> None:
     _validate_quality(quality, model)
     _validate_background(background)
     _validate_model_specific_options(model=model, background=background)
+    _validate_muapi_options(
+        quality=quality,
+        background=background,
+        output_format=payload.get("output_format"),
+        output_compression=payload.get("output_compression"),
+        moderation=payload.get("moderation"),
+    )
     oc = payload.get("output_compression")
     if oc is not None and not (0 <= int(oc) <= 100):
         _die("output_compression must be between 0 and 100")
@@ -878,7 +943,7 @@ def _add_shared_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--prompt")
     parser.add_argument("--prompt-file")
     parser.add_argument("--n", type=int, default=1)
-    parser.add_argument("--size", default=DEFAULT_SIZE)
+    parser.add_argument("--size", default=_default_size())
     parser.add_argument("--quality", default=DEFAULT_QUALITY)
     parser.add_argument("--background")
     parser.add_argument("--output-format")
@@ -962,6 +1027,19 @@ def main() -> int:
         background=args.background,
         input_fidelity=getattr(args, "input_fidelity", None),
     )
+    _validate_muapi_options(
+        quality=args.quality,
+        background=args.background,
+        output_format=args.output_format,
+        output_compression=args.output_compression,
+        moderation=args.moderation,
+        input_fidelity=getattr(args, "input_fidelity", None),
+    )
+    if args.command == "edit" and _is_muapi_base_url(_api_base_url()):
+        _die(
+            "MuAPI's documented OpenAI-compatible image endpoint supports generation only; "
+            "image editing is unavailable."
+        )
     _ensure_api_key(args.dry_run)
 
     args.func(args)

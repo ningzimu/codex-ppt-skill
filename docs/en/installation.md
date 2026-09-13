@@ -92,3 +92,7 @@ This skill includes a script compatible with OpenAI's official image-generation 
 - The exact `gpt-image-2.5-flare` model name used by the relay service
 
 After providing this information to the AI, ask it to generate an image. If it still does not work, the relay service may use a custom image-generation scheme that is not fully compatible with the OpenAI image API. Send the relay service's official image-generation documentation to the AI so it can learn the interface and adapt the image-generation script.
+
+### MuAPI
+
+MuAPI provides a generation-only OpenAI-compatible image endpoint. Configure `https://api.muapi.ai/v1` with model `flux-schnell`; the adapter sends the documented `model`, `prompt`, `n`, and `size` fields, accepts the documented three sizes, and downloads returned HTTPS image URLs without forwarding the API key. Image editing and unsupported output options are rejected before a request is sent. See the [MuAPI OpenAI-compatible documentation](https://muapi.ai/docs/openai-compatible).

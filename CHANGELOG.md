@@ -4,6 +4,14 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ## Unreleased
 
+### Features
+
+- Add MuAPI generation support to the OpenAI-compatible image fallback, including documented defaults and URL-result downloads.
+
+### Documentation
+
+- Document MuAPI setup, generation-only behavior, and supported request options in all installation guides.
+
 ## 0.6.0
 
 ### Improvements

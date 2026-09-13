@@ -51,6 +51,8 @@ The fallback CLI supports:
 - `generate`: create one or more images from a prompt.
 - `edit`: edit one or more existing images, optionally with a mask.
 
+For MuAPI, set `OPENAI_BASE_URL` to `https://api.muapi.ai/v1` and use the documented model name (the default is `flux-schnell` when no model is configured). The MuAPI adapter supports generation only, uses the documented `model`, `prompt`, `n`, and `size` fields, and downloads returned HTTPS URLs into the normal output path. It does not support image editing or the GPT-specific quality, background, compression, moderation, or non-PNG output options.
+
 The fallback CLI defaults to 2K 16:9 landscape output, `2560x1440`, with `medium` quality. GPT Image 2.5 also supports `xhigh` and `max`; older models retain their existing quality limits. For 4K landscape slides, use `--size 3840x2160 --quality high` only when the user asks for 4K, text-heavy slides need sharper output, or the default result is blurry. For portrait assets, use `--size 2160x3840` only if the user requests portrait output. For GPT Image 2.5, output above `2560x1440` pixels is experimental; inspect the actual size and visual quality.
 
 ## Editing Slides

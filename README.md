@@ -42,7 +42,7 @@
 ## 特点
 
 - 多 agent 可用：支持 Codex、Claude Code、OpenClaw、Hermes Agent 等支持 `SKILL.md` 的环境；最推荐在 Codex 中使用，优先走内置生图和编辑图能力。
-- 第三方生图供应商接入：支持 OpenAI 兼容接口、AtlasCloud、`base URL` 和自定义模型名配置，方便通过 API/CLI fallback 使用 `gpt-image-2.5-flare` 或兼容模型。
+- 第三方生图供应商接入：支持 OpenAI 兼容接口、AtlasCloud、MuAPI 仅生成的 URL 图片结果、`base URL` 和自定义模型名配置，方便通过 API/CLI fallback 使用 `gpt-image-2.5-flare` 或兼容模型。
 - 稳定的阶段化流程：先确认大纲、页数、视觉风格、生图后端和样张，再进入整套生成，降低一次生成完整 PPT 时的返工和偏航。
 - 不是无脑生成：会先引导你确认 `outline.md`、每页要点、风格方向和样张效果，再按确认后的方案继续。
 - 低门槛输入：文章、报告、论文、课程笔记、Markdown、大纲、PDF、Word 等材料都可以作为起点。

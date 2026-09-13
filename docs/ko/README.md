@@ -45,7 +45,7 @@ Codex PPT는 Codex용 PPT 생성 skill이며, Claude Code, OpenClaw, Hermes Agen
 - 지정 이미지 삽입: 논문 원본 이미지, 실험 결과 그래프, 아키텍처 다이어그램 또는 스크린샷을 특정 슬라이드에 사용하도록 지정할 수 있습니다.
 - 여러 agent 환경 지원: Codex 외에도 Claude Code, OpenClaw, Hermes Agent 등 `SKILL.md`를 지원하는 agent에서 사용할 수 있습니다.
 - PowerPoint 자동 조립: `outline.md`, 각 슬라이드 이미지, `speech.md`를 생성하고 최종적으로 `.pptx` 파일로 조립합니다.
-- 서드파티 API를 통한 텍스트 모델 및 `gpt-image-2.5-flare` 이미지 생성 모델 사용 지원.
+- 서드파티 API를 통한 텍스트 모델, `gpt-image-2.5-flare` 이미지 생성 모델 및 MuAPI 생성 전용 URL 결과 사용을 지원합니다.
 - PPT 발표 대본 생성을 지원하며, 기본적으로 PPT 메모 영역에 자동 삽입합니다.
 - 생성 후 만족스럽지 않은 특정 슬라이드만 선택적으로 수정할 수 있습니다. 자세한 내용은 [자주 묻는 질문](/ko/faq.md)을 참고하세요.
 

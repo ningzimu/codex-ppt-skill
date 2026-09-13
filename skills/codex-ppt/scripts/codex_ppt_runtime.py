@@ -24,6 +24,8 @@ import venv
 
 DEFAULT_RUNTIME_HOME = "~/.codex-ppt-skill"
 DEFAULT_MODEL = "gpt-image-2.5-flare"
+MUAPI_HOSTNAME = "api.muapi.ai"
+MUAPI_DEFAULT_MODEL = "flux-schnell"
 ENV_FIELDS = ("OPENAI_API_KEY", "OPENAI_BASE_URL", "CODEX_PPT_IMAGE_MODEL")
 
 
@@ -214,6 +216,11 @@ def _is_atlascloud_base_url(base_url: str) -> bool:
     return "atlascloud.ai" in hostname.lower()
 
 
+def _is_muapi_base_url(base_url: str) -> bool:
+    parsed = urllib.parse.urlparse(base_url)
+    return parsed.scheme.lower() == "https" and (parsed.hostname or "").lower() == MUAPI_HOSTNAME
+
+
 def _doctor(args: argparse.Namespace) -> int:
     home = _runtime_home()
     env_file = _env_path(home)
@@ -227,13 +234,17 @@ def _doctor(args: argparse.Namespace) -> int:
     values = _load_env_values(home)
     api_key = values.get("OPENAI_API_KEY", "")
     base_url = values.get("OPENAI_BASE_URL", "https://api.openai.com/v1")
-    model = values.get("CODEX_PPT_IMAGE_MODEL", DEFAULT_MODEL)
+    model = values.get("CODEX_PPT_IMAGE_MODEL") or (
+        MUAPI_DEFAULT_MODEL if _is_muapi_base_url(base_url) else DEFAULT_MODEL
+    )
 
     print(f"OPENAI_API_KEY={'set (' + _mask_secret(api_key) + ')' if api_key else '<unset>'}")
     print(f"OPENAI_BASE_URL={base_url}")
     print(f"CODEX_PPT_IMAGE_MODEL={model}")
 
-    if "gpt-image-" not in model:
+    if _is_muapi_base_url(base_url):
+        print("model check: ok (MuAPI model)")
+    elif "gpt-image-" not in model:
         print("model check: warning, model name should contain 'gpt-image-'")
         ok = False
     else:
