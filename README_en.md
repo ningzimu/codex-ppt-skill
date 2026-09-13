@@ -42,7 +42,7 @@ For a basic introduction to skill design and usage, see [good-skill-design.pptx]
 ## Features
 
 - Works across multiple agents: supports Codex, Claude Code, OpenClaw, Hermes Agent, and other `SKILL.md`-based environments; Codex is the recommended environment because it can use the built-in image generation and image editing tools first.
-- Supports third-party image providers: works with OpenAI-compatible endpoints, AtlasCloud, `base URL`, and custom model names, so API/CLI fallback can use `gpt-image-2.5-flare` or compatible image models.
+- Supports third-party image providers: works with OpenAI-compatible endpoints, AtlasCloud, MuAPI's generation-only URL output, `base URL`, and custom model names, so API/CLI fallback can use `gpt-image-2.5-flare` or compatible image models.
 - Stable staged workflow: confirms the outline, slide count, visual style, image backend, and sample slide before full-deck generation, reducing drift and rework when generating a complete PPT.
 - Guided instead of one-shot: the skill asks you to confirm `outline.md`, per-slide key points, style direction, and sample-slide quality before continuing.
 - Low setup effort: articles, reports, papers, course notes, Markdown files, outlines, PDFs, and Word documents can all be used as starting material.

@@ -25,7 +25,7 @@ If Codex is being used through a GPT subscription and the built-in image tool is
 
 - `OPENAI_API_KEY` is required for real API/CLI fallback calls.
 - `OPENAI_BASE_URL` is optional. When it is unset, the CLI uses the official OpenAI API. When it is set, the CLI uses the configured third-party provider base URL.
-- `CODEX_PPT_IMAGE_MODEL` is optional. The default is `gpt-image-2.5-flare`. Use `gpt-image-2.5-sunburst` to select Sunburst, or a model name supported by the provider.
+- `CODEX_PPT_IMAGE_MODEL` is optional. The default is `gpt-image-2.5-flare`; when the official MuAPI base URL is selected, the provider-specific default is `flux-schnell`. Use `gpt-image-2.5-sunburst` for Sunburst or a model name supported by the selected provider.
 
 Configure provided API settings with `scripts/codex_ppt_runtime.py config --api-key`. The config command writes `~/.codex-ppt-skill/.env`.
 
@@ -59,6 +59,19 @@ CODEX_PPT_IMAGE_MODEL=gpt-image-2.5-flare
 For OpenAI-compatible providers, `OPENAI_BASE_URL` should normally end at the provider's `/v1` root. Do not set it to `/images/generations`, `/images/edits`, or another terminal endpoint. The fallback CLI appends the image-generation or image-edit path through the OpenAI SDK.
 
 Use the provider's model name only when the provider documents a custom name. Otherwise prefer `gpt-image-2.5-flare`.
+
+## MuAPI Example
+
+MuAPI exposes a generation-only OpenAI-compatible image endpoint. Configure its documented base URL and model like this:
+
+```bash
+python3 {skill_root}/scripts/codex_ppt_runtime.py config \
+  --api-key "your-muapi-api-key" \
+  --base-url "https://api.muapi.ai/v1" \
+  --model flux-schnell
+```
+
+The MuAPI adapter sends only `model`, `prompt`, `n`, and `size`. Its defaults are `flux-schnell` and `1024x1024`; the documented sizes are `1024x1024`, `1792x1024`, and `1024x1792`. MuAPI returns image URLs, which the fallback downloads over HTTPS without forwarding the API key and with a 50MB response limit. Image editing and unsupported output options are rejected before a request is sent. See the [MuAPI OpenAI-compatible documentation](https://muapi.ai/docs/openai-compatible).
 
 ## AtlasCloud Example
 

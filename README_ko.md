@@ -42,7 +42,7 @@ skill 설계와 사용에 대한 기본 소개는 [good-skill-design.pptx](asset
 ## 특징
 
 - 여러 에이전트에서 동작: Codex, Claude Code, OpenClaw, Hermes Agent 등 `SKILL.md` 기반 환경을 지원합니다. 내장 이미지 생성·편집 도구를 우선 사용할 수 있는 Codex가 가장 권장되는 환경입니다.
-- 서드파티 이미지 공급자 연동: OpenAI 호환 엔드포인트, AtlasCloud, `base URL`, 커스텀 모델명 설정을 지원하므로, API/CLI fallback에서 `gpt-image-2.5-flare`나 호환 이미지 모델을 사용할 수 있습니다.
+- 서드파티 이미지 공급자 연동: OpenAI 호환 엔드포인트, AtlasCloud, MuAPI의 생성 전용 URL 결과, `base URL`, 커스텀 모델명 설정을 지원하므로, API/CLI fallback에서 `gpt-image-2.5-flare`나 호환 이미지 모델을 사용할 수 있습니다.
 - 안정적인 단계형 워크플로: 전체 덱 생성 전에 개요, 슬라이드 수, 시각 스타일, 이미지 백엔드, 샘플 슬라이드를 확인하여 완성 PPT 생성 시의 이탈과 재작업을 줄입니다.
 - 원샷이 아닌 가이드형: 계속 진행하기 전에 `outline.md`, 슬라이드별 핵심 포인트, 스타일 방향, 샘플 슬라이드 품질을 확인하도록 요청합니다.
 - 낮은 준비 부담: 글, 리포트, 논문, 강의 노트, Markdown 파일, 개요, PDF, Word 문서 등을 모두 시작 자료로 사용할 수 있습니다.

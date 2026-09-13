@@ -55,12 +55,13 @@ class ImageModelTests(unittest.TestCase):
                 with self.subTest(model=model, size=size), self.assertRaises(SystemExit):
                     image_gen._validate_size(size, model)
 
-    def run_cli(self, *args):
+    def run_cli(self, *args, env=None):
         output = io.StringIO()
+        environment = env or {"OPENAI_BASE_URL": "https://api.openai.com/v1"}
         with (
             patch.object(sys, "argv", ["image_gen.py", *args]),
             patch.object(image_gen, "_load_runtime_env"),
-            patch.dict("os.environ", {"OPENAI_BASE_URL": "https://api.openai.com/v1"}, clear=True),
+            patch.dict("os.environ", environment, clear=True),
             contextlib.redirect_stdout(output),
         ):
             self.assertEqual(image_gen.main(), 0)
@@ -72,6 +73,28 @@ class ImageModelTests(unittest.TestCase):
         self.assertEqual(result["model"], codex_ppt_runtime.DEFAULT_MODEL)
         self.assertEqual(result["size"], "2560x1440")
         self.assertEqual(result["quality"], "medium")
+
+    def test_muapi_defaults_use_documented_generation_shape(self):
+        result = self.run_cli(
+            "generate",
+            "--prompt",
+            "slide",
+            "--dry-run",
+            env={"OPENAI_BASE_URL": "https://api.muapi.ai/v1"},
+        )
+        self.assertEqual(result["model"], "flux-schnell")
+        self.assertEqual(result["size"], "1024x1024")
+        self.assertEqual(result["endpoint"], "/v1/images/generations")
+
+    def test_muapi_rejects_unsupported_options_and_editing(self):
+        env = {"OPENAI_BASE_URL": "https://api.muapi.ai/v1"}
+        with self.assertRaises(SystemExit):
+            self.run_cli("generate", "--prompt", "slide", "--quality", "high", "--dry-run", env=env)
+        with tempfile.TemporaryDirectory() as temp:
+            image = Path(temp) / "reference.png"
+            image.write_bytes(b"reference")
+            with self.assertRaises(SystemExit):
+                self.run_cli("edit", "--prompt", "slide", "--image", str(image), "--dry-run", env=env)
 
     def test_generate_and_edit_transparent_requests(self):
         with tempfile.TemporaryDirectory() as temp:

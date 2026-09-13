@@ -1,17 +1,38 @@
 from __future__ import annotations
 
 import asyncio
+import base64
 import os
 from pathlib import Path
 import re
 import sys
 from typing import Any, Callable, Dict, List, Optional
+from urllib.parse import urlparse
+from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 from .base import ImageProvider
 
 
 ClientFactory = Callable[[], Any]
 DEFAULT_RUNTIME_HOME = "~/.codex-ppt-skill"
+MAX_REMOTE_IMAGE_BYTES = 50 * 1024 * 1024
+REMOTE_IMAGE_TIMEOUT_SECONDS = 60
+USER_AGENT = "codex-ppt-skill/0.1 (+https://github.com/ningzimu/codex-ppt-skill)"
+
+
+class _NoRedirectHandler(HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+
+_NO_REDIRECT_OPENER = build_opener(_NoRedirectHandler())
+
+
+def _urlopen_no_redirect(request: Request, *, timeout: float):
+    return _NO_REDIRECT_OPENER.open(request, timeout=timeout)
+
+
+UrlOpen = Callable[..., Any]
 
 
 def _runtime_home() -> Path:
@@ -110,16 +131,19 @@ class OpenAICompatibleImageProvider(ImageProvider):
         base_url: Optional[str],
         client_factory: Optional[ClientFactory] = None,
         async_client_factory: Optional[ClientFactory] = None,
+        urlopen: UrlOpen = _urlopen_no_redirect,
     ) -> None:
         self.api_key = api_key
         self.base_url = base_url
         self._client_factory = client_factory
         self._async_client_factory = async_client_factory
+        self._urlopen = urlopen
         self._async_client: Optional[Any] = None
 
     def generate(self, payload: Dict[str, Any]) -> List[str]:
-        result = self._create_client().images.generate(**payload)
-        return [item.b64_json for item in result.data]
+        request = self._prepare_payload(payload)
+        result = self._create_client().images.generate(**request)
+        return self._result_to_base64(result)
 
     def edit(
         self,
@@ -132,8 +156,8 @@ class OpenAICompatibleImageProvider(ImageProvider):
             request["image"] = image_files if len(image_files) > 1 else image_files[0]
             if mask_file is not None:
                 request["mask"] = mask_file
-            result = self._create_client().images.edit(**request)
-        return [item.b64_json for item in result.data]
+            result = self._create_client().images.edit(**self._prepare_payload(request))
+        return self._result_to_base64(result)
 
     async def generate_batch(
         self,
@@ -144,11 +168,74 @@ class OpenAICompatibleImageProvider(ImageProvider):
     ) -> List[str]:
         result = await _generate_one_with_retries(
             self._create_async_client(),
-            payload,
+            self._prepare_payload(payload),
             attempts=attempts,
             job_label=job_label,
         )
-        return [item.b64_json for item in result.data]
+        return self._result_to_base64(result)
+
+    def _prepare_payload(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        """Allow provider adapters to normalize a request before SDK dispatch."""
+        return dict(payload)
+
+    def _result_to_base64(self, result: Any) -> List[str]:
+        data = getattr(result, "data", None)
+        if not data:
+            raise RuntimeError("OpenAI-compatible image response did not include image data.")
+        return [self._image_item_to_base64(item) for item in data]
+
+    def _image_item_to_base64(self, item: Any) -> str:
+        b64_json = _item_value(item, "b64_json")
+        if b64_json:
+            return str(b64_json)
+
+        url = _item_value(item, "url")
+        if url:
+            return self._download_image_url(str(url))
+
+        raise RuntimeError("OpenAI-compatible image response item had neither b64_json nor url.")
+
+    def _download_image_url(self, url: str) -> str:
+        try:
+            parsed = urlparse(url)
+        except ValueError as exc:
+            raise ValueError("OpenAI-compatible image URL is invalid.") from exc
+        if parsed.scheme.lower() != "https" or not parsed.netloc:
+            raise ValueError("OpenAI-compatible image URLs must use HTTPS.")
+        if parsed.username is not None or parsed.password is not None:
+            raise ValueError("OpenAI-compatible image URLs must not contain user information.")
+
+        request = Request(
+            url,
+            headers={"Accept": "image/*", "User-Agent": USER_AGENT},
+            method="GET",
+        )
+        with self._urlopen(request, timeout=REMOTE_IMAGE_TIMEOUT_SECONDS) as response:
+            headers = getattr(response, "headers", None)
+            content_length = headers.get("Content-Length") if headers is not None else None
+            try:
+                content_length = int(content_length) if content_length else None
+            except (TypeError, ValueError):
+                content_length = None
+            if content_length is not None and content_length > MAX_REMOTE_IMAGE_BYTES:
+                raise ValueError("OpenAI-compatible image URL response exceeds the 50MB limit.")
+
+            chunks: List[bytes] = []
+            total = 0
+            while True:
+                chunk = response.read(min(64 * 1024, MAX_REMOTE_IMAGE_BYTES + 1 - total))
+                if not chunk:
+                    break
+                if not isinstance(chunk, (bytes, bytearray)):
+                    raise RuntimeError("OpenAI-compatible image URL response was not binary data.")
+                total += len(chunk)
+                if total > MAX_REMOTE_IMAGE_BYTES:
+                    raise ValueError("OpenAI-compatible image URL response exceeds the 50MB limit.")
+                chunks.append(bytes(chunk))
+
+        if not chunks:
+            raise RuntimeError("OpenAI-compatible image URL response was empty.")
+        return base64.b64encode(b"".join(chunks)).decode("ascii")
 
     def _create_client(self) -> Any:
         if self._client_factory is not None:
@@ -182,6 +269,12 @@ class OpenAICompatibleImageProvider(ImageProvider):
             ) from exc
         self._async_client = AsyncOpenAI(api_key=self.api_key, base_url=self.base_url)
         return self._async_client
+
+
+def _item_value(item: Any, key: str) -> Any:
+    if isinstance(item, dict):
+        return item.get(key)
+    return getattr(item, key, None)
 
 
 def _open_files(paths: List[Path]):
