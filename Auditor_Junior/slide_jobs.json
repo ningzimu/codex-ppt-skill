@@ -1,0 +1,397 @@
+{
+  "run_status": "slides_recorded",
+  "deck_name": "Auditor_Junior",
+  "selected_backend": "built-in image tool",
+  "sample_generation_method": {
+    "backend_used": "built-in image tool",
+    "tool_name": "image_gen",
+    "mode": "generate",
+    "prompt_source": "Prompt inline preparado a partir do roteiro aprovado para o slide 7, com o conceito de validação cruzada e a direção visual aprovada.",
+    "size": "Padrão da ferramenta integrada; arquivo aprovado em 1672x941 px, proporção 16:9.",
+    "quality": "Padrão da ferramenta integrada; parâmetro não exposto.",
+    "model": "Padrão da ferramenta integrada; nome do modelo não exposto.",
+    "approved_sample_path": "/home/ezer/repos/mine/codex-ppt-skill/Auditor_Junior/origin_image/slide_07.png",
+    "input_context_preparation": "Sem imagens de origem obrigatórias. O slide 7 foi gerado a partir de um prompt textual; os demais trabalhadores devem receber o arquivo aprovado local como referência somente de estilo, usando referenced_image_paths do image_gen.",
+    "handoff_rule": "Usar a ferramenta integrada image_gen no modo generate e a imagem aprovada como referência somente de estilo. Se esse caminho não estiver disponível, retornar um bloqueio; não trocar de backend."
+  },
+  "max_concurrent_slides": 3,
+  "slides": [
+    {
+      "slide_id": "slide_01",
+      "number": 1,
+      "title": "Auditor Júnior: ensine o agente a seguir o seu padrão",
+      "job": "prompts/slide_01.json",
+      "out": "origin_image/slide_01.png",
+      "input_images": [
+        {
+          "path": "/home/ezer/repos/mine/codex-ppt-skill/Auditor_Junior/origin_image/slide_07.png",
+          "role": "Amostra aprovada para referência de estilo do deck.",
+          "fidelity": "Reproduzir somente paleta, hierarquia, clima tipográfico, densidade, textura e linguagem visual. Não copiar o diagrama ou o layout do slide de amostra."
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/slide_01",
+        "agent_nickname": "slide_01",
+        "prompt": "prompts/slide_01.json",
+        "prompt_sha256": "1fcb026fb097bf32084e8ecf11a7ab86e8a899a42fda398359132a1ad2eec872",
+        "dispatched_at": "2026-11-06T11:46:06Z"
+      },
+      "result": {
+        "agent_id": "/root/slide_01",
+        "backend_used": "built-in image tool",
+        "selected_source": "/home/ezer/.codex/generated_images/01a1b0ae-0675-7f91-a82f-160e1f62eb6a/exec-21397a32-4e42-4bf9-b5dd-6bd797f0a682.png",
+        "selected_source_sha256": "b7be0760041ff308b07118ed838e00d691a1b2bd5a799a3ec223d602227939d5",
+        "final_image": "origin_image/slide_01.png",
+        "final_image_sha256": "b7be0760041ff308b07118ed838e00d691a1b2bd5a799a3ec223d602227939d5",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "Brazilian Portuguese text is clear; blue hierarchy and hand-drawn illustration match the approved sample.",
+        "recorded_at": "2026-11-06T11:48:03Z"
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_02",
+      "number": 2,
+      "title": "Tudo começa com uma tarefa bem definida",
+      "job": "prompts/slide_02.json",
+      "out": "origin_image/slide_02.png",
+      "input_images": [
+        {
+          "path": "/home/ezer/repos/mine/codex-ppt-skill/Auditor_Junior/origin_image/slide_07.png",
+          "role": "Amostra aprovada para referência de estilo do deck.",
+          "fidelity": "Reproduzir somente paleta, hierarquia, clima tipográfico, densidade, textura e linguagem visual. Não copiar o diagrama ou o layout do slide de amostra."
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/slide_02",
+        "agent_nickname": "slide_02",
+        "prompt": "prompts/slide_02.json",
+        "prompt_sha256": "2e5f2b3a41130836c1626a8189e97e5b6e12874a74c7f7a32f47d286e37208e9",
+        "dispatched_at": "2026-11-06T11:46:21Z"
+      },
+      "result": {
+        "agent_id": "/root/slide_02",
+        "backend_used": "built-in image tool",
+        "selected_source": "/home/ezer/.codex/generated_images/01a1b0ae-57d7-7882-bdf8-4abee16cdc32/exec-0e4780fa-99d3-4ae9-8b18-e9de0fc487b0.png",
+        "selected_source_sha256": "de2d50ced09fd65f14bde18d5eb0a732bb7b78295523ea13a0e42b1388bb0982",
+        "final_image": "origin_image/slide_02.png",
+        "final_image_sha256": "de2d50ced09fd65f14bde18d5eb0a732bb7b78295523ea13a0e42b1388bb0982",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "Brazilian Portuguese text is clear and visual style matches the approved sample.",
+        "recorded_at": "2026-11-06T11:48:23Z"
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_03",
+      "number": 3,
+      "title": "Diga o que o agente deve fazer",
+      "job": "prompts/slide_03.json",
+      "out": "origin_image/slide_03.png",
+      "input_images": [
+        {
+          "path": "/home/ezer/repos/mine/codex-ppt-skill/Auditor_Junior/origin_image/slide_07.png",
+          "role": "Amostra aprovada para referência de estilo do deck.",
+          "fidelity": "Reproduzir somente paleta, hierarquia, clima tipográfico, densidade, textura e linguagem visual. Não copiar o diagrama ou o layout do slide de amostra."
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/slide_03",
+        "agent_nickname": "slide_03",
+        "prompt": "prompts/slide_03.json",
+        "prompt_sha256": "a31301dabe3a3c912adace4c11b201c1e3ecb556b1aa95d089543af4ec3441f1",
+        "dispatched_at": "2026-11-06T11:46:37Z"
+      },
+      "result": {
+        "agent_id": "/root/slide_03",
+        "backend_used": "built-in image tool",
+        "selected_source": "/home/ezer/.codex/generated_images/01a1b0ae-93a6-7321-b53f-dd37b9da6aa9/exec-e1f0ba73-766f-4425-b0e8-cde15b1c368e.png",
+        "selected_source_sha256": "e8a9ec77ab20e31fc553ea6713727d6f97558d28bdc2721e51b6c0ce9ef8a032",
+        "final_image": "origin_image/slide_03.png",
+        "final_image_sha256": "e8a9ec77ab20e31fc553ea6713727d6f97558d28bdc2721e51b6c0ce9ef8a032",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "Brazilian Portuguese text is correct and legible; the example comparison follows the approved style.",
+        "recorded_at": "2026-11-06T11:48:24Z"
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_04",
+      "number": 4,
+      "title": "Mostre quais informações entram",
+      "job": "prompts/slide_04.json",
+      "out": "origin_image/slide_04.png",
+      "input_images": [
+        {
+          "path": "/home/ezer/repos/mine/codex-ppt-skill/Auditor_Junior/origin_image/slide_07.png",
+          "role": "Amostra aprovada para referência de estilo do deck.",
+          "fidelity": "Reproduzir somente paleta, hierarquia, clima tipográfico, densidade, textura e linguagem visual. Não copiar o diagrama ou o layout do slide de amostra."
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/slide_04",
+        "agent_nickname": "slide_04",
+        "prompt": "prompts/slide_04.json",
+        "prompt_sha256": "88d870e4bf1fae45054f1d70d3291a3706eacadc9aef32fb86d42c1f8ab14993",
+        "dispatched_at": "2026-11-06T11:48:48Z"
+      },
+      "result": {
+        "agent_id": "/root/slide_04",
+        "backend_used": "built-in image tool",
+        "selected_source": "/home/ezer/.codex/generated_images/01a1b0b0-8fff-7000-889a-53829a429a5c/exec-03d68a55-a76a-4912-8067-4080572bb9a4.png",
+        "selected_source_sha256": "787002a0c8864382c135cf68d8296ea2b98141b530f2e7092dc5d0f2963fe552",
+        "final_image": "origin_image/slide_04.png",
+        "final_image_sha256": "787002a0c8864382c135cf68d8296ea2b98141b530f2e7092dc5d0f2963fe552",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "Portuguese labels are correct and legible; the inputs-to-agent diagram matches the blue hand-drawn style.",
+        "recorded_at": "2026-11-06T11:51:07Z"
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_05",
+      "number": 5,
+      "title": "Ensine com exemplos do padrão ouro",
+      "job": "prompts/slide_05.json",
+      "out": "origin_image/slide_05.png",
+      "input_images": [
+        {
+          "path": "/home/ezer/repos/mine/codex-ppt-skill/Auditor_Junior/origin_image/slide_07.png",
+          "role": "Amostra aprovada para referência de estilo do deck.",
+          "fidelity": "Reproduzir somente paleta, hierarquia, clima tipográfico, densidade, textura e linguagem visual. Não copiar o diagrama ou o layout do slide de amostra."
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/slide_05",
+        "agent_nickname": "slide_05",
+        "prompt": "prompts/slide_05.json",
+        "prompt_sha256": "7f98232f1688c645b6b1df8f9ea4f51c46096c6df4c3e1c91003df0253553d77",
+        "dispatched_at": "2026-11-06T11:49:03Z"
+      },
+      "result": {
+        "agent_id": "/root/slide_05",
+        "backend_used": "built-in image tool",
+        "selected_source": "/home/ezer/.codex/generated_images/01a1b0b0-d0c3-7a40-8624-ccb6e62f7bdf/exec-cd82af8b-5d94-425a-b34f-4eec0b041331.png",
+        "selected_source_sha256": "6598fadaa7af6dd3fa26bf2fba12be639ad1a92232c036077a9ec9d072aad1ed",
+        "final_image": "origin_image/slide_05.png",
+        "final_image_sha256": "6598fadaa7af6dd3fa26bf2fba12be639ad1a92232c036077a9ec9d072aad1ed",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "Brazilian Portuguese copy is legible; the two response choices are distinct and keep the example explicitly fictional.",
+        "recorded_at": "2026-11-06T11:51:40Z"
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_06",
+      "number": 6,
+      "title": "Melhorar o agente é ajustar suas instruções",
+      "job": "prompts/slide_06.json",
+      "out": "origin_image/slide_06.png",
+      "input_images": [
+        {
+          "path": "/home/ezer/repos/mine/codex-ppt-skill/Auditor_Junior/origin_image/slide_07.png",
+          "role": "Amostra aprovada para referência de estilo do deck.",
+          "fidelity": "Reproduzir somente paleta, hierarquia, clima tipográfico, densidade, textura e linguagem visual. Não copiar o diagrama ou o layout do slide de amostra."
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/slide_06",
+        "agent_nickname": "slide_06",
+        "prompt": "prompts/slide_06.json",
+        "prompt_sha256": "4ee0a717a2bf4b55c639f3307ba007f6bd13ecc5b34d561ad11d910661d08a1c",
+        "dispatched_at": "2026-11-06T11:49:19Z"
+      },
+      "result": {
+        "agent_id": "/root/slide_06",
+        "backend_used": "built-in image tool",
+        "selected_source": "/home/ezer/.codex/generated_images/01a1b0b1-0d66-7561-899a-1efb39428de5/exec-140e37b4-297f-40f7-96f2-c4e038d204ff.png",
+        "selected_source_sha256": "2412da4306150c0062321588db2a6268e1f5975a6d7968cb61d955a19ef4daf8",
+        "final_image": "origin_image/slide_06.png",
+        "final_image_sha256": "2412da4306150c0062321588db2a6268e1f5975a6d7968cb61d955a19ef4daf8",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "The Portuguese text is legible and accurate; the comparison-adjustment-evaluation cycle matches the approved style.",
+        "recorded_at": "2026-11-06T11:51:18Z"
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_07",
+      "number": 7,
+      "title": "Validação cruzada: testar em exemplos diferentes",
+      "job": "prompts/slide_07.json",
+      "out": "origin_image/slide_07.png",
+      "input_images": [],
+      "requires_context_images": false,
+      "status": "accepted",
+      "dispatch": null,
+      "result": {
+        "final_image": "origin_image/slide_07.png",
+        "accepted_sample": true
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_08",
+      "number": 8,
+      "title": "Acompanhe a qualidade ao longo do tempo",
+      "job": "prompts/slide_08.json",
+      "out": "origin_image/slide_08.png",
+      "input_images": [
+        {
+          "path": "/home/ezer/repos/mine/codex-ppt-skill/Auditor_Junior/origin_image/slide_07.png",
+          "role": "Amostra aprovada para referência de estilo do deck.",
+          "fidelity": "Reproduzir somente paleta, hierarquia, clima tipográfico, densidade, textura e linguagem visual. Não copiar o diagrama ou o layout do slide de amostra."
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/slide_08",
+        "agent_nickname": "slide_08",
+        "prompt": "prompts/slide_08.json",
+        "prompt_sha256": "cecc60b7a6c685cc63bb0ab28449315501dfae6b7c965f36470a120e59d90084",
+        "dispatched_at": "2026-11-06T11:52:24Z"
+      },
+      "result": {
+        "agent_id": "/root/slide_08",
+        "backend_used": "built-in image tool",
+        "selected_source": "/home/ezer/.codex/generated_images/01a1b0b3-8a26-7e51-bd34-8fb48d19d614/exec-c34fef97-b06d-4cbb-9b23-5cf5b8277c13.png",
+        "selected_source_sha256": "ba493e1738c6f1a24543e04828ec68f42b406c504965cad2bb9c60d2bb55574f",
+        "final_image": "origin_image/slide_08.png",
+        "final_image_sha256": "ba493e1738c6f1a24543e04828ec68f42b406c504965cad2bb9c60d2bb55574f",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "Portuguese copy is legible, the stability and decline paths are clearly illustrative, and no invented metrics appear.",
+        "recorded_at": "2026-11-06T11:58:56Z"
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_09",
+      "number": 9,
+      "title": "Use o agente no fluxo de trabalho",
+      "job": "prompts/slide_09.json",
+      "out": "origin_image/slide_09.png",
+      "input_images": [
+        {
+          "path": "/home/ezer/repos/mine/codex-ppt-skill/Auditor_Junior/origin_image/slide_07.png",
+          "role": "Amostra aprovada para referência de estilo do deck.",
+          "fidelity": "Reproduzir somente paleta, hierarquia, clima tipográfico, densidade, textura e linguagem visual. Não copiar o diagrama ou o layout do slide de amostra."
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/slide_09",
+        "agent_nickname": "slide_09",
+        "prompt": "prompts/slide_09.json",
+        "prompt_sha256": "06e4cf7768ed09b3bf6c5e0374209c83beee855ff184d6e0e73cac0bf75cf4db",
+        "dispatched_at": "2026-11-06T11:52:53Z"
+      },
+      "result": {
+        "agent_id": "/root/slide_09",
+        "backend_used": "built-in image tool",
+        "selected_source": "/home/ezer/.codex/generated_images/01a1b0b4-45f9-7933-b96a-2e2c72197ab6/exec-11a49cd6-8f8b-4596-9ac8-d60acd809c04.png",
+        "selected_source_sha256": "b4639134d66772b37acdbb82fe16ebabe5a9a0b5001bd25ea0a6a1312020c509",
+        "final_image": "origin_image/slide_09.png",
+        "final_image_sha256": "b4639134d66772b37acdbb82fe16ebabe5a9a0b5001bd25ea0a6a1312020c509",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "Labels are correct and legible; the three use paths are clear and match the approved visual style.",
+        "recorded_at": "2026-11-06T11:54:59Z"
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_10",
+      "number": 10,
+      "title": "Um ciclo claro: definir, ensinar, testar e acompanhar",
+      "job": "prompts/slide_10.json",
+      "out": "origin_image/slide_10.png",
+      "input_images": [
+        {
+          "path": "/home/ezer/repos/mine/codex-ppt-skill/Auditor_Junior/origin_image/slide_07.png",
+          "role": "Amostra aprovada para referência de estilo do deck.",
+          "fidelity": "Reproduzir somente paleta, hierarquia, clima tipográfico, densidade, textura e linguagem visual. Não copiar o diagrama ou o layout do slide de amostra."
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/slide_10",
+        "agent_nickname": "slide_10",
+        "prompt": "prompts/slide_10.json",
+        "prompt_sha256": "ceac95e241fd140633e8849176c862ba43e457f021a8f044d8d6e1dbcda3d97d",
+        "dispatched_at": "2026-11-06T11:53:16Z"
+      },
+      "result": {
+        "agent_id": "/root/slide_10",
+        "backend_used": "built-in image tool",
+        "selected_source": "/home/ezer/.codex/generated_images/01a1b0b4-9a34-7222-bdd0-1d713ad1f692/exec-a6c7c072-d960-434f-aa46-ce74f9848013.png",
+        "selected_source_sha256": "fb5fbe85ef620c104effc3e688ff59120297b38265b321adf50b31cf9249a538",
+        "final_image": "origin_image/slide_10.png",
+        "final_image_sha256": "fb5fbe85ef620c104effc3e688ff59120297b38265b321adf50b31cf9249a538",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "Portuguese text is legible; the five-step recap and final prompt clearly close the deck in the approved style.",
+        "recorded_at": "2026-11-06T11:56:26Z"
+      },
+      "blocker": null
+    }
+  ],
+  "updated_at": "2026-11-06T11:58:56Z"
+}

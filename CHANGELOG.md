@@ -4,6 +4,10 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ## Unreleased
 
+### Features
+
+- Add the Auditor Júnior Brazilian Portuguese presentation with guided audience prompts and speaker notes. (#108)
+
 ## 0.6.0
 
 ### Improvements
