@@ -6,7 +6,7 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ### Features
 
-- Add the Auditor Júnior Brazilian Portuguese presentation with guided audience prompts and speaker notes.
+- Add the Auditor Júnior Brazilian Portuguese presentation with guided audience prompts and speaker notes. (#108)
 
 ## 0.6.0
 
