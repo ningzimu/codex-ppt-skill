@@ -1,0 +1,43 @@
+{
+  "slide": 1,
+  "title": "Auditor Júnior: ensine o agente a seguir o seu padrão",
+  "prompt": "# Codex PPT Slide Image Prompt\n\n## Canvas\n{\n  \"type\": \"16:9 full-slide PowerPoint image\",\n  \"language\": \"Português brasileiro\",\n  \"slide_number\": 1,\n  \"render_slide_number\": false\n}\n\n## Deck Goal\nApresentar o Auditor Júnior a pessoas leigas, explicando como criar, configurar, otimizar, avaliar e usar agentes para tarefas de auditoria.\n\n## Required Background\n{\n  \"deck_context\": {\n    \"source_summary\": \"Auditor Júnior é uma aplicação self-service em que a pessoa cria um agente, escolhe o tipo de aplicação (por exemplo, Situação Monitorada ou Classificação), define entradas (como arquivos, data-base e CNPJ), fornece exemplos com as saídas esperadas e otimiza as instruções do agente. A avaliação pode usar validação cruzada e acompanhar a qualidade ao longo do tempo. Depois de criado e otimizado, o agente pode ser usado pela interface, por agendamentos ou por API chamada por outros sistemas e scripts.\",\n    \"core_claim\": \"Uma pessoa pode ensinar um agente a seguir seu padrão de trabalho com instruções e exemplos, testar se o padrão se mantém em diferentes casos, acompanhar a qualidade e escolher como colocar o agente em uso.\",\n    \"canonical_terms\": [\n      \"Agente: ajudante de software configurado para uma tarefa específica.\",\n      \"Padrão ouro: conjunto de exemplos com entradas e respostas esperadas pelo usuário.\",\n      \"Otimização: ajuste das instruções do agente para buscar respostas mais alinhadas ao padrão ouro.\",\n      \"Validação cruzada: revezamento de exemplos entre ajuste e teste para observar se a regra funciona em casos deixados fora do ajuste.\",\n      \"Data-base: data de referência definida para a análise.\",\n      \"CNPJ: identificador de empresa que pode ser definido como tipo de entrada.\"\n    ],\n    \"content_guardrails\": [\n      \"Não inventar métricas, resultados, alertas automáticos ou telas reais do produto.\",\n      \"Marcar exemplos de funcionamento que não vieram do usuário como didáticos e fictícios.\",\n      \"Explicar conceitos técnicos com palavras simples e analogias curtas.\",\n      \"A proposta descrita otimiza as instruções do agente; não afirmar que treina um modelo do zero.\"\n    ]\n  },\n  \"slide_local_context\": \"A pergunta final deve ser entendida como convite oral para o público pensar em uma tarefa. Auditor Júnior é o nome do aplicativo. Não inventar logotipo ou identidade visual de marca.\"\n}\n\n## Global Style\n{\n  \"name\": \"Explicador desenhado à mão com estrutura profissional em azul\",\n  \"visual_direction\": \"Apresentação didática, acolhedora e profissional para público leigo. Combinar diagramas desenhados à mão com hierarquia e organização de uma apresentação profissional. Uma ideia central por slide, conceitos ilustrados por analogias simples, layouts variados conforme o conteúdo e textos curtos em português brasileiro.\",\n  \"color_palette\": \"Fundo branco ou quase branco; azul-marinho e azul profissional para títulos, estruturas e grupos de ajuste; verde-azulado para teste e destaques; cinza grafite para traços; hachuras suaves e acentos discretos. Manter azul como estrutura principal.\",\n  \"typography\": \"Títulos em sans-serif profissional, legíveis e com hierarquia clara; rótulos curtos em sans-serif legível. O desenho à mão aparece nos diagramas e linhas, não em texto difícil de ler.\",\n  \"texture_and_finish\": \"Traço de grafite fino e levemente irregular, pequenos realces de marcador azul ou verde-azulado, fundo limpo, bastante espaço em branco. Evitar aparência infantil, lousa confusa, excesso de elementos, cartões repetidos e efeitos digitais genéricos.\",\n  \"deck_consistency\": \"Manter paleta azul e verde-azulado, hierarquia tipográfica profissional, traços desenhados à mão e tom didático em toda a apresentação; variar composição conforme o papel de cada slide.\"\n}\n\n## Input Images\n\n- Image 1: /home/ezer/repos/mine/codex-ppt-skill/Auditor_Junior/origin_image/slide_07.png — Amostra aprovada para referência de estilo do deck.; Reproduzir somente paleta, hierarquia, clima tipográfico, densidade, textura e linguagem visual. Não copiar o diagrama ou o layout do slide de amostra.\n\n\n## Slide\n{\n  \"number\": 1,\n  \"title\": \"Auditor Júnior: ensine o agente a seguir o seu padrão\",\n  \"role\": \"cover\",\n  \"intent\": \"Abrir com uma frase simples que resuma a jornada de criação e uso de um agente.\"\n}\n\n## Text\n{\n  \"title\": \"Auditor Júnior: ensine o agente a seguir o seu padrão\",\n  \"key_points\": [\n    \"Crie e ensine agentes para tarefas de auditoria\",\n    \"Definir · ensinar · testar · acompanhar · usar\",\n    \"Qual tarefa você repetiria com mais consistência?\"\n  ],\n  \"speaker_focus\": null\n}\n\n## Layout\n{\n  \"composition\": \"Capa com título grande à esquerda e uma trilha ilustrada de cinco passos à direita, encerrada por uma pergunta curta na base.\",\n  \"content_zones\": \"Título e subtítulo no lado esquerdo; sequência desenhada à mão ocupando o centro-direita; pergunta em área de destaque discreta.\",\n  \"spacing\": \"Pouco texto, grande respiro e hierarquia forte.\"\n}\n\n## Visual Elements\n{\n  \"main_visual\": \"Trilha de cinco ícones desenhados à mão representando definição, exemplos, teste, acompanhamento e uso.\",\n  \"supporting_elements\": \"Setas finas em azul e destaques verde-azulados, sem interface fictícia.\"\n}\n\n## Constraints\n[\n  \"Usar somente os textos exatos indicados em título e key_points.\",\n  \"Não acrescentar números de desempenho, funcionalidades não descritas ou logotipos.\",\n  \"Manter a pergunta como texto curto e legível.\"\n]\n\n## Style Reference Rule\nUse Image 1 as the approved sample-slide style reference. Match its palette, typography mood, density, texture, and overall visual identity. Do not copy its exact layout unless this slide's layout explicitly asks for it.\n\n## Input Image Handling Rules\nFor any input image marked as a strict input asset, include it visibly and preserve its content. Do not redraw, replace, relabel, or invent a similar figure. Scale and crop only as needed for composition while keeping the important labels, arrows, data, and relationships recognizable.\n\n## Universal Constraints\n- The final image itself must contain the title and key points.\n- Render Brazilian Portuguese text exactly and legibly, preserve accents, and avoid garbled characters.\n- Keep the confirmed deck style consistent while varying layout by slide role.\n- No watermark, unrelated logo, or extra slide number.\n",
+  "out": "slide_01.png",
+  "input_images": [
+    {
+      "path": "/home/ezer/repos/mine/codex-ppt-skill/Auditor_Junior/origin_image/slide_07.png",
+      "role": "Amostra aprovada para referência de estilo do deck.",
+      "fidelity": "Reproduzir somente paleta, hierarquia, clima tipográfico, densidade, textura e linguagem visual. Não copiar o diagrama ou o layout do slide de amostra."
+    }
+  ],
+  "requires_context_images": true,
+  "expected_backend": "built-in image tool",
+  "sample_generation_method": {
+    "backend_used": "built-in image tool",
+    "tool_name": "image_gen",
+    "mode": "generate",
+    "prompt_source": "Prompt inline preparado a partir do roteiro aprovado para o slide 7, com o conceito de validação cruzada e a direção visual aprovada.",
+    "size": "Padrão da ferramenta integrada; arquivo aprovado em 1672x941 px, proporção 16:9.",
+    "quality": "Padrão da ferramenta integrada; parâmetro não exposto.",
+    "model": "Padrão da ferramenta integrada; nome do modelo não exposto.",
+    "approved_sample_path": "/home/ezer/repos/mine/codex-ppt-skill/Auditor_Junior/origin_image/slide_07.png",
+    "input_context_preparation": "Sem imagens de origem obrigatórias. O slide 7 foi gerado a partir de um prompt textual; os demais trabalhadores devem receber o arquivo aprovado local como referência somente de estilo, usando referenced_image_paths do image_gen.",
+    "handoff_rule": "Usar a ferramenta integrada image_gen no modo generate e a imagem aprovada como referência somente de estilo. Se esse caminho não estiver disponível, retornar um bloqueio; não trocar de backend."
+  },
+  "generation_contract": {
+    "must_use_selected_image_backend": true,
+    "must_match_sample_generation_method": true,
+    "forbidden_final_image_methods": [
+      "local drawing/rendering scripts",
+      "Pillow-generated slides",
+      "SVG/HTML/CSS/canvas screenshots",
+      "python-pptx/PptxGenJS/native PPT layout screenshots",
+      "manually composited text/image overlays"
+    ],
+    "must_return": [
+      "backend_used",
+      "selected_source",
+      "qa_note"
+    ]
+  }
+}

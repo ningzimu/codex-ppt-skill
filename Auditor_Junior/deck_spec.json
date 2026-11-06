@@ -1,0 +1,319 @@
+{
+  "deck_name": "Auditor_Junior",
+  "language": "Português brasileiro",
+  "goal": "Apresentar o Auditor Júnior a pessoas leigas, explicando como criar, configurar, otimizar, avaliar e usar agentes para tarefas de auditoria.",
+  "deck_context": {
+    "source_summary": "Auditor Júnior é uma aplicação self-service em que a pessoa cria um agente, escolhe o tipo de aplicação (por exemplo, Situação Monitorada ou Classificação), define entradas (como arquivos, data-base e CNPJ), fornece exemplos com as saídas esperadas e otimiza as instruções do agente. A avaliação pode usar validação cruzada e acompanhar a qualidade ao longo do tempo. Depois de criado e otimizado, o agente pode ser usado pela interface, por agendamentos ou por API chamada por outros sistemas e scripts.",
+    "core_claim": "Uma pessoa pode ensinar um agente a seguir seu padrão de trabalho com instruções e exemplos, testar se o padrão se mantém em diferentes casos, acompanhar a qualidade e escolher como colocar o agente em uso.",
+    "canonical_terms": [
+      "Agente: ajudante de software configurado para uma tarefa específica.",
+      "Padrão ouro: conjunto de exemplos com entradas e respostas esperadas pelo usuário.",
+      "Otimização: ajuste das instruções do agente para buscar respostas mais alinhadas ao padrão ouro.",
+      "Validação cruzada: revezamento de exemplos entre ajuste e teste para observar se a regra funciona em casos deixados fora do ajuste.",
+      "Data-base: data de referência definida para a análise.",
+      "CNPJ: identificador de empresa que pode ser definido como tipo de entrada."
+    ],
+    "content_guardrails": [
+      "Não inventar métricas, resultados, alertas automáticos ou telas reais do produto.",
+      "Marcar exemplos de funcionamento que não vieram do usuário como didáticos e fictícios.",
+      "Explicar conceitos técnicos com palavras simples e analogias curtas.",
+      "A proposta descrita otimiza as instruções do agente; não afirmar que treina um modelo do zero."
+    ]
+  },
+  "selected_image_backend": "built-in image tool",
+  "max_concurrent_slides": 3,
+  "sample_generation_method": {
+    "backend_used": "built-in image tool",
+    "tool_name": "image_gen",
+    "mode": "generate",
+    "prompt_source": "Prompt inline preparado a partir do roteiro aprovado para o slide 7, com o conceito de validação cruzada e a direção visual aprovada.",
+    "size": "Padrão da ferramenta integrada; arquivo aprovado em 1672x941 px, proporção 16:9.",
+    "quality": "Padrão da ferramenta integrada; parâmetro não exposto.",
+    "model": "Padrão da ferramenta integrada; nome do modelo não exposto.",
+    "approved_sample_path": "/home/ezer/repos/mine/codex-ppt-skill/Auditor_Junior/origin_image/slide_07.png",
+    "input_context_preparation": "Sem imagens de origem obrigatórias. O slide 7 foi gerado a partir de um prompt textual; os demais trabalhadores devem receber o arquivo aprovado local como referência somente de estilo, usando referenced_image_paths do image_gen.",
+    "handoff_rule": "Usar a ferramenta integrada image_gen no modo generate e a imagem aprovada como referência somente de estilo. Se esse caminho não estiver disponível, retornar um bloqueio; não trocar de backend."
+  },
+  "style": {
+    "name": "Explicador desenhado à mão com estrutura profissional em azul",
+    "visual_direction": "Apresentação didática, acolhedora e profissional para público leigo. Combinar diagramas desenhados à mão com hierarquia e organização de uma apresentação profissional. Uma ideia central por slide, conceitos ilustrados por analogias simples, layouts variados conforme o conteúdo e textos curtos em português brasileiro.",
+    "color_palette": "Fundo branco ou quase branco; azul-marinho e azul profissional para títulos, estruturas e grupos de ajuste; verde-azulado para teste e destaques; cinza grafite para traços; hachuras suaves e acentos discretos. Manter azul como estrutura principal.",
+    "typography": "Títulos em sans-serif profissional, legíveis e com hierarquia clara; rótulos curtos em sans-serif legível. O desenho à mão aparece nos diagramas e linhas, não em texto difícil de ler.",
+    "texture_and_finish": "Traço de grafite fino e levemente irregular, pequenos realces de marcador azul ou verde-azulado, fundo limpo, bastante espaço em branco. Evitar aparência infantil, lousa confusa, excesso de elementos, cartões repetidos e efeitos digitais genéricos.",
+    "deck_consistency": "Manter paleta azul e verde-azulado, hierarquia tipográfica profissional, traços desenhados à mão e tom didático em toda a apresentação; variar composição conforme o papel de cada slide."
+  },
+  "approved_style_reference": {
+    "path": "/home/ezer/repos/mine/codex-ppt-skill/Auditor_Junior/origin_image/slide_07.png",
+    "role": "Amostra aprovada para referência de estilo do deck.",
+    "fidelity": "Reproduzir somente paleta, hierarquia, clima tipográfico, densidade, textura e linguagem visual. Não copiar o diagrama ou o layout do slide de amostra."
+  },
+  "slides": [
+    {
+      "number": 1,
+      "title": "Auditor Júnior: ensine o agente a seguir o seu padrão",
+      "role": "cover",
+      "intent": "Abrir com uma frase simples que resuma a jornada de criação e uso de um agente.",
+      "key_points": [
+        "Crie e ensine agentes para tarefas de auditoria",
+        "Definir · ensinar · testar · acompanhar · usar",
+        "Qual tarefa você repetiria com mais consistência?"
+      ],
+      "local_context": "A pergunta final deve ser entendida como convite oral para o público pensar em uma tarefa. Auditor Júnior é o nome do aplicativo. Não inventar logotipo ou identidade visual de marca.",
+      "layout": {
+        "composition": "Capa com título grande à esquerda e uma trilha ilustrada de cinco passos à direita, encerrada por uma pergunta curta na base.",
+        "content_zones": "Título e subtítulo no lado esquerdo; sequência desenhada à mão ocupando o centro-direita; pergunta em área de destaque discreta.",
+        "spacing": "Pouco texto, grande respiro e hierarquia forte."
+      },
+      "visual_elements": {
+        "main_visual": "Trilha de cinco ícones desenhados à mão representando definição, exemplos, teste, acompanhamento e uso.",
+        "supporting_elements": "Setas finas em azul e destaques verde-azulados, sem interface fictícia."
+      },
+      "constraints": [
+        "Usar somente os textos exatos indicados em título e key_points.",
+        "Não acrescentar números de desempenho, funcionalidades não descritas ou logotipos.",
+        "Manter a pergunta como texto curto e legível."
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Tudo começa com uma tarefa bem definida",
+      "role": "concept explanation",
+      "intent": "Explicar o que é um agente e mostrar que o primeiro passo é escolher o trabalho que ele fará.",
+      "key_points": [
+        "Um agente é um ajudante de software para uma tarefa específica",
+        "Situação Monitorada",
+        "Classificação",
+        "Qual tarefa se repete na sua rotina?"
+      ],
+      "local_context": "Situação Monitorada e Classificação são exemplos de tipos de aplicação mencionados pelo usuário. A última frase é um convite oral para participação.",
+      "layout": {
+        "composition": "Conceito central no meio, ligado a dois exemplos de tipo de aplicação; pergunta curta na base.",
+        "content_zones": "Definição breve no topo; ilustração principal no centro; dois rótulos de aplicação ao redor; pergunta no rodapé.",
+        "spacing": "Cada exemplo deve ser fácil de distinguir, sem cartões repetitivos."
+      },
+      "visual_elements": {
+        "main_visual": "Pequeno ajudante de software desenhado como uma lupa ou prancheta que recebe uma tarefa específica.",
+        "supporting_elements": "Dois caminhos rotulados Situação Monitorada e Classificação."
+      },
+      "constraints": [
+        "Usar somente os textos exatos indicados em título e key_points.",
+        "Evitar robô humanoide e efeitos futuristas.",
+        "Não afirmar que o agente substitui a decisão humana."
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Diga o que o agente deve fazer",
+      "role": "comparison",
+      "intent": "Mostrar visualmente a diferença entre uma orientação vaga e uma instrução mais específica.",
+      "key_points": [
+        "Exemplo didático",
+        "Vago: “Analise tudo”",
+        "Claro: “Classifique pelos critérios e explique a decisão”",
+        "Qual instrução orienta melhor?"
+      ],
+      "local_context": "A comparação é ilustrativa; não reproduz uma tela real do produto nem um procedimento oficial de auditoria.",
+      "layout": {
+        "composition": "Comparação antes e depois, com a orientação vaga à esquerda e a instrução específica à direita.",
+        "content_zones": "Título no topo; dois quadros de comparação no centro; pergunta curta na base.",
+        "spacing": "Destacar a mudança de clareza sem sobrecarregar com texto explicativo."
+      },
+      "visual_elements": {
+        "main_visual": "Uma folha com instrução vaga transformada por uma seta em uma folha com instrução clara.",
+        "supporting_elements": "Realce azul para a instrução específica e anotação pequena indicando exemplo didático."
+      },
+      "constraints": [
+        "Usar exatamente as frases entre aspas.",
+        "Não criar critérios de auditoria reais nem resultados factuais.",
+        "Não adicionar parágrafos ao slide."
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Mostre quais informações entram",
+      "role": "process",
+      "intent": "Apresentar os tipos de entrada citados pelo usuário e mostrar que a seleção depende da tarefa.",
+      "key_points": [
+        "Arquivos",
+        "Data-base",
+        "CNPJ",
+        "Cada tarefa pode precisar de entradas diferentes",
+        "O que essa tarefa precisa receber?"
+      ],
+      "local_context": "Os três itens são exemplos de tipos de input configuráveis. A pergunta é uma interação oral do apresentador.",
+      "layout": {
+        "composition": "Três entradas em formatos visuais distintos convergem para um agente central; uma legenda explica que a seleção varia por tarefa.",
+        "content_zones": "Ícones grandes e rótulos claros no centro; frase de conclusão embaixo; pergunta curta no rodapé.",
+        "spacing": "Deixar cada entrada separada e fácil de reconhecer."
+      },
+      "visual_elements": {
+        "main_visual": "Ícone de arquivo, calendário com data-base e campo CNPJ convergindo para um agente.",
+        "supporting_elements": "Setas finas em azul; acento verde-azulado apenas no ponto de chegada."
+      },
+      "constraints": [
+        "Usar apenas os rótulos e frases exatos de key_points.",
+        "Não inventar limites de arquivo, validação de CNPJ ou regras de dados."
+      ]
+    },
+    {
+      "number": 5,
+      "title": "Ensine com exemplos do padrão ouro",
+      "role": "case study",
+      "intent": "Explicar que um exemplo padrão ouro liga uma entrada a uma resposta esperada e convidar o público a comparar saídas.",
+      "key_points": [
+        "Entrada + resposta esperada = padrão ouro",
+        "Exemplo fictício: arquivo anexado",
+        "A: “Arquivo recebido”",
+        "B: “Nenhum arquivo”",
+        "Qual resposta segue o padrão?"
+      ],
+      "local_context": "O exemplo do arquivo é fictício e serve apenas para ilustrar a ideia de entrada e saída esperada. A pergunta convida a audiência a votar em A ou B; não há regra real de Auditor Júnior sendo demonstrada.",
+      "layout": {
+        "composition": "Uma entrada fictícia à esquerda e duas respostas candidatas à direita, com a pergunta de votação em destaque.",
+        "content_zones": "Equação curta padrão ouro no topo; diagrama de entrada e respostas no centro; pergunta no rodapé.",
+        "spacing": "A resposta A e a resposta B devem ter o mesmo peso visual; não revelar um gabarito no slide."
+      },
+      "visual_elements": {
+        "main_visual": "Folha de arquivo entrando em um comparador desenhado à mão e se dividindo em duas respostas candidatas.",
+        "supporting_elements": "Pequena etiqueta “Exemplo fictício” ou usar essa expressão já incluída na entrada; realce azul para entrada e verde-azulado para resposta."
+      },
+      "constraints": [
+        "Usar exatamente os textos de key_points.",
+        "Não mostrar um gabarito separado nem marcar A ou B como correto.",
+        "Manter o caráter fictício explícito."
+      ]
+    },
+    {
+      "number": 6,
+      "title": "Melhorar o agente é ajustar suas instruções",
+      "role": "process",
+      "intent": "Simplificar a otimização do agente como um ciclo de comparar, ajustar instruções e avaliar novamente.",
+      "key_points": [
+        "Compare com o padrão esperado",
+        "Ajuste as instruções",
+        "Avalie de novo",
+        "Não é preciso treinar um modelo do zero"
+      ],
+      "local_context": "O produto otimiza as instruções do agente com exemplos e avaliações. Não afirmar que altera pesos do modelo, garante uma qualidade máxima ou torna os erros impossíveis.",
+      "layout": {
+        "composition": "Ciclo circular de três passos com uma saída comparada ao exemplo esperado e retornando a instruções revisadas.",
+        "content_zones": "Título no topo; ciclo com três etapas no centro; frase de esclarecimento em uma nota inferior discreta.",
+        "spacing": "Usar poucas palavras por etapa e setas claras."
+      },
+      "visual_elements": {
+        "main_visual": "Ciclo desenhado à mão: comparar → ajustar instruções → avaliar de novo.",
+        "supporting_elements": "Uma folha de instruções e dois balões de resposta, sem telas de produto inventadas."
+      },
+      "constraints": [
+        "Usar somente os textos exatos indicados em título e key_points.",
+        "Não apresentar valores, percentuais ou promessa de resultado."
+      ]
+    },
+    {
+      "number": 7,
+      "title": "Validação cruzada: testar em exemplos diferentes",
+      "role": "concept explanation",
+      "intent": "Explicar validação cruzada por meio de grupos de exemplos que alternam entre ajuste e teste.",
+      "key_points": [
+        "Os exemplos se revezam entre ajuste e teste.",
+        "Rodada 1",
+        "Rodada 2",
+        "Ajuste",
+        "Teste",
+        "Como estudar com exercícios e depois fazer uma prova",
+        "Assim, vemos se a regra funciona também nos casos que ficaram fora do ajuste."
+      ],
+      "local_context": "Este slide é a amostra aprovada e não deve ser regenerado. A analogia com exercícios e prova explica a validação cruzada sem jargão.",
+      "layout": {
+        "composition": "Duas rodadas com seis exemplos cada; quatro alternam no grupo de ajuste e dois no grupo de teste; analogia da prova ao lado.",
+        "content_zones": "Título e subtítulo no alto; rodadas no centro; analogia lateral; conclusão curta no rodapé.",
+        "spacing": "Amostra aprovada; preservar exatamente o layout existente."
+      },
+      "visual_elements": {
+        "main_visual": "Dois grupos de exemplos com as funções ajuste e teste alternadas, caderno e prova desenhados à mão.",
+        "supporting_elements": "Setas finas mostrando o revezamento."
+      },
+      "constraints": [
+        "Manter o arquivo de amostra existente; não gerar uma nova imagem para este slide."
+      ],
+      "sample_approved": true,
+      "use_approved_style_reference": false
+    },
+    {
+      "number": 8,
+      "title": "Acompanhe a qualidade ao longo do tempo",
+      "role": "timeline",
+      "intent": "Mostrar que a avaliação continua após a criação e pode revelar estabilidade ou queda de qualidade.",
+      "key_points": [
+        "A qualidade pode se manter ou cair",
+        "Compare avaliações ao longo do tempo",
+        "Investigue mudanças nos casos",
+        "Revise instruções e exemplos quando necessário"
+      ],
+      "local_context": "O produto permite avaliar o desempenho do agente ao longo do tempo. Não afirmar que envia alertas automáticos nem inventar métricas ou resultados.",
+      "layout": {
+        "composition": "Linha do tempo com avaliações sucessivas, uma sequência estável e outra descendente, ambas claramente identificadas como ilustração sem números.",
+        "content_zones": "Linha do tempo ocupa o centro; recomendações curtas ficam ao lado ou abaixo.",
+        "spacing": "Sem eixos numéricos ou valores fictícios."
+      },
+      "visual_elements": {
+        "main_visual": "Duas trilhas qualitativas desenhadas à mão: uma estável e uma em queda, sem escala nem percentuais.",
+        "supporting_elements": "Lupa sobre o ponto de mudança e uma nota indicando revisão."
+      },
+      "constraints": [
+        "Não inventar métricas, alertas, datas ou resultados quantitativos.",
+        "Rotular como ilustração se a linha parecer um gráfico real."
+      ]
+    },
+    {
+      "number": 9,
+      "title": "Use o agente no fluxo de trabalho",
+      "role": "architecture",
+      "intent": "Apresentar os três caminhos de uso depois da otimização: interface, agendamentos e API.",
+      "key_points": [
+        "Interface do aplicativo",
+        "Agendamentos",
+        "API para outros sistemas e scripts",
+        "Qual caminho combina com sua rotina?"
+      ],
+      "local_context": "A interface, os agendamentos e a API são possibilidades descritas pelo usuário. A pergunta final é uma escolha guiada pelo apresentador; não inventar detalhes de configuração.",
+      "layout": {
+        "composition": "Um agente central ligado a três caminhos distintos, organizados como escolhas equivalentes.",
+        "content_zones": "Agente no centro; interface, agenda e API em três direções; pergunta na base.",
+        "spacing": "Diagrama leve e claro, sem cartões repetidos ou tela fictícia."
+      },
+      "visual_elements": {
+        "main_visual": "Agente ligado a uma janela de aplicativo, um calendário e dois sistemas conectados por API.",
+        "supporting_elements": "Setas azuis; rótulos curtos; ícones desenhados à mão."
+      },
+      "constraints": [
+        "Usar somente os textos exatos indicados em título e key_points.",
+        "Não desenhar endpoints, comandos ou telas que não foram fornecidos."
+      ]
+    },
+    {
+      "number": 10,
+      "title": "Um ciclo claro: definir, ensinar, testar e acompanhar",
+      "role": "summary",
+      "intent": "Fechar com a jornada completa e convidar o público a escolher uma tarefa pequena para começar.",
+      "key_points": [
+        "Escolha uma tarefa pequena para começar",
+        "Qual poderia ser seu primeiro agente?"
+      ],
+      "local_context": "O resumo representa as cinco etapas definidas no título. A pergunta final é convite oral para que a audiência proponha uma tarefa inicial.",
+      "layout": {
+        "composition": "Jornada de cinco etapas em uma trilha contínua com o convite final em destaque.",
+        "content_zones": "Trilha no centro; pergunta final em uma área clara no rodapé.",
+        "spacing": "Encerramento simples, visualmente completo e com bastante respiro."
+      },
+      "visual_elements": {
+        "main_visual": "Cinco marcos desenhados à mão representando tipo e entradas, padrão ouro, validação, acompanhamento e uso.",
+        "supporting_elements": "Acentos azuis e verde-azulados; o último marco conecta interface, agenda e API."
+      },
+      "constraints": [
+        "Não introduzir novos recursos ou métricas no encerramento.",
+        "Manter a pergunta final curta e legível."
+      ]
+    }
+  ]
+}
