@@ -6,7 +6,7 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ### Fixes
 
-- Recognize GPT Image 2.6 Flare and Sunburst in CLI size and quality validation, including provider-prefixed model routes, while retaining legacy and unknown-model restrictions.
+- Recognize GPT Image 2.6 Flare and Sunburst in CLI size and quality validation, including provider-prefixed model routes, while retaining legacy and unknown-model restrictions. (#110)
 
 ## 0.6.0
 
