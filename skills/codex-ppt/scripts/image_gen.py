@@ -235,19 +235,19 @@ def _validate_gpt_image_2_size(size: str) -> None:
     total_pixels = width * height
 
     if max_edge > GPT_IMAGE_2_MAX_EDGE:
-        _die("GPT Image 2 / 2.5 size maximum edge length must be less than or equal to 3840px.")
+        _die("GPT Image 2 / 2.5 / 2.6 size maximum edge length must be less than or equal to 3840px.")
     if width % 16 != 0 or height % 16 != 0:
-        _die("GPT Image 2 / 2.5 size width and height must be multiples of 16px.")
+        _die("GPT Image 2 / 2.5 / 2.6 size width and height must be multiples of 16px.")
     if max_edge / min_edge > GPT_IMAGE_2_MAX_RATIO:
-        _die("GPT Image 2 / 2.5 size long edge to short edge ratio must not exceed 3:1.")
+        _die("GPT Image 2 / 2.5 / 2.6 size long edge to short edge ratio must not exceed 3:1.")
     if total_pixels < GPT_IMAGE_2_MIN_PIXELS or total_pixels > GPT_IMAGE_2_MAX_PIXELS:
         _die(
-            "GPT Image 2 / 2.5 size total pixels must be at least 655,360 and no more than 8,294,400."
+            "GPT Image 2 / 2.5 / 2.6 size total pixels must be at least 655,360 and no more than 8,294,400."
         )
 
 
 def _validate_size(size: str, model: str) -> None:
-    if _is_gpt_image_2_model(model) or _is_gpt_image_2_5_model(model):
+    if _is_gpt_image_2_model(model) or _is_gpt_image_2_5_or_2_6_model(model):
         _validate_gpt_image_2_size(size)
         return
 
@@ -260,8 +260,8 @@ def _validate_size(size: str, model: str) -> None:
 def _validate_quality(quality: str, model: str) -> None:
     if quality not in ALLOWED_QUALITIES:
         _die("quality must be one of low, medium, high, xhigh, max, or auto.")
-    if quality in {"xhigh", "max"} and not _is_gpt_image_2_5_model(model):
-        _die("xhigh and max quality require gpt-image-2.5-flare or gpt-image-2.5-sunburst.")
+    if quality in {"xhigh", "max"} and not _is_gpt_image_2_5_or_2_6_model(model):
+        _die("xhigh and max quality require GPT Image 2.5 or 2.6 (Flare or Sunburst).")
 
 
 def _validate_background(background: Optional[str]) -> None:
@@ -287,9 +287,9 @@ def _is_gpt_image_2_model(model: str) -> bool:
     return bool(re.search(r"(?:^|/)gpt-image-2(?:-\d{4}-\d{2}-\d{2})?(?:/|$)", model))
 
 
-def _is_gpt_image_2_5_model(model: str) -> bool:
+def _is_gpt_image_2_5_or_2_6_model(model: str) -> bool:
     return bool(re.search(
-        r"(?:^|/)gpt-image-2\.5-(?:flare|sunburst)(?:-\d{4}-\d{2}-\d{2})?(?:/|$)",
+        r"(?:^|/)gpt-image-2\.(?:5|6)-(?:flare|sunburst)(?:-\d{4}-\d{2}-\d{2})?(?:/|$)",
         model,
     ))
 

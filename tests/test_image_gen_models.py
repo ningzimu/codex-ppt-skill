@@ -21,13 +21,18 @@ class ImageModelTests(unittest.TestCase):
             "gpt-image-2.5-sunburst",
             "openai/gpt-image-2.5-flare-2026-09-08",
             "openai/gpt-image-2.5-sunburst/edit",
+            "gpt-image-2.6-flare",
+            "gpt-image-2.6-sunburst",
+            "openai/gpt-image-2.6-flare/text-to-image",
+            "openai/gpt-image-2.6-sunburst/edit",
         ):
             for quality in ("xhigh", "max"):
-                with self.subTest(model=model, quality=quality):
-                    image_gen._validate_generate_payload({
-                        "model": model, "quality": quality,
-                        "size": "2560x1440", "background": "transparent",
-                    })
+                for size in ("2048x1152", "2560x1440", "3840x2160"):
+                    with self.subTest(model=model, quality=quality, size=size):
+                        image_gen._validate_generate_payload({
+                            "model": model, "quality": quality,
+                            "size": size, "background": "transparent",
+                        })
 
     def test_legacy_models_reject_new_quality(self):
         for model in ("gpt-image-2", "openai/gpt-image-2/edit", "gpt-image-1.5"):
@@ -36,9 +41,21 @@ class ImageModelTests(unittest.TestCase):
                     image_gen._validate_quality(quality, model)
 
     def test_unknown_model_does_not_inherit_new_quality(self):
-        for model in ("gpt-image-2.5", "gpt-image-2.5-flare-invalid", "gpt-image-20"):
+        for model in (
+            "gpt-image-2.5", "gpt-image-2.5-flare-invalid",
+            "gpt-image-2.6", "gpt-image-2.6-flare-invalid",
+            "gpt-image-2.7-sunburst", "gpt-image-20",
+        ):
             with self.subTest(model=model), self.assertRaises(SystemExit):
                 image_gen._validate_quality("max", model)
+
+    def test_legacy_and_unknown_models_reject_custom_sizes(self):
+        for model in (
+            "gpt-image-1.5", "gpt-image-1-mini", "gpt-image-2.6",
+            "gpt-image-2.6-flare-invalid", "gpt-image-2.7-sunburst",
+        ):
+            with self.subTest(model=model), self.assertRaises(SystemExit):
+                image_gen._validate_size("2048x1152", model)
 
     def test_legacy_transparency_and_fidelity_rules(self):
         for model in ("gpt-image-2", "openai/gpt-image-2-2026-04-21/edit"):
@@ -49,18 +66,24 @@ class ImageModelTests(unittest.TestCase):
         image_gen._validate_model_specific_options(model="gpt-image-1.5", background="transparent")
 
     def test_size_constraints_remain_enforced(self):
-        for model in ("gpt-image-2.5-flare", "gpt-image-2.5-sunburst", "gpt-image-2"):
+        for model in (
+            "gpt-image-2.5-flare", "gpt-image-2.5-sunburst", "gpt-image-2",
+            "gpt-image-2.6-flare", "openai/gpt-image-2.6-sunburst/edit",
+        ):
             image_gen._validate_size("3840x2160", model)
-            for size in ("4096x2160", "1025x1024", "3840x3840", "3840x1024", "256x256"):
+            for size in (
+                "4096x2160", "1025x1024", "3840x3840", "3840x1024",
+                "256x256", "0x1152", "2048x",
+            ):
                 with self.subTest(model=model, size=size), self.assertRaises(SystemExit):
                     image_gen._validate_size(size, model)
 
-    def run_cli(self, *args):
+    def run_cli(self, *args, base_url="https://api.openai.com/v1"):
         output = io.StringIO()
         with (
             patch.object(sys, "argv", ["image_gen.py", *args]),
             patch.object(image_gen, "_load_runtime_env"),
-            patch.dict("os.environ", {"OPENAI_BASE_URL": "https://api.openai.com/v1"}, clear=True),
+            patch.dict("os.environ", {"OPENAI_BASE_URL": base_url}, clear=True),
             contextlib.redirect_stdout(output),
         ):
             self.assertEqual(image_gen.main(), 0)
@@ -72,6 +95,39 @@ class ImageModelTests(unittest.TestCase):
         self.assertEqual(result["model"], codex_ppt_runtime.DEFAULT_MODEL)
         self.assertEqual(result["size"], "2560x1440")
         self.assertEqual(result["quality"], "medium")
+
+    def test_image_2_6_generate_edit_and_atlascloud_routes(self):
+        with tempfile.TemporaryDirectory() as temp:
+            image = Path(temp) / "reference.png"
+            image.write_bytes(b"reference")
+            for base_url in ("https://api.openai.com/v1", "https://api.atlascloud.ai/v1"):
+                atlascloud = "atlascloud.ai" in base_url
+                for command in (("generate",), ("edit", "--image", str(image))):
+                    suffix = "edit" if command[0] == "edit" else "text-to-image"
+                    for variant in ("flare", "sunburst"):
+                        model = f"gpt-image-2.6-{variant}"
+                        if atlascloud:
+                            model = f"openai/{model}/{suffix}"
+                        for size in ("2048x1152", "3840x2160"):
+                            for quality in ("xhigh", "max"):
+                                with self.subTest(
+                                    command=command[0], model=model, size=size, quality=quality,
+                                ):
+                                    result = self.run_cli(
+                                        *command, "--prompt", "slide", "--model", model,
+                                        "--size", size, "--quality", quality,
+                                        "--out", str(Path(temp) / "out.png"), "--dry-run",
+                                        base_url=base_url,
+                                    )
+                                    self.assertEqual(result["model"], model)
+                                    self.assertEqual(result["size"], size)
+                                    self.assertEqual(result["quality"], quality)
+                                    endpoint = (
+                                        "/api/v1/model/generateImage" if atlascloud
+                                        else "/v1/images/edits" if command[0] == "edit"
+                                        else "/v1/images/generations"
+                                    )
+                                    self.assertEqual(result["endpoint"], endpoint)
 
     def test_generate_and_edit_transparent_requests(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -103,12 +159,17 @@ class ImageModelTests(unittest.TestCase):
                 "prompt": "slide", "model": "gpt-image-2.5-sunburst",
                 "quality": "xhigh", "background": "transparent", "output_format": "webp",
             }
-            jobs.write_text(json.dumps(job) + "\n")
             args = ("generate-batch", "--input", str(jobs), "--out-dir", temp, "--dry-run")
-            result = self.run_cli(*args)
-            self.assertEqual(result["model"], job["model"])
-            self.assertEqual(result["quality"], "xhigh")
-            self.assertEqual(result["output_format"], "webp")
+            for model in ("gpt-image-2.5-sunburst", "gpt-image-2.6-flare", "gpt-image-2.6-sunburst"):
+                with self.subTest(model=model):
+                    job["model"] = model
+                    job["size"] = "2048x1152"
+                    jobs.write_text(json.dumps(job) + "\n")
+                    result = self.run_cli(*args)
+                    self.assertEqual(result["model"], model)
+                    self.assertEqual(result["size"], "2048x1152")
+                    self.assertEqual(result["quality"], "xhigh")
+                    self.assertEqual(result["output_format"], "webp")
             job["model"] = "gpt-image-2"
             jobs.write_text(json.dumps(job) + "\n")
             with self.assertRaises(SystemExit):
