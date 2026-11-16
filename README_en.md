@@ -221,8 +221,9 @@ The skill follows this workflow:
 
 ## Usage Tips
 
-- Prefer the built-in image tool available in the current environment. Its actual model, resolution, and controls depend on that environment; a subscription or successful image response does not verify them. If precise size or quality settings are required and the built-in tool does not expose them, use an API/CLI fallback that supports those parameters. API/CLI fallback output defaults to 2K 16:9; try 4K for text-heavy or blurry slides. GPT Image 2.5 output above `2560x1440` pixels is experimental; inspect the actual result.
+- Prefer the built-in image tool available in the current environment. Its actual model, resolution, and controls depend on that environment; a subscription or successful image response does not verify them. If precise size or quality settings are required and the built-in tool does not expose them, use an API/CLI fallback that supports those parameters. API/CLI fallback output defaults to 2K 16:9; try 4K for text-heavy or blurry slides. GPT Image 2.5 / 2.6 output above `2560x1440` pixels is experimental; inspect the actual result.
 - API/CLI fallback defaults to `gpt-image-2.5-flare`; select `--model gpt-image-2.5-sunburst` to switch. Both support `xhigh` / `max` quality and transparent PNG/WebP. Defaults remain 2K 16:9 and `medium`. Older models retain their parameter limits; check which models and parameters your provider supports.
+- When your provider supports GPT Image 2.6, select `--model gpt-image-2.6-flare` or `--model gpt-image-2.6-sunburst`. Generation, editing, and batch jobs accept custom sizes such as `2048x1152`, `2560x1440`, and `3840x2160`, plus `xhigh` / `max` quality, while continuing to enforce size limits.
 - If you are unhappy with one specific slide's content, layout, colors, or wording, ask the current agent to refine that slide in detail instead of regenerating the whole deck.
 
 ![Single-slide revision example: open the PPT, click annotation, and mark the area to revise](assets/single-slide-revision-example.png)
